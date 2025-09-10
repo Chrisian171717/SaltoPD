@@ -1,0 +1,102 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: rgb(43, 56, 139);
+  color: black;
+}
+
+/* === Sección principal === */
+.vehiculos-section {
+  padding: 2rem;
+  background-image: linear-gradient(to right, rgb(71, 99, 140), rgb(29, 37, 102));
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border: 3px solid rgb(0, 0, 0);
+  border-radius: 12px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* === Encabezado === */
+.vehiculos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.vehiculos-header__branding {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.vehiculos-header__icon {
+  height: 50px;
+  width: auto;
+}
+
+.vehiculos-header__title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: rgb(226, 188, 65);
+}
+
+.vehiculos-header__search {
+  max-width: 300px;
+  flex-grow: 1;
+}
+
+.vehiculos-search {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 3px solid black;
+  font-size: 1rem;
+}
+
+/* === Lista de vehículos === */
+.vehiculos-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* === Tarjeta de vehículo === */
+.vehiculo-card {
+  background-color: rgb(143, 157, 200);
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.vehiculo-card__foto {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.vehiculo-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+
+.vehiculo-card__marca,
+.vehiculo-card__modelo,
+.vehiculo-card__matricula {
+  font-size: 1rem;
+  color: black;
+}
+
+.vehiculo-card__observacion {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 3px solid black;
+  font-size: 0.9rem;
+}
+
