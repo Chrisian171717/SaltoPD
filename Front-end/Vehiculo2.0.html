@@ -3,49 +3,53 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="Script.js"></script>
+        <script src="../Back-end/vehiculo.js"></script>
         <title>Vehículos</title>
         <link rel="icon" href="logo.png" type="image/png">
         <link rel="stylesheet" href="vehiculo.css">
     </head>
         <body>
+            <form action="../Back-end/Vehiculos.php" method="POST">
+    <nav class="nav-tabs" aria-label="Navegación principal">
+        <ul class="nav-tabs__list">
+            <li><a href="civiles.html" class="nav-tabs__link"><img src="Civil.png" alt="Sección Civil" class="nav-tabs__icon" /></a></li>
+            <li><a href="Denuncias.html" class="nav-tabs__link"><img src="Denuncias.png" alt="Sección Denuncias" class="nav-tabs__icon" /></a></li>
+            <li><a href="Radio.html" class="nav-tabs__link"><img src="radio-policia-2507338-2102444.png" alt="Sección Radio" class="nav-tabs__icon" /></a></li>
+            <li><a href="Mapa.html" class="nav-tabs__link"><img src="mapa.png" alt="Sección Mapa" class="nav-tabs__icon" /></a></li>
+            <li><a href="principal.html" class="nav-tabs__link"><img src="Logo.png" alt="Sección principal" class="nav-tabs__icon" /></a></li>
+            <li><a href="Escaner Facial.html" class="nav-tabs__link"><img src="Escaner Facial.png" alt="Sección Escaner" class="nav-tabs__icon" /></a></li>
+        </ul>
+    </nav>
 
-             <nav class="nav-tabs" aria-label="Navegación principal">
-                <ul class="nav-tabs__list">
-                    <li><a href="civiles.html" class="nav-tabs__link"><img src="Civil.png" alt="Sección Civil" class="nav-tabs__icon" /></a></li>
-                    <li><a href="Denuncias.html" class="nav-tabs__link"><img src="Denuncias.png" alt="Sección Denuncias" class="nav-tabs__icon" /></a></li>
-                    <li><a href="Radio.html" class="nav-tabs__link"><img src="radio-policia-2507338-2102444.png" alt="Sección Radio" class="nav-tabs__icon" /></a></li>
-                    <li><a href="Mapa.html" class="nav-tabs__link"><img src="mapa.png" alt="Sección Mapa" class="nav-tabs__icon" /></a></li>
-                    <li><a href="principal.html" class="nav-tabs__link"><img src="Logo.png" alt="Sección principal" class="nav-tabs__icon" /></a></li>
+    <section class="vehiculos-section" aria-label="Listado de vehículos">
+        <header class="vehiculos-header">
+            <div class="vehiculos-header__branding">
+                <img src="Vehiculo.png" alt="Icono de vehículo" class="vehiculos-header__icon" />
+                <h1 class="vehiculos-header__title">Vehículos</h1>
+            </div>
+            <div class="vehiculos-header__search">
+                <input type="search" name="busqueda" placeholder="Buscar por matrícula o nombre del civil..." class="vehiculos-search" aria-label="Buscar vehículo" />
+                <button type="submit">🔍</button>
+            </div>
+        </header>
 
-                </ul>
-            </nav>
-
-            <section class="vehiculos-section" aria-label="Listado de vehículos">
-                <header class="vehiculos-header">
-                    <div class="vehiculos-header__branding">
-                    <img src="Vehiculo.png" alt="Icono de vehículo" class="vehiculos-header__icon" />
-                    <h1 class="vehiculos-header__title">Vehículos</h1>
-                    </div>
-                    <div class="vehiculos-header__search">
-                    <input type="search" placeholder="Buscar vehículo por matrícula o marca..." class="vehiculos-search" aria-label="Buscar vehículo" />
-                    </div>
-                </header>
-
-                <div class="vehiculos-lista">
-                    <!-- Tarjeta de vehículo -->
+        <div class="vehiculos-lista">
+        
                     <article class="vehiculo-card">
                         <img src="Civil.png" alt="Foto del conductor" class="vehiculo-card__foto" />
                         <div class="vehiculo-card__info">
-                            <span class="vehiculo-card__marca">Toyota</span>
-                            <span class="vehiculo-card__modelo">Corolla 2022</span>
-                            <span class="vehiculo-card__matricula">MAT-1234</span>
+                            <span class="vehiculo-card__marca"><?= htmlspecialchars($row['marca']) ?></span>
+                            <span class="vehiculo-card__modelo"><?= htmlspecialchars($row['modelo']) ?></span>
+                            <span class="vehiculo-card__matricula"><?= htmlspecialchars($row['matricula']) ?></span>
+                            <span class="vehiculo-card__civil">Conductor: <?= htmlspecialchars($row['nombre']) ?> (DNI: <?= htmlspecialchars($row['dni']) ?>)</span>
                             <input type="text" placeholder="Observación..." class="vehiculo-card__observacion" required />
                         </div>
                     </article>
-
-                 <!-- Más tarjetas generadas dinámicamente -->
-                </div>
-            </section>
+                
+                <p>No se encontraron vehículos con esos datos.</p>
+        
+        </div>
+    </section>
+</form>
        </body>
 </html>

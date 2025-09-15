@@ -1,64 +1,77 @@
 <?php 
-include("../ConexionSPD.php");
+include("conexion.php");
 
-$host="localhost";
-$user= "root";
-$pass= "";
-$db= "saltodp";
+// Iniciar sesión
+session_start();
 
-$conn=mysqli_connect($host,$user,$pass,$db);
-$conn = new mysqli($host, $user, $pass, $db);
-
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
+// Si el usuario no está logueado, lo mandamos al login
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: IniciarSesion.php");
+    exit();
 }
 
-// Verifica si se envió el formulario
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Sanitiza los datos
-    $email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
-    $placa = htmlspecialchars(trim($_POST["placa"]));
-    $password = $_POST["password"];
-    $confirmPassword = $_POST["password"]; // Este campo debería tener un name distinto en el HTML
-    $rol = htmlspecialchars(trim($_POST["rolLogin"]));
+// ===== Conexión a la base de datos =====
+$host = "localhost";   // Servidor
+$user = "root";        // Usuario de BD
+$pass = "";            // Contraseña (vacío en XAMPP)
+$db   = "saltopd";     // Nombre de la BD
 
-    // Validaciones
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "Correo inválido.";
+$conn = new mysqli($host, $user, $pass, $db);
+
+// Verificar conexión
+if ($conn->connect_error) {
+    die("Error en la conexión a la BD: " . $conn->connect_error);
+}
+
+// Recibir datos del formulario
+$email        = $_POST['email'] ?? '';
+$placa        = $_POST['placa'] ?? '';
+$password     = $_POST['password'] ?? '';
+$confipass    = $_POST['confipassword'] ?? '';
+$rol          = $_POST['rolLogin'] ?? '';
+
+// Validaciones básicas
+if (empty($email) || empty($placa) || empty($password) || empty($confipass) || empty($rol)) {
+    die("⚠️ Debes completar todos los campos.");
+}
+
+if ($password !== $confipass) {
+    die("❌ Las contraseñas no coinciden.");
+}
+
+// Buscar usuario
+$sql = "SELECT * FROM usuarios WHERE correo = ? AND placa = ? AND rol = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("sss", $email, $placa, $rol);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 1) {
+    $user = $result->fetch_assoc();
+
+    // Verificar contraseña
+    if (password_verify($password, $user['contrasena'])) {
+        // Crear sesión
+        $_SESSION['usuario_id'] = $user['id'];
+        $_SESSION['nombre']     = $user['nombre'];
+        $_SESSION['rol']        = $user['rol'];
+
+        // Redirigir según el rol
+        if ($rol === "administrador") {
+            header("Location: ../Front-end/panel_admin.php");
+        } elseif ($rol === "policia") {
+            header("Location: ../Front-end/panel_policia.php");
+        } else {
+            echo "Rol no válido.";
+        }
         exit;
-    }
-
-    if (strlen($password) < 8) {
-        echo "La contraseña debe tener al menos 8 caracteres.";
-        exit;
-    }
-
-    if ($password !== $confirmPassword) {
-        echo "Las contraseñas no coinciden.";
-        exit;
-    }
-
-    if ($rol !== "policia" && $rol !== "administrador") {
-        echo "Rol inválido.";
-        exit;
-    }
-
-    // Encriptar contraseña
-    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-
-    // Insertar en la base de datos
-    $sql = "INSERT INTO usuarios (email, placa, contrasena, rol) VALUES (?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssss", $email, $placa, $passwordHash, $rol);
-
-    if ($stmt->execute()) {
-        echo "Registro exitoso";
     } else {
-        echo "Error al registrar: " . $stmt->error;
+        echo "❌ Contraseña incorrecta.";
     }
-
-    $stmt->close();
+} else {
+    echo "❌ No existe un usuario con esos datos.";
 }
 
 $conn->close();
 ?>
+

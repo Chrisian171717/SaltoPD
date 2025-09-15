@@ -1,52 +1,95 @@
-
-
-import os
 import cv2
+import os
+import time
 
+# Detecta la primera cámara disponible probando distintos backends
+def find_available_camera(max_index=5):
+    backends = [cv2.CAP_ANY, cv2.CAP_MSMF, cv2.CAP_DSHOW]
+    for backend in backends:
+        for i in range(max_index):
+            cap = cv2.VideoCapture(i, backend)
+            if cap.isOpened():
+                ret, _ = cap.read()
+                if ret:
+                    cap.release()
+                    print(f"✅ Cámara encontrada en índice {i} con backend {backend}")
+                    return i, backend
+            cap.release()
+    return None, None
 
-# Cargar el clasificador de rostros (asegúrate de que el archivo esté en la misma carpeta)
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-if face_cascade.empty():
-    print("Error: No se pudo cargar el clasificador de rostros. Asegúrate de que 'haarcascade_frontalface_default.xml' esté en la carpeta correcta.")
-    exit()
+def scan_face_and_id():
+    cv2.setUseOptimized(True)  # Activa optimización (mejor rendimiento)
 
-# Intenta abrir la cámara
-cap = cv2.VideoCapture(0)
-OPENCV_LOG_LEVEL=0
+    cam_index, backend = find_available_camera()
+    if cam_index is None:
+        print("❌ No se encontró ninguna cámara disponible.")
+        return
 
-# Verificar si la cámara se abrió correctamente
-if not cap.isOpened():
-    print("Error: No se pudo abrir la cámara.")
-    exit()
+    # Crear carpetas de salida
+    os.makedirs("faces", exist_ok=True)
+    os.makedirs("ids", exist_ok=True)
 
-while True:
-    # Capturar un frame de la cámara
-    ret, frame = cap.read()
-    
-    # Si la captura del frame falla, salimos del bucle
-    if not ret:
-        print("Error: No se pudo leer el frame. La conexión se perdió.")
-        break
-    
-    # Convertir la imagen a escala de grises para la detección de rostros
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    
-    # Detectar rostros en la imagen en escala de grises
-    faces = face_cascade.detectMultiScale(gray, 1.1, 4)
-    
-    # Dibujar un rectángulo alrededor de cada rostro detectado
-    for (x, y, w, h) in faces:
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
-    
-    # Mostrar la imagen con los rectángulos
-    cv2.imshow('Deteccion de Rostros', frame)
-    
-    # Salir del bucle al presionar la tecla 'q'
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+    cap = cv2.VideoCapture(cam_index, backend)
 
-# Liberar los recursos de la cámara y cerrar las ventanas
-cap.release()
-cv2.destroyAllWindows()
+    # Modelo DNN de detección de rostros (SSD basado en ResNet10)
+    modelFile = cv2.data.haarcascades + "../dnn/res10_300x300_ssd_iter_140000.caffemodel"
+    configFile = cv2.data.haarcascades + "../dnn/deploy.prototxt"
+    net = cv2.dnn.readNetFromCaffe(configFile, modelFile)
 
-    
+    print(f"🎥 Usando cámara en índice {cam_index} con backend {backend}")
+    print("Presiona 'f' para escanear rostro, 'i' para escanear ID, 'q' para salir.")
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            print("⚠️ Error al capturar el frame. Verifica la cámara.")
+            break
+
+        (h, w) = frame.shape[:2]
+        blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 1.0,
+                                     (300, 300), (104.0, 177.0, 123.0))
+        net.setInput(blob)
+        detections = net.forward()
+
+        faces = []
+        for i in range(detections.shape[2]):
+            confidence = detections[0, 0, i, 2]
+            if confidence > 0.6:  # confianza mínima 60%
+                box = detections[0, 0, i, 3:7] * [w, h, w, h]
+                (x, y, x2, y2) = box.astype("int")
+                faces.append((x, y, x2 - x, y2 - y))
+                cv2.rectangle(frame, (x, y), (x2, y2), (0, 255, 0), 2)
+
+        # Mostrar cantidad de rostros detectados
+        cv2.putText(frame, f"Rostros detectados: {len(faces)}",
+                    (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+
+        # Mostrar instrucciones en pantalla
+        cv2.putText(frame, "Presiona 'f'=rostro, 'i'=ID, 'q'=salir",
+                    (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+
+        cv2.imshow('Escáner', frame)
+        key = cv2.waitKey(1) & 0xFF
+
+        if key == ord('f'):
+            if len(faces) > 0:
+                for i, (x, y, w_, h_) in enumerate(faces):
+                    face_img = frame[y:y+h_, x:x+w_]
+                    filename = f"faces/face_{int(time.time())}_{i}.jpg"
+                    cv2.imwrite(filename, face_img)
+                    print(f"🧑‍🦰 Rostro {i+1} guardado como '{filename}'")
+            else:
+                print("🚫 No se detectó ningún rostro.")
+        elif key == ord('i'):
+            filename = f"ids/id_{int(time.time())}.jpg"
+            cv2.imwrite(filename, frame)
+            print(f"🪪 ID escaneada y guardada como '{filename}'")
+        elif key == ord('q'):
+            print("👋 Cerrando escáner...")
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    scan_face_and_id()

@@ -1,48 +1,53 @@
 <?php 
-include("../ConexionSPD.php");
+include("conexion.php");
 
 $host="localhost";
 $user= "root";
 $pass= "";
-$db= "saltodp";
+$db= "saltopd";
 
 $conn=mysqli_connect($host,$user,$pass,$db);
 $conn = new mysqli($host, $user, $pass, $db);
 
 
-// Verifica la conexión
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
+// Recibir datos del formulario
+$nombre     = $_POST['nombre'] ?? '';
+$apellido   = $_POST['apellido'] ?? '';
+$placa      = $_POST['placa'] ?? '';
+$correo     = $_POST['correo'] ?? '';
+$contrasena = $_POST['contrasena'] ?? '';
+$rol        = $_POST['rol'] ?? '';
+
+// Validar que los campos no estén vacíos
+if (empty($nombre) || empty($apellido) || empty($placa) || empty($correo) || empty($contrasena) || empty($rol)) {
+    die("Por favor, complete todos los campos.");
 }
 
-// Verifica si se envió el formulario
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Sanitiza y recoge los datos
-    $nombre = htmlspecialchars(trim($_POST["nombre"]));
-    $apellido = htmlspecialchars(trim($_POST["apellido"]));
-    $placa = htmlspecialchars(trim($_POST["placa"]));
-    $correo = filter_var(trim($_POST["correo"]), FILTER_SANITIZE_EMAIL);
-    $contrasena = password_hash($_POST["contrasena"], PASSWORD_DEFAULT); // Encriptar contraseña
+// Verificar si ya existe un usuario con ese correo o placa
+$sql_check = "SELECT * FROM usuarios WHERE correo = ? OR placa = ?";
+$stmt_check = $conn->prepare($sql_check);
+$stmt_check->bind_param("ss", $correo, $placa);
+$stmt_check->execute();
+$result = $stmt_check->get_result();
 
-    // Validación básica
-    if (!empty($nombre) && !empty($apellido) && !empty($placa) && filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-        // Inserta en la base de datos
-        $sql = "INSERT INTO usuarios (nombre, apellido, placa, correo, contrasena) VALUES (?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssss", $nombre, $apellido, $placa, $correo, $contrasena);
+if ($result->num_rows > 0) {
+    die("Ya existe un usuario con ese correo o placa.");
+}
 
-        if ($stmt->execute()) {
-            echo "Registro exitoso 🎉";
-        } else {
-            echo "Error al registrar: " . $stmt->error;
-        }
+// Hashear contraseña
+$hash = password_hash($contrasena, PASSWORD_DEFAULT);
 
-        $stmt->close();
-    } else {
-        echo "Por favor completa todos los campos correctamente.";
-    }
+// Insertar nuevo usuario
+$sql = "INSERT INTO usuarios (nombre, apellido, placa, correo, contrasena, rol) VALUES (?, ?, ?, ?, ?, ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ssssss", $nombre, $apellido, $placa, $correo, $hash, $rol);
+
+if ($stmt->execute()) {
+    echo "Registro exitoso. Ahora puede iniciar sesión.";
+    header("refresh:2; url=../Front-end/inicio_sesion.html"); 
+} else {
+    echo "Error al registrar: " . $conn->error;
 }
 
 $conn->close();
-
 ?>

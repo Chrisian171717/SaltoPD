@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de sesion</title>
     <link rel="icon" href="logo.png" type="image/png">
-    <script src="registro e inicio.js"></script>
+    <script src="../Back-end/registro e inicio.js"></script>
     <link rel="stylesheet" href="registro e inicio.css">
 </head>
     <body>
         <section id="login" class="page active" aria-label="Formulario de inicio de sesión">
   <h1>Iniciar Sesión</h1>
-
-  <form id="loginForm" autocomplete="on" novalidate>
+          <form action="../Back-end/IniciarSesion.php" method="POST">
+            <form id="loginForm" autocomplete="on" novalidate>
     <fieldset>
       <legend>Datos de acceso</legend>
 
@@ -84,6 +84,7 @@
       <a href="registro.html" class="link">Regístrate aquí</a>
     </p>
   </form>
+          </form>
 </section>
 
     </body>

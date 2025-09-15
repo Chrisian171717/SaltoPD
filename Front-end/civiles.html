@@ -3,13 +3,14 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="Script.js"></script>
+        <script src="../Back-end/civiles.js"></script>
         <title>Civiles</title>
         <link rel="icon" href="logo.png" type="image/png">
         <link rel="stylesheet" href="civiles.css">
     </head>
     <body>
-        <header class="header-civiles" aria-label="Encabezado de sección civiles">
+        <form action="../Back-end/Civiles.php" method="POST">
+             <header class="header-civiles" aria-label="Encabezado de sección civiles">
             <div class="header-civiles__branding">
                 <img src="1769039.png" alt="Icono de sección civiles" class="header-civiles__icon" />
                 <h1 class="header-civiles__title">Civiles</h1>
@@ -17,6 +18,9 @@
 
             <div class="header-civiles__search">
                 <input type="search" placeholder="Buscar persona..." class="search-input" aria-label="Buscar persona por nombre o DNI" />
+                 <input type="text" name="nombre" placeholder="Nombre" required />
+                    <input type="text" name="dni" placeholder="DNI" required />
+                <button type="submit" name="agregar">➕</button>
             </div>
     </header>
 
@@ -27,10 +31,10 @@
           <li><a href="Vehiculo2.0.html" class="nav-tabs__link"><img src="Vehiculo.png" alt="Sección Vehículo" class="nav-tabs__icon" /></a></li>
           <li><a href="Mapa.html" class="nav-tabs__link"><img src="mapa.png" alt="Sección Mapa" class="nav-tabs__icon" /></a></li>
           <li><a href="Radio.html" class="nav-tabs__link"><img src="radio-policia-2507338-2102444.png" alt="Sección Radio" class="nav-tabs__icon" /></a></li>
+          <li><a href="Escaner Facial.html" class="nav-tabs__link"><img src="Escaner Facial.png" alt="Sección Escaner" class="nav-tabs__icon" /></a></li>
 
         </ul>
       </nav>
-
 
         <main class="civiles-main">
             <section class="civiles-list" aria-label="Listado de civiles">
@@ -49,5 +53,6 @@
             </section>
         </main>
 
+        </form>
     </body>
 </html>

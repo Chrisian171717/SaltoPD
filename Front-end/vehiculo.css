@@ -1,14 +1,14 @@
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background-color: orange;
+  background: linear-gradient(135deg, #1d1b1b, #2c4c6b);
   color: black;
 }
 
 /* === Sección principal === */
 .vehiculos-section {
   padding: 2rem;
-  background-image: linear-gradient(to right, yellow, orange);
+    background: linear-gradient(135deg,#306eac, #000000);
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   border-radius: 12px;
   font-family: 'Segoe UI', sans-serif;
@@ -62,7 +62,7 @@ body {
 
 /* === Tarjeta de vehículo === */
 .vehiculo-card {
-  background-color: rosybrown;
+  background: linear-gradient(135deg,#223d58, #206acc);
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   padding: 1rem;
@@ -97,4 +97,63 @@ body {
   border-radius: 6px;
   border: 3px solid black;
   font-size: 0.9rem;
+}
+
+.nav-tabs {
+  background-color: #2c3e50;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  border-radius: 2%;
+  user-select: none;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease;
+}
+
+.nav-tabs__list {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.nav-tabs__link {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  color: gray;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 4px rgba(70, 2, 2, 0.1);
+}
+
+.nav-tabs__link:hover {
+  transform: scale(1.1);
+  text-shadow: 0 0 5px rgba(18, 18, 19, 0.7);
+  box-shadow: 0 4px 8px aqua;
+  background-color: rgba(0, 255, 255, 0.2);
+  border-radius: 8px; 
+}
+
+.nav-tabs__icon {
+  height: 50px;
+  width: auto;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  user-select: none;
+  display: inline-block;
+  transition: transform 0.3s ease;
+  
 }

@@ -3,7 +3,7 @@
 $host="localhost";
 $user= "root";
 $pass= "";
-$db= "saltodp";
+$db= "saltopd";
 
 $conn = mysqli_connect($host,$user,$pass, $db);
 

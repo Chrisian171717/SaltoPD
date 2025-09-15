@@ -5,11 +5,26 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="escaner.css">
         <link rel="icon" href="logo.png" type="image/png">
-        <script src="Script.js"></script>
+        <script src="../Back-end/escaneo.js"></script>
         <title>Escáner Facial - Sistema de Reconocimiento</title>
     </head>
     <body>
+
+        <form action="../Back-end/Escaner.php" method="post">
+            <nav class="nav-tabs" aria-label="Navegación principal">
+                <ul class="nav-tabs__list">
+                    <li><a href="civiles.html" class="nav-tabs__link"><img src="Civil.png" alt="Sección Civil" class="nav-tabs__icon" /></a></li>
+                    <li><a href="Denuncias.html" class="nav-tabs__link"><img src="Denuncias.png" alt="Sección Denuncias" class="nav-tabs__icon" /></a></li>
+                    <li><a href="Vehiculo2.0.html" class="nav-tabs__link"><img src="Vehiculo.png" alt="Sección Vehículo" class="nav-tabs__icon" /></a></li>
+                    <li><a href="Radio.html" class="nav-tabs__link"><img src="radio-policia-2507338-2102444.png" alt="Sección Radio" class="nav-tabs__icon" /></a></li>
+                    <li><a href="principal.html" class="nav-tabs__link"><img src="Logo.png" alt="Sección principal" class="nav-tabs__icon" /></a></li>
+                    <li><a href="Mapa.html" class="nav-tabs__link"><img src="mapa.png" alt="Sección mapa" class="nav-tabs__icon" /></a></li>
+
+                </ul>
+            </nav>
+        
         <section class="scanner-system" aria-label="Sistema de escaneo biométrico">
+            
 
             <!-- Encabezado -->
             <header class="scanner-header">
@@ -110,6 +125,7 @@
             </section>
 
         </section>
+        </form>
 
     </body>
 </html>

@@ -214,4 +214,127 @@ body {
 }
 
 
+.nav-tabs {
+  background-color: #2c3e50;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  border-radius: 2%;
+  user-select: none;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease;
+}
 
+.nav-tabs__list {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.nav-tabs__link {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  color: gray;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 4px rgba(70, 2, 2, 0.1);
+}
+
+.nav-tabs__link:hover {
+  transform: scale(1.1);
+  text-shadow: 0 0 5px rgba(18, 18, 19, 0.7);
+  box-shadow: 0 4px 8px aqua;
+  background-color: rgba(0, 255, 255, 0.2);
+  border-radius: 8px; 
+}
+
+.nav-tabs__icon {
+  height: 50px;
+  width: auto;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  user-select: none;
+  display: inline-block;
+  transition: transform 0.3s ease;
+  
+}
+
+.header-civiles__branding {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-civiles__icon {
+    width: 45px;
+    height: 45px;
+}
+
+.header-civiles__title {
+    font-size: 1.8rem;
+    color: #007bff;
+    font-weight: bold;
+}
+
+/* Contenedor de búsqueda + agregar civil */
+.header-civiles__search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* todo a la derecha */
+    gap: 5px;
+}
+
+/* Buscador compacto */
+.header-civiles__search-container .search-input {
+    width: 150px;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* Formulario agregar civil pequeño */
+.civiles-add-small {
+    display: flex;
+    gap: 5px;
+}
+
+/* Inputs pequeños */
+.civiles-add-small input[type="text"] {
+    width: 70px;
+    padding: 4px 6px;
+    font-size: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Botón pequeño */
+.civiles-add-small button[name="agregar"] {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.civiles-add-small button[name="agregar"]:hover {
+    background: #0056b3;
+    transform: scale(1.1);
+}

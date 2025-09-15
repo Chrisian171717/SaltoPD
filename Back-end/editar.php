@@ -1,5 +1,5 @@
 <?php
-include("../conexion.php");
+include("conexion.php");
 
 $id = $_GET["id"];
 $result = mysqli_query($conn, "SELECT * FROM usuario WHERE id= $id");

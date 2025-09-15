@@ -3,16 +3,17 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="registro e inicio.js"></script>
+        <script src="../Back-end/registro e inicio.js"></script>
         <link rel="stylesheet" href="registro e inicio.css">
         <link rel="icon" href="logo.png" type="image/png">
         <title>Sistema de Registro</title>
     </head>
     <body>
         <section id="registro" class="page active" aria-label="Formulario de registro">
-  <h1>Crear Cuenta</h1>
-
-  <form id="registroForm" autocomplete="on" novalidate>
+          <h1>Crear Cuenta</h1>
+                
+          <form action="../Back-end/Registro.php" method="POST">
+            <form id="registroForm" autocomplete="on" novalidate>
     <fieldset>
       <legend>Información personal</legend>
 
@@ -86,7 +87,10 @@
       <a href="inicio de sesion.html" class="link">Inicia sesión aquí</a>
     </p>
   </form>
-</section>
+          </form>
+
+  
+        </section>
 
     </body>
 </html>
