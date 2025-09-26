@@ -74,12 +74,12 @@ function responderMensaje(mensaje, nombre) {
     // Opciones del menú
     const menuOpciones = {
         "1": "¡Hola " + nombre + "! ¿Cómo estás hoy?",
-        "2": "El scanner sirve para registrar personas en la frontera.",
-        "3": "La pestaña Denuncias permite registrar delitos de civiles.",
-        "4": "La pestaña Civiles muestra información de las personas.",
-        "5": "La pestaña Vehículos muestra matrícula y descripción de vehículos.",
-        "6": "La pestaña Mapa muestra ubicación de policías y denuncias.",
-        "7": "Sí, hay otras funciones como mostrar policías en horario.",
+        "2": "El scanner sirve para saber el registro de las personas que pasan por la frontera. Si surge algún inconveniente (como negarse a dar su cédula o información), se pueden encontrar sus datos escaneando a la persona.",
+        "3": "La pestaña Denuncias cumple con la función de registrar y mostrar los delitos cometidos por los civiles. Cada denuncia queda asociada a la persona en la base de datos, y a su vez se conecta con la pestaña Vehículos y con el Mapa. Esto permite que, por ejemplo, si un vehículo o una matrícula tienen una denuncia, el sistema pueda mostrar su ubicación en tiempo real junto con los policías que están de servicio. Para agregar, eliminar o editar una denuncia hay un boton en el final de la denuncia.",
+        "4": "La pestaña Civiles muestra la información de todas las personas en la base de datos: nombre, apellido, cédula y denuncia cometida. Además, está vinculada con la pestaña Vehículos, ya que cada vehículo debe tener un propietario.",
+        "5": "La pestaña Vehículos muestra la matrícula y una breve descripción de cada vehículo. Está vinculada con Civiles, porque cada vehículo tiene un dueño registrado.",
+        "6": "La pestaña Mapa muestra la ubicación actual de todos los policías en servicio y de las matrículas con denuncias.",
+        "7": "Sí, debajo de estas pestañas hay un cuadro que muestra todos los policías que están en horario de trabajo.",
         "8": "¡Hasta pronto!",
         "9": "Modo charla libre activado. Escribe cualquier cosa."
     };
@@ -89,11 +89,11 @@ function responderMensaje(mensaje, nombre) {
 
     // Texto libre
     if(mensaje.includes("hola")) return "¡Hola " + nombre + "! ¿Cómo estás hoy?";
-    if(mensaje.includes("scanner")) return "El scanner sirve para registrar personas en la frontera.";
-    if(mensaje.includes("denuncia") || mensaje.includes("denuncias")) return "La pestaña Denuncias permite registrar delitos de civiles.";
-    if(mensaje.includes("civiles")) return "La pestaña Civiles muestra información de las personas.";
-    if(mensaje.includes("vehículo") || mensaje.includes("vehiculos")) return "La pestaña Vehículos muestra matrícula y descripción de vehículos.";
-    if(mensaje.includes("mapa")) return "La pestaña Mapa muestra ubicación de policías y denuncias.";
+    if(mensaje.includes("scanner")) return "El scanner sirve para saber el registro de las personas que pasan por la frontera. Si surge algún inconveniente (como negarse a dar su cédula o información), se pueden encontrar sus datos escaneando a la persona.";
+    if(mensaje.includes("denuncia") || mensaje.includes("denuncias")) return "La pestaña Denuncias cumple con la función de registrar y mostrar los delitos cometidos por los civiles. Cada denuncia queda asociada a la persona en la base de datos, y a su vez se conecta con la pestaña Vehículos y con el Mapa. Esto permite que, por ejemplo, si un vehículo o una matrícula tienen una denuncia, el sistema pueda mostrar su ubicación en tiempo real junto con los policías que están de servicio. Para agregar, eliminar o editar una denuncia hay un boton en el final de la denuncia.";
+    if(mensaje.includes("civiles")) return "La pestaña Civiles muestra la información de todas las personas en la base de datos: nombre, apellido, cédula y denuncia cometida. Además, está vinculada con la pestaña Vehículos, ya que cada vehículo debe tener un propietario.";
+    if(mensaje.includes("vehículo") || mensaje.includes("vehiculos")) return "La pestaña Vehículos muestra la matrícula y una breve descripción de cada vehículo. Está vinculada con Civiles, porque cada vehículo tiene un dueño registrado.";
+    if(mensaje.includes("mapa")) return "La pestaña Mapa muestra la ubicación actual de todos los policías en servicio y de las matrículas con denuncias.";
     if(mensaje.includes("hora")) return "La hora actual es " + new Date().toLocaleTimeString();
     if(mensaje.includes("fecha")) return "Hoy es " + new Date().toLocaleDateString();
     if(mensaje.includes("adiós") || mensaje.includes("adios")) return "¡Hasta luego! Fue un gusto hablar contigo.";
