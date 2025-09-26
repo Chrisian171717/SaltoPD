@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>ChatBot Tipo WhatsApp</title>
+<style>
+body { font-family: Arial; margin: 20px; background: #ece5dd; }
+#chatbox { border: 1px solid #ccc; padding: 10px; width: 500px; height: 500px; overflow-y: scroll; background: #f0f0f0; border-radius: 10px; display: flex; flex-direction: column; }
+.burbuja-usuario { background: #dcf8c6; padding: 8px 12px; border-radius: 15px; margin: 5px; text-align: right; display: inline-block; max-width: 80%; align-self: flex-end; }
+.burbuja-bot { background: #ffffff; padding: 8px 12px; border-radius: 15px; margin: 5px; display: inline-block; max-width: 80%; align-self: flex-start; }
+#input-container { margin-top: 10px; display: flex; }
+#msg { flex: 1; padding: 8px; border-radius: 5px; border: 1px solid #ccc; }
+#send-btn { padding: 8px 12px; margin-left: 5px; border-radius: 5px; border: none; background-color: #128c7e; color: white; cursor: pointer; }
+.boton-opcion { margin: 2px; padding: 5px 8px; border: 1px solid #128c7e; background: #ffffff; border-radius: 5px; cursor: pointer; color: #128c7e; }
+</style>
+</head>
+<body>
+<h1>ChatBot</h1>
+<input id="nombre" placeholder="Tu nombre"><br><br>
+<div id="chatbox"></div>
+
+<div id="input-container">
+    <input id="msg" placeholder="Escribe un mensaje">
+    <button id="send-btn" onclick="sendMsg()">Enviar</button>
+</div>
+
+<script>
+// ---------- MENÚ INICIAL ----------
+const menuInicialChatBot = [
+    "Opciones:",
+    "1. Saludar",
+    "2. Finalidad del scanner",
+    "3. Funcionalidad de denuncias",
+    "4. Funcionalidad de civiles",
+    "5. Funcionalidad de vehículos",
+    "6. Funcionalidad de mapa",
+    "7. ¿Hay otras funciones?",
+    "8. Salir",
+    "9. Charla libre"
+];
+
+// ---------- HISTORIAL ----------
+let historial = [];
+const chatbox = document.getElementById("chatbox");
+
+// ---------- MOSTRAR MENÚ INICIAL ----------
+menuInicialChatBot.forEach((line, index) => {
+    const div = document.createElement("div");
+    div.className = "burbuja-bot";
+    div.innerText = line;
+    chatbox.appendChild(div);
+
+    // Agregar botones clicables para opciones 1-9
+    if(index > 0 && index < menuInicialChatBot.length){
+        const btn = document.createElement("button");
+        btn.className = "boton-opcion";
+        btn.innerText = line.split(".")[0];
+        btn.onclick = () => enviarOpcion(btn.innerText);
+        chatbox.appendChild(btn);
+    }
+});
+chatbox.scrollTop = chatbox.scrollHeight;
+
+// ---------- FUNCIONES ----------
+function enviarOpcion(opcion){
+    document.getElementById("msg").value = opcion;
+    sendMsg();
+}
+
+// ---------- RESPONDER MENSAJE ----------
+function responderMensaje(mensaje, nombre) {
+    mensaje = mensaje.toLowerCase();
+
+    // Opciones del menú
+    const menuOpciones = {
+        "1": "¡Hola " + nombre + "! ¿Cómo estás hoy?",
+        "2": "El scanner sirve para registrar personas en la frontera.",
+        "3": "La pestaña Denuncias permite registrar delitos de civiles.",
+        "4": "La pestaña Civiles muestra información de las personas.",
+        "5": "La pestaña Vehículos muestra matrícula y descripción de vehículos.",
+        "6": "La pestaña Mapa muestra ubicación de policías y denuncias.",
+        "7": "Sí, hay otras funciones como mostrar policías en horario.",
+        "8": "¡Hasta pronto!",
+        "9": "Modo charla libre activado. Escribe cualquier cosa."
+    };
+
+    // Revisar si es una opción de menú
+    if(menuOpciones[mensaje]) return menuOpciones[mensaje];
+
+    // Texto libre
+    if(mensaje.includes("hola")) return "¡Hola " + nombre + "! ¿Cómo estás hoy?";
+    if(mensaje.includes("scanner")) return "El scanner sirve para registrar personas en la frontera.";
+    if(mensaje.includes("denuncia") || mensaje.includes("denuncias")) return "La pestaña Denuncias permite registrar delitos de civiles.";
+    if(mensaje.includes("civiles")) return "La pestaña Civiles muestra información de las personas.";
+    if(mensaje.includes("vehículo") || mensaje.includes("vehiculos")) return "La pestaña Vehículos muestra matrícula y descripción de vehículos.";
+    if(mensaje.includes("mapa")) return "La pestaña Mapa muestra ubicación de policías y denuncias.";
+    if(mensaje.includes("hora")) return "La hora actual es " + new Date().toLocaleTimeString();
+    if(mensaje.includes("fecha")) return "Hoy es " + new Date().toLocaleDateString();
+    if(mensaje.includes("adiós") || mensaje.includes("adios")) return "¡Hasta luego! Fue un gusto hablar contigo.";
+
+    return "No entendí eso, ¿puedes decirlo de otra manera?";
+}
+
+// ---------- ENVIAR MENSAJE ----------
+function sendMsg(){
+    const msgInput = document.getElementById("msg");
+    const nombre = document.getElementById("nombre").value || "Usuario";
+    const msg = msgInput.value;
+    if(!msg) return;
+
+    // Mostrar mensaje del usuario
+    const divUsuario = document.createElement("div");
+    divUsuario.className = "burbuja-usuario";
+    divUsuario.innerText = msg;
+    chatbox.appendChild(divUsuario);
+
+    // Mostrar respuesta del bot
+    const reply = responderMensaje(msg, nombre);
+    const divBot = document.createElement("div");
+    divBot.className = "burbuja-bot";
+    divBot.innerText = reply;
+    chatbox.appendChild(divBot);
+
+    // Guardar en historial
+    historial.push({usuario: nombre, mensaje: msg});
+    historial.push({bot: reply});
+
+    chatbox.scrollTop = chatbox.scrollHeight;
+    msgInput.value = "";
+    msgInput.focus();
+}
+
+// Enviar con Enter
+document.getElementById("msg").addEventListener("keypress", function(e){
+    if(e.key === "Enter") sendMsg();
+});
+</script>
+</body>
+</html>
