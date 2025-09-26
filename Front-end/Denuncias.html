@@ -1,69 +1,75 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="../Back-end/denuncia.js"></script>
-        <link rel="icon" href="logo.png" type="image/png">
-        <link rel="stylesheet" href="denuncia.css">
-        <title>Denuncias</title>
-    </head>
-    <body>
- 
-<form action="Denuncia.php" method="POST"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../Back-end/denuncia.js"></script>
+    <link rel="icon" href="logo.png" type="image/png">
+    <link rel="stylesheet" href="denuncia.css">
+    <title>Denuncias</title>
+    
+</head>
+<body>
 
-    <!-- Navegación -->
-    <nav class="nav-tabs" aria-label="Navegación principal">
-        <ul class="nav-tabs__list">
-            <li><a href="civiles.html" class="nav-tabs__link"><img src="Civil.png" alt="Sección Civil" class="nav-tabs__icon" /></a></li>
-            <li><a href="Radio.html" class="nav-tabs__link"><img src="radio-policia-2507338-2102444.png" alt="Sección Radio" class="nav-tabs__icon" /></a></li>
-            <li><a href="Vehiculo2.0.html" class="nav-tabs__link"><img src="Vehiculo.png" alt="Sección Vehículo" class="nav-tabs__icon" /></a></li>
-            <li><a href="Mapa.html" class="nav-tabs__link"><img src="mapa.png" alt="Sección Mapa" class="nav-tabs__icon" /></a></li>
-            <li><a href="principal.html" class="nav-tabs__link"><img src="Logo.png" alt="Sección principal" class="nav-tabs__icon" /></a></li>
-            <li><a href="Escaner Facial.html" class="nav-tabs__link"><img src="Escaner Facial.png" alt="Sección Escaner" class="nav-tabs__icon" /></a></li>
-        </ul>
-    </nav>
+<!-- Navegación -->
+<nav class="nav-tabs" aria-label="Navegación principal">
+    <ul class="nav-tabs__list">
+        <li><a href="civiles.html" class="nav-tabs__link"><img src="Civil.png" alt="Sección Civil" class="nav-tabs__icon" /></a></li>
+        <li><a href="Radio.html" class="nav-tabs__link"><img src="radio-policia-2507338-2102444.png" alt="Sección Radio" class="nav-tabs__icon" /></a></li>
+        <li><a href="Vehiculo2.0.html" class="nav-tabs__link"><img src="Vehiculo.png" alt="Sección Vehículo" class="nav-tabs__icon" /></a></li>
+        <li><a href="Mapa.html" class="nav-tabs__link"><img src="mapa.png" alt="Sección Mapa" class="nav-tabs__icon" /></a></li>
+        <li><a href="principal.html" class="nav-tabs__link"><img src="Logo.png" alt="Sección principal" class="nav-tabs__icon" /></a></li>
+        <li><a href="Escaner Facial.html" class="nav-tabs__link"><img src="Escaner Facial.png" alt="Sección Escaner" class="nav-tabs__icon" /></a></li>
+    </ul>
+</nav>
 
-    <main class="denuncias-main">
+<main class="denuncias-main">
 
-        <!-- Banner principal -->
-        <section class="banner" aria-label="Mensaje ciudadano">
-            <div class="banner__content">
-                <h2 class="banner__title">La voz ciudadana cuenta</h2>
-                <p class="banner__text">Denuncia, participa y ayuda a crear una comunidad más segura.</p>
-                <a href="#" class="btn btn-accent">Buscar Denuncias</a>
-            </div>
-        </section>
+    <!-- Banner principal -->
+    <section class="banner" aria-label="Mensaje ciudadano">
+        <div class="banner__content">
+            <h2 class="banner__title">La voz ciudadana cuenta</h2>
+            <p class="banner__text">Denuncia, participa y ayuda a crear una comunidad más segura.</p>
+            <a href="#" class="btn btn-accent" onclick="cargarDenuncias(); return false;">Buscar Denuncias</a>
+        </div>
+    </section>
 
-        <!-- Sección para agregar denuncia -->
-        <section class="denuncia-form" aria-label="Agregar nueva denuncia">
-            <div class="denuncia-form__content">
-                <h3 class="denuncia-form__title">¿Querés reportar algo?</h3>
-                <input type="hidden" name="accion" value="agregar">
+    <!-- Sección para agregar denuncia -->
+    <section class="denuncia-form" aria-label="Agregar nueva denuncia">
+        <div class="denuncia-form__content">
+            <h3 class="denuncia-form__title">¿Querés reportar algo?</h3>
+            <form id="form-agregar-denuncia">
                 <input type="text" name="nombre_civil" placeholder="Nombre del Civil" required>
                 <input type="text" name="codigo_penal" placeholder="Código Penal" required>
                 <input type="text" name="descripcion" placeholder="Descripción" required>
                 <button type="submit" class="btn btn-primary">Agregar Denuncia</button>
-            </div>
-        </section>
+            </form>
+            <div id="mensaje-form"></div>
+        </div>
+    </section>
 
-        <!-- Buscar Denuncias -->
-        <section class="buscar-denuncia" aria-label="Buscar denuncia">
-            <h3>Buscar Denuncia / Código Penal</h3>
+    <!-- Buscar Denuncias -->
+    <section class="buscar-denuncia" aria-label="Buscar denuncia">
+        <h3>Buscar Denuncia / Código Penal</h3>
+        <form id="form-buscar-denuncia">
             <input type="text" name="busqueda" placeholder="Buscar por nombre">
-             <input type="text" name="codigo_busqueda" placeholder="Buscar por Código Penal (Uruguay)">
-             
+            <input type="text" name="codigo_busqueda" placeholder="Buscar por Código Penal (Uruguay)">
             <button type="submit" class="btn btn-primary">Buscar</button>
-        </section>
+            <button type="button" onclick="limpiarBusqueda()" class="btn btn-secondary">Limpiar</button>
+        </form>
+    </section>
 
-        <!-- Denuncias recientes (tabla generada dinámicamente por PHP) -->
-        <section class="recent-denuncias" aria-label="Denuncias recientes">
-            <h3 class="recent-denuncias__title">Últimas Denuncias</h3>
-            <!-- Aquí PHP generará la tabla de denuncias -->
-        </section>
+    <!-- Denuncias recientes -->
+    <section class="recent-denuncias" aria-label="Denuncias recientes">
+        <h3 class="recent-denuncias__title">Últimas Denuncias</h3>
+        <div id="tabla-denuncias">
+            <div class="loader"></div>
+            <p style="text-align: center;">Cargando denuncias...</p>
+        </div>
+    </section>
 
-    </main>
-</form>
+</main>
 
 <footer class="footer">
     <p class="footer__text">&copy; 2025 Plataforma de Denuncias. Todos los derechos reservados.</p>
@@ -71,4 +77,3 @@
 
 </body>
 </html>
-

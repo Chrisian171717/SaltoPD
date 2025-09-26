@@ -1,96 +1,94 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="../Back-end/registro e inicio.js"></script>
-        <link rel="stylesheet" href="registro e inicio.css">
-        <link rel="icon" href="logo.png" type="image/png">
-        <title>Sistema de Registro</title>
-    </head>
-    <body>
-        <section id="registro" class="page active" aria-label="Formulario de registro">
-          <h1>Crear Cuenta</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../Back-end/Registro.js" defer></script>
+    <link rel="stylesheet" href="registro e inicio.css">
+    <link rel="icon" href="logo.png" type="image/png">
+    <title>Sistema de Registro</title>
+</head>
+<body>
+    <section id="registro" class="page active" aria-label="Formulario de registro">
+        <h1>Crear Cuenta</h1>
+        
+        <form id="registroForm" action="../Back-end/Registro.php" method="POST" autocomplete="on" novalidate>
+            <fieldset>
+                <legend>Información personal</legend>
+
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input
+                        type="text"
+                        id="nombre"
+                        name="nombre"
+                        required
+                        autocomplete="given-name"
+                        placeholder="Ej. Juan"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="apellido">Apellido</label>
+                    <input
+                        type="text"
+                        id="apellido"
+                        name="apellido"
+                        required
+                        autocomplete="family-name"
+                        placeholder="Ej. Pérez"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="placa">Placa</label>
+                    <input
+                        type="text"
+                        id="placa"
+                        name="placa"
+                        required
+                        pattern="[A-Z]{3}[0-9]{4}"
+                        title="Formato: ABC1234"
+                        placeholder="Ej. ABC1234"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="correo">Correo Electrónico</label>
+                    <input
+                        type="email"
+                        id="correo"
+                        name="correo"
+                        required
+                        autocomplete="email"
+                        placeholder="Ej. usuario@mail.com"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="contrasena">Contraseña</label>
+                    <input
+                        type="password"
+                        id="contrasena"
+                        name="contrasena"
+                        required
+                        autocomplete="new-password"
+                        minlength="8"
+                        placeholder="Mínimo 8 caracteres"
+                    />
+                </div>
                 
-          <form action="../Back-end/Registro.php" method="POST">
-            <form id="registroForm" autocomplete="on" novalidate>
-    <fieldset>
-      <legend>Información personal</legend>
+                <!-- Campo oculto para el rol (valor por defecto: usuario) -->
+                <input type="hidden" name="rol" value="usuario">
+            </fieldset>
 
-      <div class="form-group">
-        <label for="nombre">Nombre</label>
-        <input
-          type="text"
-          id="nombre"
-          name="nombre"
-          required
-          autocomplete="given-name"
-          placeholder="Ej. Juan"
-        />
-      </div>
+            <button type="submit" class="btn btn-primary">Registrarse</button>
 
-      <div class="form-group">
-        <label for="apellido">Apellido</label>
-        <input
-          type="text"
-          id="apellido"
-          name="apellido"
-          required
-          autocomplete="family-name"
-          placeholder="Ej. Pérez"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="placa">Placa</label>
-        <input
-          type="text"
-          id="placa"
-          name="placa"
-          required
-          pattern="[A-Z]{3}[0-9]{4}"
-          title="Formato: ABC1234"
-          placeholder="Ej. ABC1234"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="correo">Correo Electrónico</label>
-        <input
-          type="email"
-          id="correo"
-          name="correo"
-          required
-          autocomplete="email"
-          placeholder="Ej. usuario@mail.com"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="contrasena">Contraseña</label>
-        <input
-          type="password"
-          id="contrasena"
-          name="contrasena"
-          required
-          autocomplete="new-password"
-          minlength="8"
-          placeholder="Mínimo 8 caracteres"
-        />
-      </div>
-    </fieldset>
-
-    <button type="submit" class="btn btn-primary">Registrarse</button>
-
-    <p class="redirect-text">
-      ¿Ya tienes una cuenta?
-      <a href="inicio de sesion.html" class="link">Inicia sesión aquí</a>
-    </p>
-  </form>
-          </form>
-
-  
-        </section>
-
-    </body>
+            <p class="redirect-text">
+                ¿Ya tienes una cuenta?
+                <a href="InicoDeSesion.html" class="link">Inicia sesión aquí</a>
+            </p>
+        </form>
+    </section>
+</body>
 </html>

@@ -1,36 +1,52 @@
-const vehiculosSearch = document.querySelector('.vehiculos-search');
-const vehiculosList = document.querySelector('.vehiculos-lista');
+// Función para cargar resultados de búsqueda
+        function cargarResultados(busqueda = '') {
+            const formData = new FormData();
+            formData.append('busqueda', busqueda);
+            formData.append('action', 'buscar');
 
-async function loadVehiculos() {
-    try {
-        const res = await fetch('../Back-end/Vehiculos.php?action=list');
-        const data = await res.json();
-        vehiculosList.innerHTML = '';
-        data.forEach(v => {
-            const card = document.createElement('article');
-            card.className = 'vehiculo-card';
-            card.innerHTML = `
-                <img src="Civil.png" alt="Foto" class="vehiculo-card__foto" />
-                <div class="vehiculo-card__info">
-                    <span class="vehiculo-card__marca">${v.marca}</span>
-                    <span class="vehiculo-card__modelo">${v.modelo}</span>
-                    <span class="vehiculo-card__matricula">${v.matricula}</span>
-                </div>`;
-            vehiculosList.appendChild(card);
+            fetch('../Back-end/Vehiculos.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const contenedor = document.getElementById('resultados-vehiculos');
+                contenedor.innerHTML = '';
+
+                if (data.length > 0) {
+                    data.forEach(vehiculo => {
+                        const articulo = document.createElement('article');
+                        articulo.className = 'vehiculo-card';
+                        articulo.innerHTML = `
+                            <img src="Civil.png" alt="Foto del conductor" class="vehiculo-card__foto" />
+                            <div class="vehiculo-card__info">
+                                <span class="vehiculo-card__marca">${vehiculo.marca}</span>
+                                <span class="vehiculo-card__modelo">${vehiculo.modelo}</span>
+                                <span class="vehiculo-card__matricula">${vehiculo.matricula}</span>
+                                <span class="vehiculo-card__civil">Conductor: ${vehiculo.nombre} (DNI: ${vehiculo.dni})</span>
+                                <input type="text" placeholder="Observación..." class="vehiculo-card__observacion" required />
+                            </div>
+                        `;
+                        contenedor.appendChild(articulo);
+                    });
+                } else {
+                    contenedor.innerHTML = '<p>No se encontraron vehículos con esos datos.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('resultados-vehiculos').innerHTML = '<p>Error al cargar los datos.</p>';
+            });
+        }
+
+        // Cargar todos los vehículos al iniciar
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarResultados();
         });
-    } catch (err) { console.error(err); }
-}
 
-if (vehiculosSearch) {
-    vehiculosSearch.addEventListener('input', async () => {
-        const term = vehiculosSearch.value.toLowerCase();
-        const cards = vehiculosList.querySelectorAll('.vehiculo-card');
-        cards.forEach(card => {
-            const marca = card.querySelector('.vehiculo-card__marca').textContent.toLowerCase();
-            const matricula = card.querySelector('.vehiculo-card__matricula').textContent.toLowerCase();
-            card.style.display = (marca.includes(term) || matricula.includes(term)) ? '' : 'none';
+        // Manejar envío del formulario de búsqueda
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const busqueda = document.querySelector('input[name="busqueda"]').value;
+            cargarResultados(busqueda);
         });
-    });
-}
-
-loadVehiculos();

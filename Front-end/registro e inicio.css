@@ -181,3 +181,18 @@ select:focus {
   color: #1abc9c;
 }
 
+
+.link {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        
+        .link:hover {
+            text-decoration: underline;
+        }
+        
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }

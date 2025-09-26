@@ -1,127 +1,121 @@
 <?php
-header('Content-Type: application/json');
+// Configuración de errores
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-include("conexion.php");
+// Permitir CORS (opcional si solo usás localhost)
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+header('Content-Type: application/json; charset=UTF-8');
 
-// --- CONFIGURACIÓN ---
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "saltopd";
-
-// --- CONEXIÓN ---
-$mysqli = new mysqli($host, $user, $pass, $db);
-if ($mysqli->connect_errno) {
-    echo json_encode(["success" => false, "message" => "Error de conexión: " . $mysqli->connect_error]);
-    exit();
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit(0);
 }
 
-// --- CLASE CIVIL ---
-class Civil {
-    private $conn;
+// Conexión a la base de datos
+$conexion = new mysqli("localhost", "root", "", "saltopd");
 
-    public function __construct($mysqli) {
-        $this->conn = $mysqli;
+if ($conexion->connect_error) {
+    echo json_encode([
+        'success' => false,
+        'message' => "Error de conexión: " . $conexion->connect_error
+    ]);
+    exit;
+}
+
+// Sanitizar datos
+function sanitizar($dato) {
+    return htmlspecialchars(trim($dato), ENT_QUOTES, 'UTF-8');
+}
+
+// Determinar acción
+$action = $_GET['action'] ?? '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Agregar civil
+    $nombre = sanitizar($_POST['nombre'] ?? '');
+    $dni = sanitizar($_POST['dni'] ?? '');
+
+    $errores = [];
+    if (strlen($nombre) < 3) $errores[] = "El nombre debe tener al menos 3 caracteres";
+    if (empty($dni) || !is_numeric($dni)) $errores[] = "DNI inválido";
+
+    if (!empty($errores)) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Errores de validación',
+            'errors' => $errores
+        ]);
+        exit;
     }
 
-    private function sanitize($data) {
-        return htmlspecialchars($this->conn->real_escape_string(trim($data)));
+    $stmt = $conexion->prepare("INSERT INTO civiles (Nombre, dni) VALUES (?, ?)");
+    $stmt->bind_param("ss", $nombre, $dni);
+
+    if ($stmt->execute()) {
+        echo json_encode([
+            'success' => true,
+            'message' => 'Civil agregado correctamente',
+            'data' => ['nombre' => $nombre, 'dni' => $dni]
+        ]);
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => "Error al insertar: " . $stmt->error
+        ]);
     }
 
-    // LISTAR TODOS
-    public function list() {
-        $result = $this->conn->query("SELECT * FROM civiles ORDER BY id DESC");
-        return $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    $conexion->close();
+    exit;
+}
+
+// GET: leer o buscar civiles
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if ($action === 'read') {
+        $result = $conexion->query("SELECT * FROM civiles ORDER BY Nombre");
+        $civiles = [];
+        while ($row = $result->fetch_assoc()) {
+            $civiles[] = ['id' => $row['id'], 'nombre' => $row['Nombre'], 'dni' => $row['dni']];
+        }
+        echo json_encode(['success' => true, 'data' => $civiles]);
+        $result->free();
+        $conexion->close();
+        exit;
     }
 
-    // BUSCAR CIVIL
-    public function search($term) {
-        $term = $this->sanitize($term);
-        $stmt = $this->conn->prepare(
-            "SELECT * FROM civiles WHERE nombre LIKE CONCAT('%', ?, '%') OR dni LIKE CONCAT('%', ?, '%') ORDER BY id DESC"
-        );
-        $stmt->bind_param("ss", $term, $term);
+    if ($action === 'search') {
+        $q = sanitizar($_GET['q'] ?? '');
+        $stmt = $conexion->prepare("SELECT * FROM civiles WHERE Nombre LIKE ? OR dni LIKE ? ORDER BY Nombre");
+        $like = "%$q%";
+        $stmt->bind_param("ss", $like, $like);
         $stmt->execute();
         $result = $stmt->get_result();
-        $data = $result->fetch_all(MYSQLI_ASSOC);
+        $civiles = [];
+        while ($row = $result->fetch_assoc()) {
+            $civiles[] = ['id' => $row['id'], 'nombre' => $row['Nombre'], 'dni' => $row['dni']];
+        }
+        echo json_encode(['success' => true, 'data' => $civiles]);
         $stmt->close();
-        return $data;
+        $conexion->close();
+        exit;
     }
 
-    // AGREGAR CIVIL
-    public function add($nombre, $dni) {
-        $nombre = $this->sanitize($nombre);
-        $dni = $this->sanitize($dni);
-        if (!$nombre || !$dni) return ["success" => false, "message" => "Nombre o DNI vacío"];
-        $stmt = $this->conn->prepare("INSERT INTO civiles (nombre, dni) VALUES (?, ?)");
-        $stmt->bind_param("ss", $nombre, $dni);
-        $stmt->execute();
-        $id = $stmt->insert_id;
-        $stmt->close();
-        return ["success" => true, "id" => $id];
-    }
-
-    // EDITAR CIVIL
-    public function edit($id, $nombre, $dni) {
-        $id = intval($id);
-        $nombre = $this->sanitize($nombre);
-        $dni = $this->sanitize($dni);
-        if (!$id || !$nombre || !$dni) return ["success" => false, "message" => "Datos inválidos"];
-        $stmt = $this->conn->prepare("UPDATE civiles SET nombre=?, dni=? WHERE id=?");
-        $stmt->bind_param("ssi", $nombre, $dni, $id);
-        $stmt->execute();
-        $stmt->close();
-        return ["success" => true];
-    }
-
-    // ELIMINAR CIVIL
-    public function delete($id) {
-        $id = intval($id);
-        if (!$id) return ["success" => false, "message" => "ID inválido"];
-        $stmt = $this->conn->prepare("DELETE FROM civiles WHERE id=?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $stmt->close();
-        return ["success" => true];
-    }
+    // Acción inválida
+    echo json_encode([
+        'success' => false,
+        'message' => 'Acción no válida. Usa action=read o action=search'
+    ]);
+    $conexion->close();
+    exit;
 }
 
-// --- ACCIÓN ---
-$action = $_POST['action'] ?? $_GET['action'] ?? '';
-$civil = new Civil($mysqli);
-
-switch ($action) {
-    case 'list':
-        echo json_encode($civil->list());
-        break;
-
-    case 'search':
-        $term = $_POST['search'] ?? '';
-        echo json_encode($civil->search($term));
-        break;
-
-    case 'add':
-        $nombre = $_POST['nombre'] ?? '';
-        $dni = $_POST['dni'] ?? '';
-        echo json_encode($civil->add($nombre, $dni));
-        break;
-
-    case 'edit':
-        $id = $_POST['id'] ?? 0;
-        $nombre = $_POST['nombre'] ?? '';
-        $dni = $_POST['dni'] ?? '';
-        echo json_encode($civil->edit($id, $nombre, $dni));
-        break;
-
-    case 'delete':
-        $id = $_POST['id'] ?? 0;
-        echo json_encode($civil->delete($id));
-        break;
-
-    default:
-        echo json_encode(["success" => false, "message" => "Acción no válida"]);
-        break;
-}
-
-$mysqli->close();
+// Método no permitido
+echo json_encode([
+    'success' => false,
+    'message' => 'Método no permitido'
+]);
+$conexion->close();
 ?>
+
