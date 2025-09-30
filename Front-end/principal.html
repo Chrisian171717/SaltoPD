@@ -15,6 +15,25 @@
         </div>
       </header>
 
+        <div id="chat-btn">💬</div>
+        
+        <div id="chat-container" style="display:none;">
+            <h2>ChatBot</h2>
+            <div id="chatbox"></div>
+            <div id="input-container">
+                <input id="msg" placeholder="Escribe un mensaje">
+                <button id="send-btn">Enviar</button>
+            </div>
+        </div>
+              
+        <script>
+            document.getElementById("chat-btn").onclick = function(){
+                const chat = document.getElementById("chat-container");
+                chat.style.display = (chat.style.display === "none") ? "block" : "none";
+            };
+        </script>
+        
+              
       <form action="../Back-end/principal.php" method="post">
         <nav class="nav-tabs" aria-label="Navegación principal">
         <ul class="nav-tabs__list">
