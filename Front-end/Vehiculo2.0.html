@@ -3,36 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vehículos</title>
+    <title>Vehículos - Sistema de Gestión</title>
     <link rel="icon" href="logo.png" type="image/png">
     <link rel="stylesheet" href="vehiculo.css">
+    <script src="../Back-end/vehiculo.js"></script>
 </head>
 <body>
+    <!-- Navegación Principal -->
     <nav class="nav-tabs" aria-label="Navegación principal">
         <ul class="nav-tabs__list">
-            <li><a href="civiles.html" class="nav-tabs__link"><img src="Civil.png" alt="Sección Civil" class="nav-tabs__icon" /></a></li>
-            <li><a href="Denuncias.html" class="nav-tabs__link"><img src="Denuncias.png" alt="Sección Denuncias" class="nav-tabs__icon" /></a></li>
-            <li><a href="Radio.html" class="nav-tabs__link"><img src="radio-policia-2507338-2102444.png" alt="Sección Radio" class="nav-tabs__icon" /></a></li>
-            <li><a href="Mapa.html" class="nav-tabs__link"><img src="mapa.png" alt="Sección Mapa" class="nav-tabs__icon" /></a></li>
-            <li><a href="principal.html" class="nav-tabs__link"><img src="Logo.png" alt="Sección principal" class="nav-tabs__icon" /></a></li>
-            <li><a href="Escaner Facial.html" class="nav-tabs__link"><img src="Escaner Facial.png" alt="Sección Escaner" class="nav-tabs__icon" /></a></li>
+            <li><a href="civiles.html" class="nav-tabs__link">
+                <img src="Civil.png" alt="Sección Civil" class="nav-tabs__icon" />
+                <span>Civil</span>
+            </a></li>
+            <li><a href="Denuncias.html" class="nav-tabs__link">
+                <img src="Denuncias.png" alt="Sección Denuncias" class="nav-tabs__icon" />
+                <span>Denuncias</span>
+            </a></li>
+            <li><a href="Radio.html" class="nav-tabs__link">
+                <img src="radio-policia-2507338-2102444.png" alt="Sección Radio" class="nav-tabs__icon" />
+                <span>Radio</span>
+            </a></li>
+            <li><a href="Mapa.html" class="nav-tabs__link">
+                <img src="mapa.png" alt="Sección Mapa" class="nav-tabs__icon" />
+                <span>Mapa</span>
+            </a></li>
+            <li><a href="principal.html" class="nav-tabs__link">
+                <img src="Logo.png" alt="Sección principal" class="nav-tabs__icon" />
+                <span>Principal</span>
+            </a></li>
+            <li><a href="Escaner Facial.html" class="nav-tabs__link">
+                <img src="Escaner Facial.png" alt="Sección Escaner" class="nav-tabs__icon" />
+                <span>Escáner</span>
+            </a></li>
         </ul>
     </nav>
 
+    <!-- Sección Principal de Vehículos -->
     <section class="vehiculos-section" aria-label="Listado de vehículos">
+        <!-- Header con Búsqueda -->
         <header class="vehiculos-header">
             <div class="vehiculos-header__branding">
                 <img src="Vehiculo.png" alt="Icono de vehículo" class="vehiculos-header__icon" />
                 <h1 class="vehiculos-header__title">Vehículos</h1>
             </div>
-            <form action="../Back-end/Vehiculos.php" method="POST" class="vehiculos-header__search">
-                <input type="search" name="busqueda" placeholder="Buscar por matrícula o nombre del civil..." class="vehiculos-search" aria-label="Buscar vehículo" />
-                <button type="submit">🔍</button>
+            <form class="vehiculos-header__search" id="searchForm">
+                <input type="search" name="busqueda" placeholder="Buscar por matrícula, marca, modelo o tipo..." class="vehiculos-search" aria-label="Buscar vehículo" />
+                <button type="submit" class="btn btn-search">
+                    <span class="icon-large">🔍</span> Buscar
+                </button>
+                <button type="button" id="clearSearch" class="btn btn-clear">
+                    <span class="icon-large">🗑️</span> Limpiar
+                </button>
             </form>
         </header>
 
+        <!-- Panel de Administración -->
+        <div class="admin-panel">
+            <a href="../Back-end/Vehiculos.php" class="btn btn-admin" target="_blank">
+                <span class="icon-large">⚙️</span> Panel de Administración
+            </a>
+            <a href="../Back-end/Vehiculos.php?action=add" class="btn btn-add" target="_blank">
+                <span class="icon-large">➕</span> Agregar Vehículo
+            </a>
+        </div>
+
+        <!-- Lista de Resultados -->
         <div class="vehiculos-lista" id="resultados-vehiculos">
-            <!-- Los resultados se cargarán aquí mediante JavaScript -->
+            <div class="loading">🔄 Cargando vehículos...</div>
+        </div>
+
+        <!-- Acciones Adicionales -->
+        <div class="actions-container">
+            <a href="../Back-end/Vehiculos.php" class="btn btn-admin" target="_blank">
+                <span class="icon-large">📋</span> Ver Todos los Vehículos
+            </a>
+            <a href="../Back-end/Vehiculos.php?action=add" class="btn btn-add" target="_blank">
+                <span class="icon-large">🚗</span> Nuevo Vehículo
+            </a>
         </div>
     </section>
 </body>
