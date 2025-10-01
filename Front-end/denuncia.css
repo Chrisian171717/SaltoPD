@@ -9,8 +9,6 @@ body {
   overflow-x: hidden;
 }
 
-
-/* === Estructura general === */
 .denuncias-main {
   font-family: 'Segoe UI', sans-serif;
   background-color: #34495e; 
@@ -28,7 +26,6 @@ body {
   box-shadow: 0 0 20px rgba(0,0,0,0.2);
 }
 
-/* === Banner principal === */
 .banner {
   background: linear-gradient(135deg, #1f1f1f, #235f9b);
   color: black;
