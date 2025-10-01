@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    // Agregar denuncia
     $("#form-agregar-denuncia").submit(function (e) {
         e.preventDefault();
         $.post("denuncias_api.php", $(this).serialize() + "&accion=agregar", function (res) {
@@ -13,7 +12,6 @@ $(document).ready(function () {
         }, "json");
     });
 
-    // Buscar denuncias
     $("#form-buscar-denuncia").submit(function (e) {
         e.preventDefault();
         $.post("denuncias_api.php", $(this).serialize() + "&accion=buscar", function (res) {
@@ -23,7 +21,6 @@ $(document).ready(function () {
         }, "json");
     });
 
-    // Cargar denuncias al inicio
     cargarDenuncias();
 });
 
