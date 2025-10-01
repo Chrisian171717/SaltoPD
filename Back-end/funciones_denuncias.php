@@ -1,5 +1,5 @@
 <?php
-include("denuncias.php"); // acá está tu código con todas las funciones
+include("denuncias.php"); 
 
 header("Content-Type: application/json; charset=UTF-8");
 
