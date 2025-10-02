@@ -3,19 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <title>Plataforma de Denuncias</title>
-  <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="../Front-end/estilos.css">
 </head>
 <body>
+
+<?php
+// Incluir las funciones de denuncias
+include("denuncias.php");
+
+// Procesar acciones
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['agregar'])) {
+        $titulo = $_POST['titulo'] ?? '';
+        $descripcion = $_POST['descripcion'] ?? '';
+        
+        if (!empty($titulo) && !empty($descripcion)) {
+            $resultado = agregarDenuncia($titulo, '', $descripcion);
+            if ($resultado === "success") {
+                echo "<script>alert('Denuncia agregada correctamente');</script>";
+            } else {
+                echo "<script>alert('Error: " . addslashes($resultado) . "');</script>";
+            }
+        }
+    } elseif (isset($_POST['modificar'])) {
+        $id = $_POST['id'] ?? 0;
+        $titulo = $_POST['titulo'] ?? '';
+        $descripcion = $_POST['descripcion'] ?? '';
+        
+        if ($id > 0 && !empty($titulo) && !empty($descripcion)) {
+            $resultado = editarDenuncia($id, $titulo, '', $descripcion);
+            if ($resultado === "success") {
+                echo "<script>alert('Denuncia modificada correctamente');</script>";
+            } else {
+                echo "<script>alert('Error: " . addslashes($resultado) . "');</script>";
+            }
+        }
+    }
+}
+
+// Procesar eliminación
+if (isset($_GET['eliminar'])) {
+    $id = $_GET['eliminar'];
+    if ($id > 0) {
+        $resultado = eliminarDenuncia($id);
+        if ($resultado === "success") {
+            echo "<script>alert('Denuncia eliminada correctamente');</script>";
+        } else {
+            echo "<script>alert('Error: " . addslashes($resultado) . "');</script>";
+        }
+    }
+}
+
+// Obtener denuncias
+$denuncias = listarDenuncias();
+?>
 
 <!-- ===== Menú principal ===== -->
 <nav class="nav-tabs" aria-label="Navegación principal">
   <ul class="nav-tabs__list">
-    <li><a href="civiles.html" class="nav-tabs__link"><img src="Civil.png" alt="Sección Civil" class="nav-tabs__icon" /></a></li>
-    <li><a href="Radio.html" class="nav-tabs__link"><img src="radio-policia-2507338-2102444.png" alt="Sección Radio" class="nav-tabs__icon" /></a></li>
-    <li><a href="Vehiculo2.0.html" class="nav-tabs__link"><img src="Vehiculo.png" alt="Sección Vehículo" class="nav-tabs__icon" /></a></li>
-    <li><a href="Mapa.html" class="nav-tabs__link"><img src="mapa.png" alt="Sección Mapa" class="nav-tabs__icon" /></a></li>
-    <li><a href="principal.html" class="nav-tabs__link"><img src="Logo.png" alt="Sección principal" class="nav-tabs__icon" /></a></li>
-    <li><a href="Escaner Facial.html" class="nav-tabs__link"><img src="Escaner Facial.png" alt="Sección Escaner" class="nav-tabs__icon" /></a></li>
+    <li><a href="../Front-end/civiles.html" class="nav-tabs__link"><img src="../Front-end/Civil.png" alt="Sección Civil" class="nav-tabs__icon" /></a></li>
+    <li><a href="../Front-end/Radio.html" class="nav-tabs__link"><img src="../Front-end/radio-policia-2507338-2102444.png" alt="Sección Radio" class="nav-tabs__icon" /></a></li>
+    <li><a href="../Front-end/Vehiculo2.0.html" class="nav-tabs__link"><img src="../Front-end/Vehiculo.png" alt="Sección Vehículo" class="nav-tabs__icon" /></a></li>
+    <li><a href="../Front-end/Mapa.html" class="nav-tabs__link"><img src="../Front-end/mapa.png" alt="Sección Mapa" class="nav-tabs__icon" /></a></li>
+    <li><a href="../Front-end/principal.html" class="nav-tabs__link"><img src="../Front-end/Logo.png" alt="Sección principal" class="nav-tabs__icon" /></a></li>
+    <li><a href="../Front-end/Escaner Facial.html" class="nav-tabs__link"><img src="../Front-end/Escaner Facial.png" alt="Sección Escaner" class="nav-tabs__icon" /></a></li>
   </ul>
 </nav>
 
@@ -33,7 +84,7 @@
   <section class="denuncia-form" aria-label="Agregar nueva denuncia">
     <div class="denuncia-form__content">
       <h3 class="denuncia-form__title">¿Querés reportar algo?</h3>
-      <form method="POST" action="Denuncias.php">
+      <form method="POST" action="GestionDenuncia.php">
         <input type="text" name="titulo" placeholder="Título de la denuncia" required>
         <textarea name="descripcion" placeholder="Describa lo ocurrido" required></textarea>
         <button type="submit" name="agregar" class="btn btn-primary">Agregar Denuncia</button>
@@ -55,26 +106,30 @@
   <section class="recent-denuncias" aria-label="Denuncias recientes">
     <h3 class="recent-denuncias__title">Últimas Denuncias</h3>
     <div class="denuncia-cards">
-      <?php while($fila = $denuncias->fetch_assoc()): ?>
-        <article class="denuncia-card">
-          <strong>#<?php echo $fila['id']; ?></strong> — <?php echo htmlspecialchars($fila['titulo']); ?>
-          <p><?php echo htmlspecialchars($fila['descripcion']); ?></p>
-          <small><?php echo $fila['fecha']; ?></small>
+      <?php if (!empty($denuncias)): ?>
+        <?php foreach ($denuncias as $fila): ?>
+          <article class="denuncia-card">
+            <strong>#<?php echo $fila['id']; ?></strong> — <?php echo htmlspecialchars($fila['nombre_civil']); ?>
+            <p><?php echo htmlspecialchars($fila['descripcion']); ?></p>
+            <small><?php echo $fila['Fecha']; ?></small>
 
-          <!-- Botón eliminar -->
-          <a href="Denuncias.php?eliminar=<?php echo $fila['id']; ?>" 
-             onclick="return confirm('¿Eliminar esta denuncia?')" 
-             class="btn btn-danger">🗑️ Eliminar</a>
+            <!-- Botón eliminar -->
+            <a href="GestionDenuncia.php?eliminar=<?php echo $fila['id']; ?>" 
+               onclick="return confirm('¿Eliminar esta denuncia?')" 
+               class="btn btn-danger">🗑️ Eliminar</a>
 
-          <!-- Form modificar -->
-          <form method="POST" action="Denuncias.php" class="form-modificar">
-            <input type="hidden" name="id" value="<?php echo $fila['id']; ?>">
-            <input type="text" name="titulo" value="<?php echo $fila['titulo']; ?>" required>
-            <textarea name="descripcion"><?php echo $fila['descripcion']; ?></textarea>
-            <button type="submit" name="modificar" class="btn btn-warning">✏️ Modificar</button>
-          </form>
-        </article>
-      <?php endwhile; ?>
+            <!-- Form modificar -->
+            <form method="POST" action="GestionDenuncia.php" class="form-modificar">
+              <input type="hidden" name="id" value="<?php echo $fila['id']; ?>">
+              <input type="text" name="titulo" value="<?php echo htmlspecialchars($fila['nombre_civil']); ?>" required>
+              <textarea name="descripcion"><?php echo htmlspecialchars($fila['descripcion']); ?></textarea>
+              <button type="submit" name="modificar" class="btn btn-warning">✏️ Modificar</button>
+            </form>
+          </article>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <p>No hay denuncias registradas.</p>
+      <?php endif; ?>
     </div>
   </section>
 

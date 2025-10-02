@@ -1,7 +1,14 @@
 <?php
-include("funciones_denuncias.php");
+// procesar_denuncia.php - Usando conexion.php
+include("denuncias.php");
 
 header('Content-Type: text/html; charset=UTF-8');
+
+// Verificar conexión
+if (!verificarConexionBD()) {
+    echo "<p class='error'>Error de conexión a la base de datos.</p>";
+    exit();
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['accion'] === 'agregar') {
     
@@ -10,9 +17,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['
         exit();
     }
     
-    $nombre_civil = $_POST['nombre_civil'];
-    $codigo_penal = $_POST['codigo_penal'];
-    $descripcion  = $_POST['descripcion'];
+    $nombre_civil = trim($_POST['nombre_civil']);
+    $codigo_penal = trim($_POST['codigo_penal']);
+    $descripcion  = trim($_POST['descripcion']);
+
+    // Validaciones adicionales
+    if (empty($nombre_civil) || empty($codigo_penal) || empty($descripcion)) {
+        echo "<p class='error'>Todos los campos son obligatorios.</p>";
+        exit();
+    }
+
+    if (strlen($nombre_civil) > 100) {
+        echo "<p class='error'>El nombre no puede tener más de 100 caracteres.</p>";
+        exit();
+    }
+
+    if (strlen($codigo_penal) > 255) {
+        echo "<p class='error'>El código penal no puede tener más de 255 caracteres.</p>";
+        exit();
+    }
 
     $resultado = agregarDenuncia($nombre_civil, $codigo_penal, $descripcion);
     

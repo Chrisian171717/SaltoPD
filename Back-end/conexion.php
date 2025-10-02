@@ -21,4 +21,13 @@ function conectarDB() {
 
 // Crear la conexión global
 $conn = conectarDB();
+
+// Función para verificar la conexión
+function verificarConexion() {
+    global $conn;
+    if (!$conn || $conn->connect_error) {
+        return false;
+    }
+    return true;
+}
 ?>
