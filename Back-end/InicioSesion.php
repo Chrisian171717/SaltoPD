@@ -46,23 +46,10 @@ if (!empty($errors)) {
     exit;
 }
 
-include ("conexion.php");
+// Incluir conexión a la base de datos 
+include "conexion.php";
 
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db = "saltopd";
-
-// Crear conexión
-$conn = new mysqli($host, $user, $pass, $db);
-
-if ($conn->connect_error) {
-    http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Error de conexión a la base de datos']);
-    exit;
-}
-
-// Buscar usuario en la base de datos
+// Buscar usuario en la base de datos 
 $stmt = $conn->prepare("SELECT id, nombre, password, rol FROM usuarios WHERE email = ? AND placa = ? AND rol = ?");
 $stmt->bind_param("sss", $email, $placa, $rol);
 $stmt->execute();
@@ -87,7 +74,7 @@ if (!password_verify($password, $user['password'])) {
     exit;
 }
 
-// Iniciar sesión
+// Iniciar sesión 
 $_SESSION['user_id'] = $user['id'];
 $_SESSION['user_name'] = $user['nombre'];
 $_SESSION['user_email'] = $email;
@@ -97,8 +84,8 @@ $_SESSION['user_role'] = $rol;
 $stmt->close();
 $conn->close();
 
-// Redireccionar según el rol
-$redirect = ($rol === 'administrador') ? '../admin/dashboard.php' : '../policia/dashboard.php';
+// REDIRECCIÓN CORREGIDA: Ir a principal.html después del login
+$redirect = 'principal.html';
 
 echo json_encode(['success' => true, 'redirect' => $redirect]);
 exit;

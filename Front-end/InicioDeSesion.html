@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de sesión - Sistema de Gestión</title>
-    <script src="../Back-end/InicioDeSesion.js"></script>
     <link rel="stylesheet" href="registro e inicio.css">
     <link rel="icon" href="Logo.png" type="image/svg+xml">
 </head>
@@ -13,90 +12,95 @@
         <div class="header">
             <h1>Iniciar Sesión</h1>
             <p>Sistema de Gestión Policial</p>
-           
         </div>
        
-            <form id="loginForm" autocomplete="on" novalidate>
-                <div class="form-group">
-                    <label for="email">Correo Electrónico</label>
+        <form id="loginForm" autocomplete="on" novalidate>
+            <div class="form-group">
+                <label for="email">Correo Electrónico</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    autocomplete="email"
+                    placeholder="Ej. usuario@mail.com"
+                />
+                <span class="error-message" id="emailError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="placa">Placa</label>
+                <input
+                    type="text"
+                    id="placa"
+                    name="placa"
+                    required
+                    pattern="[A-Za-z]{3}[0-9]{4}"
+                    title="Formato: ABC1234"
+                    placeholder="Ej. ABC1234"
+                    style="text-transform:uppercase"
+                />
+                <span class="error-message" id="placaError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <div class="password-container">
                     <input
-                        type="email"
-                        id="email"
-                        name="email"
+                        type="password"
+                        id="password"
+                        name="password"
                         required
-                        autocomplete="email"
-                        placeholder="Ej. usuario@mail.com"
+                        autocomplete="current-password"
+                        minlength="8"
+                        placeholder="Mínimo 8 caracteres"
                     />
-                    <span class="error-message" id="emailError"></span>
+                    <button type="button" class="toggle-password" id="togglePassword">👁️</button>
                 </div>
+                <span class="error-message" id="passwordError"></span>
+            </div>
 
-                <div class="form-group">
-                    <label for="placa">Placa</label>
+            <div class="form-group">
+                <label for="confipassword">Confirmar Contraseña</label>
+                <div class="password-container">
                     <input
-                        type="text"
-                        id="placa"
-                        name="placa"
+                        type="password"
+                        id="confipassword"
+                        name="confipassword"
                         required
-                        pattern="[A-Za-z]{3}[0-9]{4}"
-                        title="Formato: ABC1234"
-                        placeholder="Ej. ABC1234"
-                        style="text-transform:uppercase"
+                        autocomplete="current-password"
+                        minlength="8"
+                        placeholder="Mínimo 8 caracteres"
                     />
-                    <span class="error-message" id="placaError"></span>
+                    <button type="button" class="toggle-password" id="toggleConfPassword">👁️</button>
                 </div>
+                <span class="error-message" id="confipasswordError"></span>
+            </div>
 
-                <div class="form-group">
-                    <label for="password">Contraseña</label>
-                    <div class="password-container">
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            required
-                            autocomplete="current-password"
-                            minlength="8"
-                            placeholder="Mínimo 8 caracteres"
-                        />
-                        <button type="button" class="toggle-password" id="togglePassword">👁️</button>
-                    </div>
-                    <span class="error-message" id="passwordError"></span>
-                </div>
+            <div class="form-group">
+                <label for="rolLogin">Rol</label>
+                <select id="rolLogin" name="rolLogin" required>
+                    <option value="">Selecciona tu rol</option>
+                    <option value="policia">Policía</option>
+                    <option value="administrador">Administrador</option>
+                </select>
+                <span class="error-message" id="rolLoginError"></span>
+            </div>
 
-                <div class="form-group">
-                    <label for="confipassword">Confirmar Contraseña</label>
-                    <div class="password-container">
-                        <input
-                            type="password"
-                            id="confipassword"
-                            name="confipassword"
-                            required
-                            autocomplete="current-password"
-                            minlength="8"
-                            placeholder="Mínimo 8 caracteres"
-                        />
-                        <button type="button" class="toggle-password" id="toggleConfPassword">👁️</button>
-                    </div>
-                    <span class="error-message" id="confipasswordError"></span>
-                </div>
+            <!-- Mensajes de feedback -->
+            <div id="serverError" class="error-message" style="display: none;"></div>
+            <div id="successMessage" class="success-message" style="display: none;"></div>
 
-                <div class="form-group">
-                    <label for="rolLogin">Rol</label>
-                    <select id="rolLogin" name="rolLogin" required>
-                        <option value="">Selecciona tu rol</option>
-                        <option value="policia">Policía</option>
-                        <option value="administrador">Administrador</option>
-                    </select>
-                    <span class="error-message" id="rolLoginError"></span>
-                </div>
+            <button type="submit" class="btn">Iniciar Sesión</button>
 
-                <button type="submit" class="btn">Iniciar Sesión</button>
-
-                <p class="redirect-text">
-                    ¿No tienes una cuenta?
-                    <a href="Registro.html" class="link">Regístrate aquí</a>
-                </p>
-            </form>
-        </div>
+            <p class="redirect-text">
+                ¿No tienes una cuenta?
+                <a href="Registro.html" class="link">Regístrate aquí</a>
+            </p>
+        </form>
     </div>
+
+    <!-- JavaScript correcto -->
+    <script src="../Back-end/InicioDeSesion.js"></script>
 </body>
 </html>
