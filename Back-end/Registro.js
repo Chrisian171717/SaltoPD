@@ -46,10 +46,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 errorMessage += 'La contraseña debe tener al menos 8 caracteres.\n';
             }
             
+            // Validar rol
+            const rol = document.getElementById('rol').value;
+            if (rol === '') {
+                isValid = false;
+                errorMessage += 'Debe seleccionar un rol.\n';
+            }
+            
             if (!isValid) {
                 alert('Por favor, corrija los siguientes errores:\n\n' + errorMessage);
                 return false;
             }
+            
+            // Mostrar mensaje de carga
+            alert('Registrando usuario...');
             
             // Si todas las validaciones pasan, enviar el formulario
             this.submit();

@@ -1,219 +1,225 @@
+console.log('✅ InicioDeSesion.js cargado desde Front-end');
+
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Sistema de login iniciado');
+    
     const loginForm = document.getElementById('loginForm');
+    if (!loginForm) {
+        console.error('❌ No se encontró el formulario');
+        return;
+    }
+
+    // Configurar toggles de contraseña
     const togglePasswordBtn = document.getElementById('togglePassword');
     const toggleConfPasswordBtn = document.getElementById('toggleConfPassword');
     const passwordInput = document.getElementById('password');
     const confPasswordInput = document.getElementById('confipassword');
-    const successMessage = document.getElementById('successMessage');
-    const serverError = document.getElementById('serverError');
-    
-    // Función para mostrar/ocultar contraseña
-    function setupPasswordToggle(button, input) {
-        button.addEventListener('click', function() {
-            if (input.type === 'password') {
-                input.type = 'text';
-                button.textContent = '🔒';
-            } else {
-                input.type = 'password';
-                button.textContent = '👁️';
-            }
+
+    if (togglePasswordBtn && passwordInput) {
+        togglePasswordBtn.addEventListener('click', function() {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            this.textContent = isPassword ? '🔒' : '👁️';
         });
     }
-    
-    setupPasswordToggle(togglePasswordBtn, passwordInput);
-    setupPasswordToggle(toggleConfPasswordBtn, confPasswordInput);
-    
-    // Convertir placa a mayúsculas automáticamente
+
+    if (toggleConfPasswordBtn && confPasswordInput) {
+        toggleConfPasswordBtn.addEventListener('click', function() {
+            const isPassword = confPasswordInput.type === 'password';
+            confPasswordInput.type = isPassword ? 'text' : 'password';
+            this.textContent = isPassword ? '🔒' : '👁️';
+        });
+    }
+
+    // Configurar input de placa
     const placaInput = document.getElementById('placa');
-    placaInput.addEventListener('input', function() {
-        this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    if (placaInput) {
+        placaInput.addEventListener('input', function() {
+            this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+        });
+    }
+
+    // Configurar envío del formulario
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        clearMessages();
+        
+        if (validateForm()) {
+            sendLoginRequest();
+        } else {
+            showError('Por favor corrige los errores en el formulario');
+        }
+    });
+});
+
+function validateForm() {
+    let isValid = true;
+    
+    // Limpiar errores previos
+    document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+    
+    // Validar campos requeridos
+    const requiredFields = document.querySelectorAll('#loginForm [required]');
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            showFieldError(field, 'Este campo es obligatorio');
+            isValid = false;
+        }
     });
     
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            serverError.style.display = 'none';
-            successMessage.style.display = 'none';
+    // Validaciones específicas
+    const email = document.getElementById('email');
+    const placa = document.getElementById('placa');
+    const password = document.getElementById('password');
+    const confPassword = document.getElementById('confipassword');
+    
+    if (email.value && !isValidEmail(email.value)) {
+        showFieldError(email, 'Formato de correo electrónico no válido');
+        isValid = false;
+    }
+    
+    if (placa.value && !isValidPlaca(placa.value)) {
+        showFieldError(placa, 'Formato de placa no válido. Debe ser ABC1234');
+        isValid = false;
+    }
+    
+    if (password.value && password.value.length < 8) {
+        showFieldError(password, 'La contraseña debe tener al menos 8 caracteres');
+        isValid = false;
+    }
+    
+    if (password.value && confPassword.value && password.value !== confPassword.value) {
+        showFieldError(confPassword, 'Las contraseñas no coinciden');
+        isValid = false;
+    }
+    
+    return isValid;
+}
+
+function isValidEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+function isValidPlaca(placa) {
+    const re = /^[A-Z]{3}[0-9]{4}$/;
+    return re.test(placa);
+}
+
+function showFieldError(field, message) {
+    const errorId = field.id + 'Error';
+    const errorElement = document.getElementById(errorId);
+    
+    field.classList.add('error');
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+    }
+}
+
+function clearMessages() {
+    const serverError = document.getElementById('serverError');
+    const successMessage = document.getElementById('successMessage');
+    
+    if (serverError) serverError.style.display = 'none';
+    if (successMessage) successMessage.style.display = 'none';
+}
+
+function sendLoginRequest() {
+    const form = document.getElementById('loginForm');
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    
+    submitBtn.textContent = 'Iniciando sesión...';
+    submitBtn.disabled = true;
+    
+    console.log('📤 Enviando datos del formulario:');
+    for (let [key, value] of formData.entries()) {
+        console.log(`  ${key}: ${value}`);
+    }
+    
+    const url = 'http://localhost/GitHub/SaltoPD/Back-end/InicioSesion.php';
+    
+    fetch(url, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('📋 Respuesta completa:', data);
+        
+        if (data.success) {
+            showSuccess(data.message);
+            setTimeout(() => {
+                window.location.href = data.redirect;
+            }, 1500);
+        } else {
+            let errorMessage = data.message;
             
-            // Validación del lado del cliente
-            if (validateForm()) {
-                // Obtener datos del formulario
-                const formData = new FormData(loginForm);
-                
-                // LLAMADA REAL al servidor 
-                makeLoginRequest(formData);
-            }
-        });
-        
-        // Validación en tiempo real
-        const inputs = loginForm.querySelectorAll('input, select');
-        inputs.forEach(input => {
-            input.addEventListener('blur', function() {
-                validateField(this);
-            });
-            
-            input.addEventListener('input', function() {
-                clearError(this);
-            });
-        });
-    }
-    
-    function validateForm() {
-        let isValid = true;
-        const inputs = document.querySelectorAll('#loginForm input, #loginForm select');
-        
-        inputs.forEach(input => {
-            if (!validateField(input)) {
-                isValid = false;
-            }
-        });
-        
-        // Validar que las contraseñas coincidan
-        if (passwordInput.value !== confPasswordInput.value) {
-            showError(confPasswordInput, 'Las contraseñas no coinciden');
-            isValid = false;
-        }
-        
-        return isValid;
-    }
-    
-    function validateField(field) {
-        let isValid = true;
-        let errorMessage = '';
-        
-        // Limpiar errores previos
-        clearError(field);
-        
-        // Validar campo requerido
-        if (field.hasAttribute('required') && !field.value.trim()) {
-            errorMessage = 'Este campo es obligatorio';
-            isValid = false;
-        }
-        
-        // Validar formato de email
-        if (field.type === 'email' && field.value && !isValidEmail(field.value)) {
-            errorMessage = 'Formato de correo electrónico no válido';
-            isValid = false;
-        }
-        
-        // Validar formato de placa
-        if (field.id === 'placa' && field.value && !isValidPlaca(field.value)) {
-            errorMessage = 'Formato de placa no válido. Debe ser ABC1234';
-            isValid = false;
-        }
-        
-        // Validar longitud mínima de contraseña
-        if ((field.id === 'password' || field.id === 'confipassword') && field.value && field.value.length < 8) {
-            errorMessage = 'La contraseña debe tener al menos 8 caracteres';
-            isValid = false;
-        }
-        
-        // Mostrar error si existe
-        if (!isValid) {
-            showError(field, errorMessage);
-        }
-        
-        return isValid;
-    }
-    
-    function isValidEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    }
-    
-    function isValidPlaca(placa) {
-        const re = /^[A-Z]{3}[0-9]{4}$/;
-        return re.test(placa);
-    }
-    
-    function showError(field, message) {
-        const errorId = field.id + 'Error';
-        const errorElement = document.getElementById(errorId);
-        
-        // Estilizar campo con error
-        field.classList.add('error');
-        
-        // Mostrar mensaje de error
-        if (errorElement) {
-            errorElement.textContent = message;
-            errorElement.style.display = 'block';
-        }
-    }
-    
-    function clearError(field) {
-        // Quitar clase de error
-        field.classList.remove('error');
-        
-        // Ocultar mensaje de error
-        const errorId = field.id + 'Error';
-        const errorElement = document.getElementById(errorId);
-        if (errorElement) {
-            errorElement.style.display = 'none';
-        }
-    }
-    
-    function displayErrors(errors) {
-        // Limpiar todos los errores primero
-        const allFields = document.querySelectorAll('#loginForm input, #loginForm select');
-        allFields.forEach(field => clearError(field));
-        
-        // Mostrar nuevos errores
-        for (const fieldName in errors) {
-            const field = document.getElementsByName(fieldName)[0];
-            if (field) {
-                showError(field, errors[fieldName]);
-            }
-        }
-    }
-    
-    // Función REAL para el inicio de sesión usando Fetch API 
-    function makeLoginRequest(formData) {
-        // Mostrar estado de carga
-        const submitBtn = loginForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Iniciando sesión...';
-        submitBtn.disabled = true;
-    
-        // Hacer la petición REAL al servidor 
-        fetch('login.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la respuesta del servidor');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                // Éxito - mostrar mensaje y redirigir
-                successMessage.style.display = 'block';
-                successMessage.textContent = '¡Inicio de sesión exitoso!';
-                successMessage.style.color = 'green';
-                
-                // Redirigir a principal.html después de 1 segundo
-                setTimeout(() => {
-                    window.location.href = data.redirect;
-                }, 1000);
-            } else {
-                // Error - mostrar mensajes de error
-                if (data.errors) {
-                    displayErrors(data.errors);
-                } else {
-                    serverError.style.display = 'block';
-                    serverError.textContent = data.message || 'Error en el servidor';
+            if (data.errors) {
+                for (const fieldName in data.errors) {
+                    const field = document.getElementsByName(fieldName)[0];
+                    if (field) showFieldError(field, data.errors[fieldName]);
                 }
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalText;
+                errorMessage = 'Por favor corrige los errores en el formulario';
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            serverError.style.display = 'block';
-            serverError.textContent = 'Error de conexión con el servidor';
+            
+            // Mostrar información de debug detallada
+            if (data.debug_info) {
+                console.log('🔍 Información de debug:', data.debug_info);
+                
+                // Construir mensaje de ayuda
+                let helpMessage = '\n\n🔍 Información para diagnóstico:';
+                
+                if (data.debug_info.usuarios_con_email && data.debug_info.usuarios_con_email.length > 0) {
+                    helpMessage += '\n📧 Usuarios con ese email: ' + 
+                        data.debug_info.usuarios_con_email.map(u => `${u.correo} (${u.Num_Placa}, ${u.rol})`).join(', ');
+                }
+                
+                if (data.debug_info.usuarios_con_placa && data.debug_info.usuarios_con_placa.length > 0) {
+                    helpMessage += '\n🚔 Usuarios con esa placa: ' + 
+                        data.debug_info.usuarios_con_placa.map(u => `${u.correo} (${u.Num_Placa}, ${u.rol})`).join(', ');
+                }
+                
+                if (data.debug_info.usuarios_con_rol && data.debug_info.usuarios_con_rol.length > 0) {
+                    helpMessage += '\n👮 Usuarios con ese rol: ' + 
+                        data.debug_info.usuarios_con_rol.map(u => `${u.correo} (${u.Num_Placa}, ${u.rol})`).join(', ');
+                }
+                
+                errorMessage += helpMessage;
+            }
+            
+            showError(errorMessage);
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
-        });
+        }
+    })
+    .catch(error => {
+        console.error('❌ Error:', error);
+        showError('Error de conexión con el servidor: ' + error.message);
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+    });
+}
+
+function showError(message) {
+    const serverError = document.getElementById('serverError');
+    if (serverError) {
+        serverError.textContent = message;
+        serverError.style.display = 'block';
+        serverError.style.color = '#e74c3c';
+        serverError.style.whiteSpace = 'pre-line';
+        serverError.style.textAlign = 'left';
     }
-});
+}
+
+function showSuccess(message) {
+    const successMessage = document.getElementById('successMessage');
+    if (successMessage) {
+        successMessage.textContent = message;
+        successMessage.style.display = 'block';
+        successMessage.style.color = '#27ae60';
+    }
+}

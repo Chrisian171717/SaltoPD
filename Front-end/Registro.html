@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="registro e inicio.css">
     <link rel="icon" href="logo.png" type="image/png">
     <title>Sistema de Registro</title>
+
 </head>
 <body>
     <section id="registro" class="page active" aria-label="Formulario de registro">
@@ -78,8 +79,16 @@
                     />
                 </div>
                 
-                <!-- Campo oculto para el rol (valor por defecto: usuario) -->
-                <input type="hidden" name="rol" value="usuario">
+                <div class="form-group">
+                    <label for="rol">Rol</label>
+                    <select id="rol" name="rol" required>
+                        <option value="">Selecciona tu rol</option>
+                        <option value="usuario">Usuario</option>
+                        <option value="policia">Policía</option>
+                        <option value="administrador">Administrador</option>
+                    </select>
+                    <span class="error-message" id="rolError"></span>
+                </div>
             </fieldset>
 
             <button type="submit" class="btn btn-primary">Registrarse</button>

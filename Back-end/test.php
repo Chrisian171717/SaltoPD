@@ -1,0 +1,9 @@
+<?php
+header('Content-Type: application/json');
+echo json_encode([
+    'success' => true, 
+    'message' => 'PHP está funcionando',
+    'method' => $_SERVER['REQUEST_METHOD'],
+    'post_data' => $_POST
+]);
+?>

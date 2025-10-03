@@ -26,70 +26,73 @@ body {
   color: var(--color-blanco-suave);
 }
 
-/* === Contenedor principal === */
-.page {
+/* === Contenedor principal - MUCHO MÁS PEQUEÑO === */
+section#registro.page.active {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  min-height: 100vh;
+  padding: 1rem; /* Reducido de 1.5rem */
+  min-height: auto;
   background: linear-gradient(145deg, var(--color-negro), var(--color-azul-oscuro));
-  box-shadow: 0 0 25px var(--sombra-fuerte);
-  border-radius: 12px;
+  box-shadow: 0 0 15px var(--sombra-fuerte); /* Reducido de 20px */
+  border-radius: 10px; /* Reducido de 12px */
+  width: 85%;
+  max-width: 320px; /* Reducido de 380px */
+  margin: 0 auto;
 }
 
-/* === Título principal === */
+/* === Título principal - MUCHO MÁS PEQUEÑO === */
 h1 {
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
+  font-size: 1.6rem; /* Reducido de 2rem */
+  margin-bottom: 1rem; /* Reducido de 1.5rem */
   text-align: center;
   color: var(--color-dorado);
-  text-shadow: 0 0 12px rgba(240, 216, 140, 0.3);
+  text-shadow: 0 0 8px rgba(240, 216, 140, 0.3); /* Reducido de 10px */
   font-family: 'Segoe UI', sans-serif;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px; /* Reducido de 1.2px */
   text-transform: uppercase;
   user-select: none;
 }
 
-/* === Formulario === */
-form {
+/* === Formulario - MUCHO MÁS PEQUEÑO === */
+form#registroForm {
   background-color: rgba(255, 255, 255, 0.03);
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 0 20px var(--sombra-suave);
+  padding: 1rem; /* Reducido de 1.5rem */
+  border-radius: 10px; /* Reducido de 12px */
+  box-shadow: 0 0 12px var(--sombra-suave); /* Reducido de 15px */
   width: 100%;
-  max-width: 400px;
+  max-width: 300px; /* Reducido de 350px */
   transition: box-shadow 0.3s ease;
 }
 
-/* === Campos === */
+/* === Campos - MÁS COMPACTOS === */
 .form-group {
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.8rem; /* Reducido de 1rem */
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.2rem; /* Reducido de 0.3rem */
 }
 
 label {
   font-weight: 600;
   color: #cfcfcf;
-  font-size: 0.95rem;
-  letter-spacing: 0.8px;
+  font-size: 0.8rem; /* Reducido de 0.9rem */
+  letter-spacing: 0.5px; /* Reducido de 0.7px */
   text-transform: uppercase;
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* === Inputs y selects === */
+/* === Inputs y selects - MÁS COMPACTOS === */
 input,
 select {
-  padding: 0.6rem;
+  padding: 0.4rem; /* Reducido de 0.5rem */
   border: none;
-  border-radius: 8px;
+  border-radius: 6px; /* Reducido de 8px */
   background-color: #1c1c1c;
   color: #e0e0e0;
-  font-size: 1rem;
-  box-shadow: inset 0 0 5px var(--sombra-suave);
+  font-size: 0.9rem; /* Reducido de 0.95rem */
+  box-shadow: inset 0 0 3px var(--sombra-suave); /* Reducido de 4px */
   transition: box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
@@ -100,19 +103,21 @@ select:focus {
   box-shadow: 0 0 0 2px var(--color-azul-claro);
 }
 
-/* === Botón principal === */
+/* === Botón principal - MÁS COMPACTO === */
 .btn,
 .btn-primary {
   background: linear-gradient(135deg, var(--color-dorado), var(--color-dorado-intenso));
   color: var(--color-negro);
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1rem; /* Reducido de 0.65rem 1.3rem */
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 6px; /* Reducido de 8px */
+  font-size: 0.9rem; /* Reducido de 0.95rem */
   font-weight: 700;
   cursor: pointer;
   transition: background 0.3s ease, color 0.3s ease;
-  box-shadow: 0 4px 10px var(--sombra-suave);
+  box-shadow: 0 2px 6px var(--sombra-suave); /* Reducido de 3px 8px */
+  width: 100%;
+  margin-top: 0.3rem; /* Reducido de 0.5rem */
 }
 
 .btn:hover,
@@ -121,12 +126,13 @@ select:focus {
   color: #ffffff;
 }
 
-/* === Texto de redirección === */
+/* === Texto de redirección - MÁS COMPACTO === */
 .redirect-text {
-  margin-top: 1rem;
+  margin-top: 0.6rem; /* Reducido de 0.8rem */
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.75rem; /* Reducido de 0.85rem */
   color: #aaa;
+  line-height: 1.2;
 }
 
 .redirect-text a {
@@ -140,10 +146,11 @@ select:focus {
   color: #ffd700;
 }
 
-/* === Links y errores === */
+/* === Links y errores - MÁS COMPACTOS === */
 .link {
   color: var(--color-dorado);
   text-decoration: none;
+  font-size: 0.75rem;
 }
 
 .link:hover {
@@ -153,7 +160,21 @@ select:focus {
 
 .error {
   color: var(--color-error);
-  font-size: 0.85rem;
-  margin-top: 5px;
+  font-size: 0.7rem; /* Reducido de 0.8rem */
+  margin-top: 2px; /* Reducido de 4px */
 }
 
+/* === Fieldset y legend - MÁS COMPACTOS === */
+fieldset {
+  border: 1px solid #333;
+  border-radius: 6px; /* Reducido de 8px */
+  padding: 0.8rem; /* Reducido de 1rem */
+  margin-bottom: 1rem; /* Reducido de 1.2rem */
+}
+
+legend {
+  font-weight: bold;
+  padding: 0 0.3rem; /* Reducido de 0.4rem */
+  color: var(--color-dorado);
+  font-size: 0.8rem; /* Reducido de 0.9rem */
+}
