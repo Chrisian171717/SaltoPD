@@ -24,6 +24,7 @@ body {
   box-sizing: border-box;
   overflow: hidden;
   color: var(--color-blanco-suave);
+
 }
 
 /* === Contenedor principal - MUCHO MÁS PEQUEÑO === */
@@ -40,6 +41,8 @@ section#registro.page.active {
   width: 85%;
   max-width: 320px; /* Reducido de 380px */
   margin: 0 auto;
+  flex-direction: column ;
+  align-items: stretch;
 }
 
 /* === Título principal - MUCHO MÁS PEQUEÑO === */
@@ -177,4 +180,87 @@ legend {
   padding: 0 0.3rem; /* Reducido de 0.4rem */
   color: var(--color-dorado);
   font-size: 0.8rem; /* Reducido de 0.9rem */
+}
+
+.INFO {
+  padding: 1rem;
+  background-color: #fdf6e3; /* fondo dorado claro */
+  color: #0a2540; /* azul profundo para texto */
+  margin-left: 0;
+  margin-right: auto;
+  display: block;
+  box-sizing: border-box;
+  width: 90%;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(10, 37, 64, 0.2);
+  transition: box-shadow 0.3s ease;
+  float: right;
+  text-align: justify;
+  user-select: none;
+  font-family: 'Segoe UI', sans-serif;
+  letter-spacing: 0.4px;
+  max-width: 800px;
+  margin-bottom: 1rem;
+  border: 2px solid #d4af37; /* dorado elegante */
+  margin-top: 1rem;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  background: linear-gradient(145deg, #fff8dc, #f0e68c);
+  box-shadow: 0 4px 16px rgba(10, 37, 64, 0.15);
+  user-select: none;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 600px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(10, 37, 64, 0.1);
+  
+}
+
+.info-section {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(10, 37, 64, 0.15);
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 2rem auto;
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease;
+  letter-spacing: 0.4px;
+  color: #0a2540;
+  user-select: none;
+  border: 2px solid #d4af37; /* dorado elegante */
+
+}
+
+.info-section__title {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  color: #d4ad2d; /* dorado para títulos */
+  font-family: 'Segoe UI', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  user-select: none;
+  box-sizing: border-box;
+  text-shadow: 0 1px 2px rgba(10, 37, 64, 0.1);
+}
+
+.info-section__text {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin-bottom: 1rem;
+  user-select: none;
+  text-align: justify;
+  padding: 0;
+  box-sizing: border-box;
+  text-shadow: 0 1px 1px rgba(10, 37, 64, 0.05);
+  color: #0a2540;
+  letter-spacing: 0.3px;
 }

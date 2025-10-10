@@ -1,158 +1,102 @@
 <?php
 // principal.php
+session_start();
 
-// Definir todas las secciones y subsecciones
-$secciones = [
-    'inicio' => [
-        'titulo' => 'Información de la Aplicación',
-        'contenido' => 'Esta plataforma está diseñada para fortalecer la seguridad ciudadana en Salto. 
-                        Desde el registro de civiles y vehículos hasta la gestión de denuncias y 
-                        visualización geográfica, cada módulo está pensado para facilitar el trabajo 
-                        policial y la participación ciudadana.',
-        'icono' => ''
-    ],
-    'civiles' => [
-        'titulo' => 'Registro de Civiles',
-        'contenido' => 'Aquí podrás gestionar la información de los ciudadanos.',
-        'icono' => 'Civil.png',
-        'subsecciones' => [
-            'nuevo' => ['titulo' => 'Nuevo Civil', 'contenido' => 'Formulario para registrar un nuevo ciudadano.'],
-            'listar' => ['titulo' => 'Listar Civiles', 'contenido' => 'Listado completo de ciudadanos registrados.']
-        ]
-    ],
-    'denuncias' => [
-        'titulo' => 'Gestión de Denuncias',
-        'contenido' => 'Sección principal de denuncias.',
-        'icono' => 'Denuncias.png',
-        'subsecciones' => [
-            'registrar' => ['titulo' => 'Registrar Denuncia', 'contenido' => 'Formulario para registrar denuncias.'],
-            'listar' => ['titulo' => 'Listar Denuncias', 'contenido' => 'Listado completo de denuncias.']
-        ]
-    ],
-    'vehiculo' => [
-        'titulo' => 'Control de Vehículos',
-        'contenido' => 'Gestión general de vehículos.',
-        'icono' => 'Vehiculo.png'
-    ],
-    'mapa' => [
-        'titulo' => 'Mapa Interactivo',
-        'contenido' => 'Visualiza zonas de riesgo y reportes geográficos.',
-        'icono' => 'Mapa.png'
-    ],
-    'radio' => [
-        'titulo' => 'Radio Policial',
-        'contenido' => 'Comunicación y coordinación en tiempo real.',
-        'icono' => 'radio-policia-2507338-2102444.png'
-    ],
-    'escaner' => [
-        'titulo' => 'Escáner Facial',
-        'contenido' => 'Reconocimiento facial para identificación rápida.',
-        'icono' => 'Escaner Facial.png'
-    ]
-];
+// Configuración de cabeceras para CORS y tipo de contenido
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Max-Age: 3600");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-// Sección y subsección seleccionadas
-$seccion = $_POST['seccion'] ?? 'inicio';
-$subseccion = $_POST['subseccion'] ?? null;
-
-// Validar sección
-if (!array_key_exists($seccion, $secciones)) {
-    $seccion = 'inicio';
-    $subseccion = null;
+// Manejo de la solicitud
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Procesar datos del formulario si es necesario
+    $response = array(
+        'status' => 'success',
+        'message' => 'Solicitud procesada correctamente',
+        'timestamp' => date('Y-m-d H:i:s')
+    );
+    
+    echo json_encode($response);
+    exit;
 }
 
-// Validar subsección
-if ($subseccion && (!isset($secciones[$seccion]['subsecciones'][$subseccion]))) {
-    $subseccion = null;
-}
-
-// Año actual
-$anio = date("Y");
-
-// Función para mostrar contenido
-function mostrarContenido($seccion, $subseccion = null, $secciones) {
-    if ($subseccion && isset($secciones[$seccion]['subsecciones'][$subseccion])) {
-        $datos = $secciones[$seccion]['subsecciones'][$subseccion];
-        echo "<h2>{$datos['titulo']}</h2>";
-        echo "<p>{$datos['contenido']}</p>";
-    } else {
-        $datos = $secciones[$seccion];
-        echo "<h2>{$datos['titulo']}</h2>";
-        echo "<p>{$datos['contenido']}</p>";
-    }
-}
+// Si no es POST, mostrar la página HTML
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SALTODP - <?php echo htmlspecialchars($secciones[$seccion]['titulo']); ?></title>
-<link rel="stylesheet" href="../Front-end/estilos.css">
-<style>
-/* Resaltar sección y subsección activa */
-.nav-tabs__link.active { border: 2px solid #007bff; border-radius: 8px; background-color: #e0f0ff; }
-.submenu button.active { background-color: #cce5ff; }
-.nav-tabs__link img { display: block; margin: 0 auto; }
-.submenu { margin-left: 20px; margin-top: 5px; }
-.submenu button { display: block; margin: 2px 0; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Estilo.css">
+    <link rel="icon" href="logo.png" type="image/png">
+    <title>Pagina Principal</title>
+    <script src="../Back-end/principal.js" defer></script>
 </head>
 <body>
+    <header class="header">
+        <div class="header__branding">
+            <img src="Logo.png" alt="Logo SALTODP" class="header__logo" />
+            <h1 class="header__title">Página Principal</h1>
+        </div>
+        
+        <!-- Botones de autenticación -->
+        <div class="auth-buttons" id="auth-buttons">
+            <a href="InicioDeSesion.html" class="auth-btn login-btn" id="login-btn">Iniciar Sesión</a>
+            <a href="Registro.html" class="auth-btn register-btn" id="register-btn">Registro</a>
+        </div>
+        
+        <!-- Perfil de usuario (inicialmente oculto) -->
+        <div class="user-profile" id="user-profile" style="display: none;">
+            <div class="user-avatar" id="user-avatar">U</div>
+            <div class="user-info">
+                <div class="user-name" id="user-name">Usuario</div>
+                <div class="user-role" id="user-role">Usuario</div>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu">
+                <div class="dropdown-item" id="profile-option">
+                    <span class="dropdown-icon">👤</span> Mi Perfil
+                </div>
+                <div class="dropdown-item admin-only" id="admin-panel">
+                    <span class="dropdown-icon">⚙️</span> Panel Admin
+                </div>
+                <div class="dropdown-item" id="settings-option">
+                    <span class="dropdown-icon">⚙️</span> Configuración
+                </div>
+                <div class="dropdown-item" id="logout-option">
+                    <span class="dropdown-icon">🚪</span> Cerrar Sesión
+                </div>
+            </div>
+        </div>
+    </header>
 
-<!-- HEADER -->
-<header class="header">
-    <div class="header__branding">
-        <img src="../Front-end/Logo.png" alt="Logo SALTODP" class="header__logo" />
-        <h1 class="header__title">Página Principal</h1>
+    <div id="chat-btn">💬</div>
+    
+    <div id="chat-container" style="display:none;">
+        <h2 style="padding: 1rem; margin: 0; border-bottom: 1px solid #ddd;">ChatBot</h2>
+        <div id="chatbox"></div>
+        <div id="input-container">
+            <input id="msg" placeholder="Escribe un mensaje">
+            <button id="send-btn">Enviar</button>
+        </div>
     </div>
-</header>
 
-<!-- NAV -->
-<form action="principal.php" method="post">
-<nav class="nav-tabs" aria-label="Navegación principal">
-<ul class="nav-tabs__list">
-<?php
-foreach ($secciones as $key => $datos) {
-    if ($key === 'inicio') continue;
-    $claseActiva = ($key === $seccion) ? 'active' : '';
-    echo '<li>';
-    echo '<button type="submit" name="seccion" value="' . htmlspecialchars($key) . '" class="nav-tabs__link ' . $claseActiva . '">
-            <img src="../Front-end/' . htmlspecialchars($datos['icono']) . '" alt="Sección ' . htmlspecialchars($datos['titulo']) . '" class="nav-tabs__icon" />
-          </button>';
+    <form action="../Back-end/principal.php" method="post">
+        <nav class="nav-tabs" aria-label="Navegación principal">
+            <ul class="nav-tabs__list">
+                <li><a href="civiles.html" class="nav-tabs__link"><img src="Civil.png" alt="Sección Civil" class="nav-tabs__icon" /></a></li>
+                <li><a href="Denuncias.html" class="nav-tabs__link"><img src="Denuncias.png" alt="Sección Denuncias" class="nav-tabs__icon" /></a></li>
+                <li><a href="Vehiculo2.0.html" class="nav-tabs__link"><img src="Vehiculo.png" alt="Sección Vehículo" class="nav-tabs__icon" /></a></li>
+                <li><a href="Mapa.html" class="nav-tabs__link"><img src="mapa.png" alt="Sección Mapa" class="nav-tabs__icon" /></a></li>
+                <li><a href="Radio.html" class="nav-tabs__link"><img src="radio-policia-2507338-2102444.png" alt="Sección Radio" class="nav-tabs__icon" /></a></li>
+                <li><a href="Escaner Facial.html" class="nav-tabs__link"><img src="Escaner Facial.png" alt="Sección Escaner" class="nav-tabs__icon" /></a></li>
+            </ul>
+        </nav>
 
-    // Si tiene subsecciones y es la sección activa, mostrar submenú
-    if (isset($datos['subsecciones']) && $key === $seccion) {
-        echo '<div class="submenu">';
-        foreach ($datos['subsecciones'] as $subKey => $subDatos) {
-            $claseSubActiva = ($subKey === $subseccion) ? 'active' : '';
-            echo '<button type="submit" name="subseccion" value="' . htmlspecialchars($subKey) . '" class="' . $claseSubActiva . '">
-                    ' . htmlspecialchars($subDatos['titulo']) . '
-                  </button>';
-        }
-        echo '</div>';
-    }
-
-    echo '</li>';
-}
-?>
-</ul>
-</nav>
-</form>
-
-<!-- MAIN -->
-<main class="INFO">
-<section class="info-section">
-<?php mostrarContenido($seccion, $subseccion, $secciones); ?>
-</section>
-</main>
-
-<!-- FOOTER -->
-<footer class="footer">
-<p class="footer__text">&copy; <?php echo $anio; ?> SALTODP. Todos los derechos reservados.</p>
-</footer>
-
+        <footer class="footer">
+            <p class="footer__text">&copy; 2025 SALTODP. Todos los derechos reservados.</p>
+        </footer>
+    </form>
 </body>
 </html>
-

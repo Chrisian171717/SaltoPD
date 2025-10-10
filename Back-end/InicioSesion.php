@@ -21,15 +21,13 @@ $rol = $_POST['rolLogin'] ?? '';
 $email = trim($email);
 $placa = strtoupper(trim($placa));
 
-// DEBUG COMPLETO
-error_log("======= DEBUG INICIO SESIÓN =======");
-error_log("📧 Email recibido: '$email'");
-error_log("🚔 Placa recibida: '$placa'");
-error_log("👮 Rol recibido: '$rol'");
-error_log("🔑 Password recibida: '" . str_repeat('*', strlen($password)) . "'");
-error_log("🔑 Confirmación: '" . str_repeat('*', strlen($confipassword)) . "'");
+// DEBUG
+error_log("======= INICIO SESIÓN =======");
+error_log("📧 Email: '$email'");
+error_log("🚔 Placa: '$placa'");
+error_log("👮 Rol: '$rol'");
 
-// Validaciones
+// Validaciones básicas
 $errors = [];
 
 if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -40,15 +38,16 @@ if (empty($placa) || !preg_match('/^[A-Z]{3}[0-9]{4}$/', $placa)) {
     $errors['placa'] = 'Formato de placa no válido. Debe ser ABC1234';
 }
 
-if (empty($password) || strlen($password) < 8) {
-    $errors['password'] = 'La contraseña debe tener al menos 8 caracteres';
+if (empty($password)) {
+    $errors['password'] = 'La contraseña es requerida';
 }
 
-if (empty($confipassword) || $password !== $confipassword) {
+// Solo validar confirmación si se proporciona
+if (!empty($confipassword) && $password !== $confipassword) {
     $errors['confipassword'] = 'Las contraseñas no coinciden';
 }
 
-if (empty($rol) || !in_array($rol, ['policia', 'administrador'])) {
+if (empty($rol) || !in_array($rol, ['policia', 'administrador', 'usuario'])) {
     $errors['rolLogin'] = 'Selecciona un rol válido';
 }
 
@@ -57,22 +56,8 @@ if (!empty($errors)) {
     exit;
 }
 
-// PRIMERO: Mostrar TODOS los usuarios de la base de datos
-error_log("--- TODOS LOS USUARIOS EN BD ---");
-$all_sql = "SELECT id, nombre, apellido, correo, Num_Placa, rol, LENGTH(contrasena) as pass_len FROM usuarios";
-$all_result = $conn->query($all_sql);
-$all_users = [];
-if ($all_result) {
-    while ($row = $all_result->fetch_assoc()) {
-        $all_users[] = $row;
-        error_log("👤 Usuario: " . json_encode($row));
-    }
-} else {
-    error_log("❌ Error al obtener usuarios: " . $conn->error);
-}
-
-// SEGUNDO: Buscar usuario EXACTO
-error_log("--- BUSCANDO USUARIO EXACTO ---");
+// BUSCAR USUARIO
+error_log("--- BUSCANDO USUARIO ---");
 error_log("🔍 Buscando: email='$email', placa='$placa', rol='$rol'");
 
 $sql = "SELECT id, nombre, apellido, contrasena, rol FROM usuarios WHERE correo = ? AND Num_Placa = ? AND rol = ?";
@@ -98,142 +83,84 @@ $user_count = $result->num_rows;
 error_log("📊 Usuarios encontrados: $user_count");
 
 if ($user_count === 0) {
-    error_log("❌ USUARIO NO ENCONTRADO CON CRITERIOS EXACTOS");
+    error_log("❌ USUARIO NO ENCONTRADO");
     
-    // TERCERO: Búsquedas parciales para diagnóstico
-    error_log("--- BÚSQUEDAS PARCIALES ---");
+    // Búsquedas parciales para diagnóstico
+    $partial_errors = [];
     
-    // Buscar solo por email
-    $email_sql = "SELECT correo, Num_Placa, rol FROM usuarios WHERE correo = ?";
-    $email_stmt = $conn->prepare($email_sql);
-    if ($email_stmt) {
-        $email_stmt->bind_param("s", $email);
-        $email_stmt->execute();
-        $email_result = $email_stmt->get_result();
-        $email_users = [];
-        while ($row = $email_result->fetch_assoc()) {
-            $email_users[] = $row;
-        }
-        $email_stmt->close();
-        error_log("📧 Usuarios con email '$email': " . json_encode($email_users));
+    // Verificar email
+    $email_check = $conn->prepare("SELECT correo FROM usuarios WHERE correo = ?");
+    $email_check->bind_param("s", $email);
+    $email_check->execute();
+    $email_check->store_result();
+    if ($email_check->num_rows === 0) {
+        $partial_errors[] = "El correo no existe";
     }
+    $email_check->close();
     
-    // Buscar solo por placa
-    $placa_sql = "SELECT correo, Num_Placa, rol FROM usuarios WHERE Num_Placa = ?";
-    $placa_stmt = $conn->prepare($placa_sql);
-    if ($placa_stmt) {
-        $placa_stmt->bind_param("s", $placa);
-        $placa_stmt->execute();
-        $placa_result = $placa_stmt->get_result();
-        $placa_users = [];
-        while ($row = $placa_result->fetch_assoc()) {
-            $placa_users[] = $row;
-        }
-        $placa_stmt->close();
-        error_log("🚔 Usuarios con placa '$placa': " . json_encode($placa_users));
+    // Verificar placa
+    $placa_check = $conn->prepare("SELECT Num_Placa FROM usuarios WHERE Num_Placa = ?");
+    $placa_check->bind_param("s", $placa);
+    $placa_check->execute();
+    $placa_check->store_result();
+    if ($placa_check->num_rows === 0) {
+        $partial_errors[] = "La placa no existe";
     }
+    $placa_check->close();
     
-    // Buscar solo por rol
-    $rol_sql = "SELECT correo, Num_Placa, rol FROM usuarios WHERE rol = ?";
-    $rol_stmt = $conn->prepare($rol_sql);
-    if ($rol_stmt) {
-        $rol_stmt->bind_param("s", $rol);
-        $rol_stmt->execute();
-        $rol_result = $rol_stmt->get_result();
-        $rol_users = [];
-        while ($row = $rol_result->fetch_assoc()) {
-            $rol_users[] = $row;
-        }
-        $rol_stmt->close();
-        error_log("👮 Usuarios con rol '$rol': " . json_encode($rol_users));
+    // Verificar combinación email-placa
+    $combo_check = $conn->prepare("SELECT correo, Num_Placa FROM usuarios WHERE correo = ? AND Num_Placa = ?");
+    $combo_check->bind_param("ss", $email, $placa);
+    $combo_check->execute();
+    $combo_check->store_result();
+    if ($combo_check->num_rows === 0) {
+        $partial_errors[] = "La combinación de correo y placa no coincide";
     }
+    $combo_check->close();
     
     echo json_encode([
         'success' => false, 
-        'message' => 'Usuario no encontrado con estas credenciales exactas.',
-        'debug_info' => [
-            'buscado' => [
-                'email' => $email,
-                'placa' => $placa, 
-                'rol' => $rol
-            ],
-            'usuarios_con_email' => $email_users ?? [],
-            'usuarios_con_placa' => $placa_users ?? [],
-            'usuarios_con_rol' => $rol_users ?? [],
-            'todos_los_usuarios' => $all_users
+        'message' => 'Credenciales incorrectas. ' . implode(', ', $partial_errors)
+    ]);
+    exit;
+}
+
+// USUARIO ENCONTRADO - VERIFICAR CONTRASEÑA
+$user = $result->fetch_assoc();
+error_log("✅ USUARIO ENCONTRADO: " . $user['nombre'] . " " . $user['apellido']);
+
+// VERIFICAR CONTRASEÑA - Método principal: password_verify
+if (password_verify($password, $user['contrasena'])) {
+    error_log("✅ Contraseña válida (password_hash)");
+    
+    // LOGIN EXITOSO
+    error_log("🎉 LOGIN EXITOSO");
+    
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['user_name'] = $user['nombre'] . ' ' . $user['apellido'];
+    $_SESSION['user_email'] = $email;
+    $_SESSION['user_placa'] = $placa;
+    $_SESSION['user_role'] = $rol;
+    
+    $stmt->close();
+    
+    echo json_encode([
+        'success' => true, 
+        'redirect' => 'principal.html',
+        'message' => '¡Inicio de sesión exitoso!',
+        'user' => [
+            'name' => $user['nombre'] . ' ' . $user['apellido'],
+            'rol' => $rol
         ]
     ]);
     exit;
-}
-
-// USUARIO ENCONTRADO
-$user = $result->fetch_assoc();
-error_log("✅ USUARIO ENCONTRADO: " . $user['nombre'] . " " . $user['apellido']);
-error_log("🔑 Contraseña almacenada: " . $user['contrasena']);
-error_log("📏 Longitud contraseña: " . strlen($user['contrasena']));
-
-// VERIFICAR CONTRASEÑA
-$stored_password = $user['contrasena'];
-$passwordValid = false;
-$passwordMethod = 'none';
-
-error_log("--- VERIFICANDO CONTRASEÑA ---");
-
-// Método 1: Password hash
-if (password_verify($password, $stored_password)) {
-    $passwordValid = true;
-    $passwordMethod = 'password_hash';
-    error_log("✅ Contraseña válida (password_hash)");
-} 
-// Método 2: Texto plano
-else if ($password === $stored_password) {
-    $passwordValid = true;
-    $passwordMethod = 'texto_plano';
-    error_log("✅ Contraseña válida (texto plano)");
-}
-// Método 3: MD5
-else if (md5($password) === $stored_password) {
-    $passwordValid = true;
-    $passwordMethod = 'md5';
-    error_log("✅ Contraseña válida (md5)");
-}
-
-if (!$passwordValid) {
+} else {
     error_log("❌ CONTRASEÑA INCORRECTA");
-    error_log("🔑 Contraseña recibida: '$password'");
-    error_log("🛠️ Método usado: $passwordMethod");
-    
     echo json_encode([
         'success' => false, 
-        'message' => 'Contraseña incorrecta.',
-        'debug_info' => 'Método de verificación: ' . $passwordMethod
+        'message' => 'Contraseña incorrecta.'
     ]);
-    $stmt->close();
-    exit;
 }
 
-// ✅ LOGIN EXITOSO
-error_log("🎉 LOGIN EXITOSO - Usuario: " . $user['nombre'] . " " . $user['apellido']);
-error_log("🛠️ Método de contraseña: $passwordMethod");
-
-$_SESSION['user_id'] = $user['id'];
-$_SESSION['user_name'] = $user['nombre'] . ' ' . $user['apellido'];
-$_SESSION['user_email'] = $email;
-$_SESSION['user_placa'] = $placa;
-$_SESSION['user_role'] = $rol;
-
 $stmt->close();
-
-echo json_encode([
-    'success' => true, 
-    'redirect' => 'principal.html',
-    'message' => '¡Inicio de sesión exitoso!',
-    'user' => [
-        'name' => $user['nombre'] . ' ' . $user['apellido'],
-        'email' => $email,
-        'placa' => $placa,
-        'rol' => $rol
-    ]
-]);
-exit;
 ?>
