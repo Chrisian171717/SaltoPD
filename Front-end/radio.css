@@ -34,6 +34,7 @@ body {
   flex: 1;
   min-width: 280px;
   color: #f5f5f5;
+  transition: box-shadow 0.2s ease;
 }
 
 .radio-tabs {
@@ -51,7 +52,7 @@ body {
   color: #ffd700;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
 }
 
 .tab-button.active {
@@ -79,6 +80,7 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
   color: #f5f5f5;
+  transition: box-shadow 0.2s ease;
 }
 
 .radio-controls {
@@ -99,7 +101,7 @@ body {
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
 }
 
 .control-btn:hover {
@@ -115,21 +117,6 @@ body {
   color: #f5f5f5;
 }
 
-.log-entry {
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
-}
-
-.timestamp {
-  font-weight: bold;
-  margin-right: 0.5rem;
-  color: #ffd700;
-}
-
-.message {
-  color: #f5f5f5;
-}
-
 .nav-tabs {
   background-color: #0f2027;
   padding: 1rem;
@@ -142,7 +129,6 @@ body {
   display: block;
   width: 100%;
   box-sizing: border-box;
-  transition: background-color 0.3s ease;
 }
 
 .nav-tabs__list {
@@ -152,57 +138,35 @@ body {
   gap: 2rem;
   padding: 0;
   margin: 0;
-  box-sizing: border-box;
   flex-wrap: wrap;
   align-items: center;
 }
 
 .nav-tabs__link {
   display: inline-block;
-  transition: transform 0.3s ease;
   color: #ffd700;
   text-decoration: none;
   font-size: 1.2rem;
   font-weight: 500;
   padding: 0.5rem 1rem;
-  box-shadow: 0 2px 4px rgba(255, 215, 0, 0.1);
+  border-radius: 8px;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .nav-tabs__link:hover {
-  transform: scale(1.1);
-  text-shadow: 0 0 5px rgba(255, 215, 0, 0.7);
-  box-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
   background-color: rgba(255, 215, 0, 0.1);
-  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(255, 215, 0, 0.3);
 }
 
 .nav-tabs__icon {
-  height: 50px;
+  height: 45px;
   width: auto;
   vertical-align: middle;
   margin-right: 0.5rem;
-  box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
   border-radius: 50%;
-  user-select: none;
   display: inline-block;
-  transition: transform 0.3s ease;
 }
-.nav-tabs__icon:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
-}
-@media (max-width: 600px) {
-  .officer-section, .control-buttons {
-    flex-direction: column;
-    align-items: center;
-  }
 
-  .tab-button, .control-btn {
-    width: 100%;
-    text-align: center;
-  }
-}   
-/* Scrollbar Styling */
 .log-container::-webkit-scrollbar {
   width: 8px;
 }
@@ -216,145 +180,57 @@ body {
 .log-container {
   scrollbar-width: thin;
   scrollbar-color: #ffd700 #1a1a2e;
-} 
-/* Button Hover Effects */
+}
+
 .tab-button:hover, .control-btn:hover {
   background-color: #0a0a0a;
   color: #ffd700;
-  box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
 }
-/* Card Hover Effects */
+
 .officer-card:hover, .unit-card:hover {
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-  transform: translateY(-5px);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-} 
-/* Responsive Design */
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+@media (max-width: 600px) {
+  .officer-section, .control-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tab-button, .control-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
 @media (max-width: 768px) {
   .units-grid {
     grid-template-columns: 1fr;
   }
-} 
-@media (max-width: 480px) {
-  .radio-dashboard {
-    padding: 1rem;
-  }
+}
 
-  .radio-header {
-    font-size: 1.5rem;
-  }
-} /* Accessibility Enhancements */
-.tab-button:focus, .control-btn:focus, .nav-tabs__link:focus {  
+.tab-button:focus, .control-btn:focus, .nav-tabs__link:focus {
   outline: 2px solid #ffd700;
   outline-offset: 2px;
 }
-.nav-tabs__link:focus {
-  background-color: rgba(255, 215, 0, 0.2);
-}
-/* Dark Mode Support */
+
 @media (prefers-color-scheme: dark) {
-  body {
-    background-image: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-    color: #f5f5f5;
-  }
-
-  .radio-dashboard {
-    background-image: linear-gradient(to right, #1c1c1c, #2c3e50);
-    color: #f5f5f5;
-  }
-
-  .officer-card, .unit-card, .log-container {
-    background-color: #1a1a2e;
-    color: #f5f5f5;
-  }
-
-  .tab-button, .control-btn {
-    background-color: #1f3b4d;
-    color: #ffd700;
-  }
-
-  .tab-button.active, .control-btn:hover {
-    background-color: #0a0a0a;
-    color: #ffd700;
-  }
-
-  .nav-tabs {
-    background-color: #0f2027;
-  }
-
-  .nav-tabs__link {
-    color: #ffd700;
-  }
 }
-/* Light Mode Support */
+
 @media (prefers-color-scheme: light) {
-  body {
-    background-image: linear-gradient(to right, #e0eafc, #cfdef3, #dfe9f3);
-    color: #333;
-  }
-
-  .radio-dashboard {
-    background-image: linear-gradient(to right, #f0f4f8, #d9e2ec);
-    color: #333;
-  }
-
-  .officer-card, .unit-card, .log-container {
-    background-color: #ffffff;
-    color: #333;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .tab-button, .control-btn {
-    background-color: #e0eafc;
-    color: #333;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .tab-button.active, .control-btn:hover {
-    background-color: #cfd8e3;
-    color: #333;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
-  }
-
-  .nav-tabs {
-    background-color: #f0f4f8;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .nav-tabs__link {
-    color: #333;
-    box-shadow: none;
-  }
-
-  .nav-tabs__link:hover {
-    text-shadow: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: rgba(200, 200, 200, 0.3);
-    border-radius: 8px;
-  }
-  .nav-tabs__icon {
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  }
-  .nav-tabs__icon:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  }
-  .log-container::-webkit-scrollbar-thumb {
-    background-color: #333;
-  }
-  .log-container {
-    scrollbar-color: #333 #ffffff;
-  }
 }
-/* Additional Enhancements */
+
 .officer-card h3, .unit-card h3 {
   margin-top: 0;
   color: #ffd700;
 }
+
 .log-entry:nth-child(odd) {
   background-color: rgba(255, 215, 0, 0.05);
   padding: 0.25rem;
   border-radius: 4px;
-} 
+}
+
 .log-entry:nth-child(even) {
   background-color: rgba(255, 215, 0, 0.1);
   padding: 0.25rem;

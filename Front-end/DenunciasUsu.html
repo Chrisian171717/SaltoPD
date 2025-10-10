@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Plataforma de Denuncias - Sistema de Gestión</title>
+  <link rel="stylesheet" href="denuncia.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<!-- ===== MENÚ PRINCIPAL ===== -->
+<nav class="nav-tabs" aria-label="Navegación principal">
+  <ul class="nav-tabs__list">
+    <li><a href="civiles.html" class="nav-tabs__link">
+      <img src="Civil.png" alt="Sección Civil" class="nav-tabs__icon" />
+      <span>Civiles</span>
+    </a></li>
+    <li><a href="Radio.html" class="nav-tabs__link">
+      <img src="radio-policia-2507338-2102444.png" alt="Sección Radio" class="nav-tabs__icon" />
+      <span>Radio</span>
+    </a></li>
+    <li><a href="Vehiculo2.0.html" class="nav-tabs__link">
+      <img src="Vehiculo.png" alt="Sección Vehículo" class="nav-tabs__icon" />
+      <span>Vehículos</span>
+    </a></li>
+    <li><a href="Mapa.html" class="nav-tabs__link">
+      <img src="mapa.png" alt="Sección Mapa" class="nav-tabs__icon" />
+      <span>Mapa</span>
+    </a></li>
+    <li><a href="principal.html" class="nav-tabs__link">
+      <img src="Logo.png" alt="Sección principal" class="nav-tabs__icon" />
+      <span>Inicio</span>
+    </a></li>
+    <li><a href="Escaner Facial.html" class="nav-tabs__link">
+      <img src="Escaner Facial.png" alt="Sección Escaner" class="nav-tabs__icon" />
+      <span>Escáner</span>
+    </a></li>
+  </ul>
+</nav>
+
+<main class="denuncias-main">
+
+  <!-- ===== BANNER ===== -->
+  <section class="banner fade-in" aria-label="Mensaje ciudadano">
+    <div class="banner__content">
+      <h2 class="banner__title">La voz ciudadana cuenta</h2>
+      <p class="banner__text">Denuncia, participa y ayuda a crear una comunidad más segura. Tu reporte hace la diferencia.</p>
+    </div>
+  </section>
+
+  <!-- ===== ESTADÍSTICAS ===== -->
+  <div class="stats-container fade-in">
+    <div class="stat-card">
+      <span class="stat-number" id="total-denuncias">0</span>
+      <span class="stat-label">Total Denuncias</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number" id="denuncias-hoy">0</span>
+      <span class="stat-label">Hoy</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number" id="denuncias-mes">0</span>
+      <span class="stat-label">Este Mes</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number" id="resueltas">0</span>
+      <span class="stat-label">Resueltas</span>
+    </div>
+  </div>
+
+  <!-- ===== FORMULARIO AGREGAR DENUNCIA ===== -->
+  <section class="denuncia-form fade-in" aria-label="Agregar nueva denuncia">
+    <div class="denuncia-form__content">
+      <h3 class="denuncia-form__title">¿Querés reportar algo?</h3>
+      <p class="platform-info__text" style="color: #666; text-align: center; margin-bottom: 25px;">
+        Completa el formulario para registrar una nueva denuncia en el sistema.
+      </p>
+      
+      <form id="form-agregar-denuncia" method="POST">
+        <div class="form-group">
+          <label for="nombre_civil">Nombre del Civil *</label>
+          <input type="text" id="nombre_civil" name="nombre_civil" placeholder="Ingrese el nombre completo" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="codigo_penal">Código Penal *</label>
+          <input type="text" id="codigo_penal" name="codigo_penal" placeholder="Ej: ART 123, CP 456" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="descripcion">Descripción Detallada *</label>
+          <textarea id="descripcion" name="descripcion" placeholder="Describa los hechos ocurridos con todos los detalles relevantes..." required></textarea>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+          <button type="submit" class="btn btn-primary">
+            📝 Registrar Denuncia
+          </button>
+          <button type="reset" class="btn btn-secondary">
+            🔄 Limpiar Formulario
+          </button>
+        </div>
+      </form>
+      <div id="mensaje-form"></div>
+    </div>
+  </section>
+
+  <!-- ===== FORMULARIO DE BÚSQUEDA ===== -->
+  <section class="busqueda-form fade-in" aria-label="Buscar denuncias">
+    <div class="busqueda-form__content">
+      <h3 class="busqueda-form__title">Buscar Denuncias</h3>
+      <p class="platform-info__text" style="color: #666; text-align: center; margin-bottom: 25px;">
+        Encuentre denuncias específicas utilizando los filtros de búsqueda.
+      </p>
+      
+      <form id="form-buscar-denuncia" method="GET">
+        <div class="form-group">
+          <label for="busqueda">Buscar por Nombre o Descripción</label>
+          <input type="text" id="busqueda" name="busqueda" placeholder="Ingrese nombre o palabras clave...">
+        </div>
+        
+        <div class="form-group">
+          <label for="codigo_busqueda">Buscar por Código Penal</label>
+          <input type="text" id="codigo_busqueda" name="codigo_busqueda" placeholder="Ingrese código penal...">
+        </div>
+        
+        <div style="text-align: center; margin-top: 25px;">
+          <button type="submit" class="btn btn-info">
+            🔍 Buscar Denuncias
+          </button>
+          <button type="button" id="btn-mostrar-todas" class="btn btn-secondary">
+            📋 Mostrar Todas
+          </button>
+          <button type="button" id="btn-generar-reporte" class="btn btn-warning">
+            📊 Generar Reporte
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== INFORMACIÓN DE LA PLATAFORMA ===== -->
+  <section class="platform-info fade-in" aria-label="Información sobre la plataforma">
+    <div class="platform-info__content">
+      <h3 class="platform-info__title">¿Qué es esta plataforma?</h3>
+      <p class="platform-info__text">
+        Un sistema transparente y eficiente para visualizar, reportar y gestionar denuncias públicas. 
+        Cada voz cuenta, cada reporte construye seguridad comunitaria. Nuestra plataforma garantiza 
+        el anonimato cuando sea necesario y proporciona seguimiento en tiempo real de todos los casos.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== DENUNCIAS RECIENTES ===== -->
+  <section class="recent-denuncias fade-in" aria-label="Denuncias recientes">
+    <div class="recent-denuncias__header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+      <h3 class="recent-denuncias__title">Denuncias Registradas</h3>
+      <button id="btn-actualizar-lista" class="btn btn-info">
+        🔄 Actualizar Lista
+      </button>
+    </div>
+    
+    <div id="tabla-denuncias">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Cargando denuncias...</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer__content">
+    <p class="footer__text">&copy; 2025 Plataforma de Denuncias - Sistema de Gestión. Todos los derechos reservados.</p>
+    <p class="footer__text" style="margin-top: 10px; font-size: 0.9rem;">
+      Versión 2.0 | Sistema desarrollado para la gestión eficiente de denuncias comunitarias
+    </p>
+  </div>
+</footer>
+
+<!-- ===== JAVASCRIPT EXTERNO ===== -->
+<script src="../Back-end/denuncia.js"></script>
+
+</body>
+</html>
