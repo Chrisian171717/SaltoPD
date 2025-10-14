@@ -1,0 +1,41 @@
+{
+    "verification_id": "VER_68ede29d9ed94_20251014074149",
+    "timestamp": "2025-10-14T07:41:49+02:00",
+    "face_data": {
+        "landmarks": 68,
+        "accuracy": "95.6",
+        "scanTime": "1.7",
+        "matchConfidence": "97.8",
+        "features": {
+            "faceId": "web_face_1760420475946",
+            "confidence": 0.95
+        }
+    },
+    "document_data": {
+        "type": "C\u00e9dula de Identidad",
+        "quality": "Buena",
+        "extracted": true,
+        "ocrData": {
+            "name": "Juan P\u00e9rez",
+            "idNumber": "12345678-2",
+            "birthDate": "1990-02-05",
+            "nationality": "Chilena"
+        },
+        "timestamp": "2025-10-14T05:41:32.461Z",
+        "image_path": "\/temp\/doc_session_1760420491982_s14qdeubz.jpg",
+        "python_processed": true
+    },
+    "face_result": {
+        "status": "processed",
+        "confidence": "95.6",
+        "landmarks_detected": 68,
+        "processing_time": "0.5s"
+    },
+    "document_result": {
+        "status": "processed",
+        "quality_score": 80,
+        "extraction_success": true,
+        "processing_time": "0.3s"
+    },
+    "session_id": "session_1760420508054_kq0mf1g7j"
+}

@@ -1,15 +1,28 @@
+/* ===== VARIABLES ===== */
+:root {
+    --gold: #d4af37;
+    --gold-light: #f5e6b1;
+    --gold-dark: #b8860b;
+    --blue-dark: #0a1c29;
+    --blue-mid: #1b2b39;
+    --blue-light: #2a3b4d;
+    --black: #101820;
+    --white: #ecf0f1;
+}
+
+/* ===== RESET GLOBAL ===== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* Azul oscuro con negro elegante */
+    background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid), var(--blue-light));
     min-height: 100vh;
     padding: 20px;
-    color: #ecf0f1;
+    color: var(--white);
 }
 
 /* ===== NAVEGACIÓN ===== */
@@ -19,8 +32,8 @@ body {
     padding: 15px 0;
     margin-bottom: 30px;
     border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.6);
-    border: 1px solid rgba(255,215,0,0.4);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 215, 0, 0.4);
 }
 
 .nav-tabs__list {
@@ -37,19 +50,20 @@ body {
     flex-direction: column;
     align-items: center;
     text-decoration: none;
-    color: #d4af37; /* Dorado elegante */
+    color: var(--gold-light);
     transition: all 0.3s ease;
     padding: 10px;
     border-radius: 10px;
     width: 80px;
     font-weight: bold;
+    animation: fadeInUp 0.6s ease forwards;
 }
 
 .nav-tabs__link:hover {
-    background: linear-gradient(135deg, #1c1c1c, #0f2027);
+    background: linear-gradient(135deg, var(--black), var(--blue-dark));
     color: #ffffff;
     transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(255,215,0,0.3);
+    box-shadow: 0 6px 15px rgba(255, 215, 0, 0.3);
 }
 
 .nav-tabs__icon {
@@ -58,7 +72,8 @@ body {
     margin-bottom: 5px;
     object-fit: contain;
     transition: transform 0.3s ease;
-    filter: brightness(0) saturate(100%) invert(74%) sepia(58%) saturate(566%) hue-rotate(15deg) brightness(95%) contrast(96%); /* Iconos dorados */
+   
+    
 }
 
 .nav-tabs__link:hover .nav-tabs__icon {
@@ -70,19 +85,20 @@ body {
 .container {
     max-width: 1400px;
     margin: 0 auto;
-    background: #101820;
+    background: var(--black);
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
     overflow: hidden;
-    border: 1px solid rgba(212,175,55,0.3);
+    border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
 .header {
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    color: #d4af37;
+    background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid), var(--blue-light));
+    color: var(--gold);
     padding: 30px;
     text-align: center;
-    border-bottom: 2px solid rgba(212,175,55,0.5);
+    border-bottom: 2px solid rgba(212, 175, 55, 0.5);
+    animation: fadeInUp 0.6s ease forwards;
 }
 
 .header h1 {
@@ -92,20 +108,20 @@ body {
     align-items: center;
     justify-content: center;
     gap: 15px;
-    text-shadow: 0 0 15px rgba(212,175,55,0.6);
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
 }
 
 .header p {
     font-size: 1.1em;
     opacity: 0.9;
-    color: #ecf0f1;
+    color: var(--white);
 }
 
 .header-icon {
     width: 45px;
     height: 45px;
     object-fit: contain;
-    filter: drop-shadow(0 0 6px rgba(212,175,55,0.8));
+    filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.8));
 }
 
 /* ===== BOTONES PREMIUM ===== */
@@ -114,50 +130,96 @@ body {
     align-items: center;
     gap: 8px;
     padding: 12px 25px;
-    background: linear-gradient(135deg, #1a1a1a, #0f2027);
-    color: #d4af37;
+    background: linear-gradient(135deg, var(--black), var(--blue-dark));
+    color: var(--gold-light);
     text-decoration: none;
     border-radius: 10px;
-    border: 1px solid rgba(212,175,55,0.5);
+    border: 1px solid rgba(212, 175, 55, 0.5);
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
     transition: all 0.3s ease;
     margin: 5px;
+    animation: fadeInUp 0.6s ease forwards;
 }
 
 .btn:hover {
-    background: linear-gradient(135deg, #d4af37, #b8860b);
-    color: black;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: var(--black);
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(212,175,55,0.4);
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
 }
 
-/* ===== CARDS VEHÍCULOS ===== */
+/* ===== SECCIÓN DENUNCIAS ===== */
+.denuncias-section {
+    background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid), var(--blue-light));
+    padding: 20px;
+    margin-top: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.denuncias-section h2 {
+    color: var(--gold);
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+}
+
+.denuncias-lista {
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: var(--black);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+.denuncia-item {
+    padding: 15px;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--black), var(--blue-dark));
+    border-left: 5px solid var(--gold);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+.denuncia-item:hover {
+    background: linear-gradient(135deg, #2c3e50, var(--black));
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+}
+
+.denuncia-item strong {
+    color: var(--gold);
+}
+
+/* ===== VEHÍCULOS ===== */
 .vehiculo-card {
     display: flex;
     align-items: center;
     gap: 20px;
     padding: 25px;
-    background: linear-gradient(135deg, #0f2027, #1c1c1c);
+    background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
     border-radius: 12px;
-    border-left: 5px solid #d4af37;
+    border-left: 5px solid var(--gold);
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
     position: relative;
     overflow: hidden;
-    color: #ecf0f1;
+    color: var(--white);
+    animation: fadeInUp 0.6s ease forwards;
 }
 
 .vehiculo-card__marca {
     font-weight: bold;
     font-size: 1.3em;
-    color: #d4af37;
+    color: var(--gold);
 }
 
 .vehiculo-card__matricula {
-    background: #d4af37;
-    color: #000;
+    background: var(--gold);
+    color: var(--black);
     padding: 4px 12px;
     border-radius: 6px;
     display: inline-block;
@@ -165,38 +227,49 @@ body {
     font-weight: bold;
 }
 
-/* ===== TABLAS ELEGANTES ===== */
+/* ===== TABLAS ===== */
 th {
-    background: linear-gradient(135deg, #0f2027, #2c3e50);
-    color: #d4af37;
+    background: linear-gradient(135deg, var(--blue-dark), #2c3e50);
+    color: var(--gold);
     padding: 18px;
     text-align: left;
     font-weight: 700;
     font-size: 16px;
-    border-bottom: 2px solid #d4af37;
+    border-bottom: 2px solid var(--gold);
 }
 
 td {
     padding: 16px 18px;
-    border-bottom: 1px solid rgba(212,175,55,0.2);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
     font-size: 15px;
-    color: #ecf0f1;
+    color: var(--white);
+}
+
+/* ===== EFECTO HOVER EN FILAS DE TABLA ===== */
+tbody tr:hover {
+    background: rgba(212, 175, 55, 0.1);
+    cursor: pointer;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+    transition: all 0.3s ease;
 }
 
 /* ===== MODAL ===== */
 .modal__contenido {
-    background: #101820;
+    background: var(--black);
     padding: 35px;
     border-radius: 15px;
     width: 90%;
     max-width: 500px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-    border: 2px solid #d4af37;
-    color: #ecf0f1;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    border: 2px solid var(--gold);
+    color: var(--white);
+    animation: fadeInUp 0.6s ease forwards;
 }
+
 .modal__contenido h2 {
-    color: #d4af37;
-    border-bottom: 3px solid #d4af37;
+    color: var(--gold);
+    border-bottom: 3px solid var(--gold);
 }
 
 /* ===== SCROLL PREMIUM ===== */
@@ -205,18 +278,68 @@ td {
 }
 
 ::-webkit-scrollbar-track {
-    background: #0f2027;
+    background: var(--blue-dark);
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #d4af37, #b8860b);
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #ffd700, #daa520);
 }
+
+/* ===== FORMULARIOS ===== */
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 8px 0 20px 0;
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    border-radius: 8px;
+    background: var(--black);
+    color: var(--white);
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+    outline: none;
+}
+
+label {
+    font-weight: bold;
+    color: var(--gold);
+    margin-bottom: 6px;
+    display: block;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* ===== ANIMACIONES ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .vehiculo-card {
@@ -254,6 +377,7 @@ td {
         font-size: 14px;
     }
 }
+
 @media (max-width: 400px) {
     .nav-tabs__link {
         width: 60px;
@@ -265,6 +389,7 @@ td {
         height: 25px;
     }
 }
+
 @media (max-width: 350px) {
     .header h1 {
         font-size: 1.5em;
@@ -275,76 +400,10 @@ td {
         font-size: 0.9em;
     }
 }
+
 @media (max-width: 320px) {
     .btn {
         padding: 8px 15px;
         font-size: 12px;
     }
-}   
-/* ===== ANIMACIONES ===== */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-.vehiculo-card {
-    animation: fadeInUp 0.6s ease forwards;
-}   
-.nav-tabs__link {
-    animation: fadeInUp 0.6s ease forwards;
-}
-.header {
-    animation: fadeInUp 0.6s ease forwards;
-}
-.btn {
-    animation: fadeInUp 0.6s ease forwards;
-}
-.modal__contenido {
-    animation: fadeInUp 0.6s ease forwards;
-}
-/* ===== EFECTO HOVER EN FILAS DE TABLA ===== */
-tbody tr:hover {
-    background: rgba(212,175,55,0.1);
-    cursor: pointer;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(212,175,55,0.2);
-    transition: all 0.3s ease;
-}
-/* ===== ESTILO PARA FORMULARIOS ===== */
-input[type="text"],
-input[type="number"],
-select,
-textarea {
-    width: 100%;
-    padding: 12px 15px;
-    margin: 8px 0 20px 0;
-    border: 1px solid rgba(212,175,55,0.5);
-    border-radius: 8px;
-    background: #1c1c1c;
-    color: #ecf0f1;
-    font-size: 15px;
-    transition: all 0.3s ease;
-}
-input[type="text"]:focus,
-input[type="number"]:focus,
-select:focus,
-textarea:focus {
-    border-color: #d4af37;
-    box-shadow: 0 0 8px rgba(212,175,55,0.6);
-    outline: none;
-}   
-label {
-    font-weight: bold;
-    color: #d4af37;
-    margin-bottom: 6px;
-    display: block;
-}
-textarea {
-    resize: vertical;
-    min-height: 80px;
 }

@@ -1,57 +1,64 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Panel Policial</title>
-  <link rel="stylesheet" href="Estilo.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página Principal</title>
+  <link rel="stylesheet" href="Estilo.css">
+  <script defer src="../Back-end/Pagprin.js"></script>
+  <script defer src="../Back-end/principal.js"></script>
 </head>
 <body>
-  <header class="header">
+  <header>
     <div class="logo">
-      <img src="logo.png" alt="Logo Policía" />
-      <span class="titulo">Página Principal</span>
+      <img src="Logo.png" alt="Escudo Policía">
+      <span>Página Principal</span>
     </div>
+
     <div class="user-menu">
       <button id="userButton">👤 Usuario ▾</button>
       <div id="dropdownMenu" class="dropdown">
-        <a href="InicioDeSesion.html">Iniciar Sesión</a>
-        <a href="Registro.html">Registro</a>
+        <a href="Registro.html">Registrar</a>
+        <a href="InicioDeSesion.html">Iniciar Sesion </a>
       </div>
     </div>
   </header>
 
-  <main>
-    <section class="iconos">
-      <div class="icono" title="Gestión de Civiles">👥</div>
-      <div class="icono" title="Denuncias">⚠️</div>
-      <div class="icono" title="Criminales">🥷</div>
-      <div class="icono" title="Vehículos">🚔</div>
-      <div class="icono" title="Mapas">🗺️</div>
-    </section>
+  <nav class="barra-iconos">
+    <a href="civiles.html" class="icono" title="Gestión de Civiles">
+      <img src="Civil.png" alt="Civiles">
+    </a>
+    <a href="Denuncias.html" class="icono" title="Denuncias">
+      <img src="Denuncias.png" alt="Denuncias">
+    </a>
+    <a href="Vehiculo2.0.html" class="icono" title="Vehículos">
+      <img src="Vehiculo.png" alt="Vehículos">
+    </a>
+    <a href="Mapa.html" class="icono" title="Mapa">
+      <img src="mapa.png" alt="Mapa">
+    </a>
+    <a href="Radio.html" class="icono" title="Radio">
+      <img src="radio-policia-2507338-2102444.png" alt="Radio">
+    </a>
+    <a href="Escaner Facial.html" class="icono" title="Escáner Facial">
+      <img src="Escaner Facial.png" alt="Escáner Facial">
+    </a>
+  </nav>
 
-    <section class="chatbot">
-      <div class="chat-header">ChatBot</div>
-      <div class="chat-body">
-        🤖 Bienvenido, ¿en qué puedo ayudarte?
-      </div>
-      <input type="text" placeholder="Escribe tu mensaje..." class="chat-input" />
-    </section>
-  </main>
+  <!-- Chat visible y centrado -->
+  <div id="chatbot" class="chatbot">
+    <div class="chat-header">
+      ChatBot
+      <button id="cerrarChat">✖</button>
+    </div>
+    <div class="chat-body">
+      🤖 Bienvenido, ¿en qué puedo ayudarte?
+    </div>
+    <input type="text" placeholder="Escribe tu mensaje..." class="chat-input">
+  </div>
 
   <footer>
     © 2025 SALTODP. Todos los derechos reservados.
   </footer>
-
-  <script>
-    const userButton = document.getElementById("userButton");
-    const dropdownMenu = document.getElementById("dropdownMenu");
-    userButton.addEventListener("click", () => {
-      dropdownMenu.classList.toggle("show");
-    });
-    window.addEventListener("click", (e) => {
-      if (!userButton.contains(e.target)) dropdownMenu.classList.remove("show");
-    });
-  </script>
 </body>
 </html>

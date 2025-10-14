@@ -1,131 +1,216 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="escaner.css">
-        <link rel="icon" href="logo.png" type="image/png">
-        <script src="../Back-end/escaneo.js"></script>
-        <title>Escáner Facial - Sistema de Reconocimiento</title>
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema avanzado de reconocimiento facial para identificación biométrica">
+    <meta name="keywords" content="reconocimiento facial, biométrica, escáner, seguridad, identificación">
+    <link rel="stylesheet" href="escaner.css">
+    <link rel="icon" href="logo.png" type="image/png">
+    <script src="../Back-end/Escaner.js" defer></script>
+    <title>Escáner Facial - Sistema Avanzado de Reconocimiento Biométrico</title>
+</head>
+<body>
+    <!-- Navegación principal -->
+    <nav class="nav-tabs" aria-label="Navegación principal">
+        <ul class="nav-tabs__list">
+            <li><a href="principal.html" class="nav-tabs__link" aria-label="Página principal"><img src="Logo.png" alt="Sección principal" class="nav-tabs__icon" /></a></li>
+            <li><a href="civiles.html" class="nav-tabs__link" aria-label="Gestión de civiles"><img src="Civil.png" alt="Sección Civil" class="nav-tabs__icon" /></a></li>
+            <li><a href="Denuncias.html" class="nav-tabs__link" aria-label="Sistema de denuncias"><img src="Denuncias.png" alt="Sección Denuncias" class="nav-tabs__icon" /></a></li>
+            <li><a href="Vehiculo2.0.html" class="nav-tabs__link" aria-label="Registro vehicular"><img src="Vehiculo.png" alt="Sección Vehículo" class="nav-tabs__icon" /></a></li>
+            <li><a href="Radio.html" class="nav-tabs__link" aria-label="Comunicaciones por radio"><img src="radio-policia-2507338-2102444.png" alt="Sección Radio" class="nav-tabs__icon" /></a></li>
+            <li><a href="Mapa.html" class="nav-tabs__link" aria-label="Mapa del sistema"><img src="mapa.png" alt="Sección mapa" class="nav-tabs__icon" /></a></li>
+        </ul>
+    </nav>
 
-        <form action="../Back-end/Escaner.php" method="post">
-            <nav class="nav-tabs" aria-label="Navegación principal">
-                <ul class="nav-tabs__list">
-                    <li><a href="civiles.html" class="nav-tabs__link"><img src="Civil.png" alt="Sección Civil" class="nav-tabs__icon" /></a></li>
-                    <li><a href="Denuncias.html" class="nav-tabs__link"><img src="Denuncias.png" alt="Sección Denuncias" class="nav-tabs__icon" /></a></li>
-                    <li><a href="Vehiculo2.0.html" class="nav-tabs__link"><img src="Vehiculo.png" alt="Sección Vehículo" class="nav-tabs__icon" /></a></li>
-                    <li><a href="Radio.html" class="nav-tabs__link"><img src="radio-policia-2507338-2102444.png" alt="Sección Radio" class="nav-tabs__icon" /></a></li>
-                    <li><a href="principal.html" class="nav-tabs__link"><img src="Logo.png" alt="Sección principal" class="nav-tabs__icon" /></a></li>
-                    <li><a href="Mapa.html" class="nav-tabs__link"><img src="mapa.png" alt="Sección mapa" class="nav-tabs__icon" /></a></li>
-
-                </ul>
-            </nav>
-        
-        <section class="scanner-system" aria-label="Sistema de escaneo biométrico">
-            
-
-            <!-- Encabezado -->
+    <!-- Contenido principal -->
+    <main class="main-content">
+        <div id="scanner-container">
+            <!-- Encabezado del sistema -->
             <header class="scanner-header">
-                <h1>🧠 Sistema de Escáner Facial</h1>
-                <p>Tecnología avanzada de reconocimiento biométrico</p>
+                <h1>🧠 Sistema de Escáner Facial Biométrico</h1>
+                <p>Tecnología avanzada de reconocimiento facial para identificación precisa</p>
             </header>
 
-            <!-- Interfaz principal -->
-            <main class="scanner-interface">
-
-                <!-- Panel: Escáner Facial -->
-                <article class="scanner-panel facial-panel" aria-label="Panel de escaneo facial">
-                <h2 class="panel-title">👤 Escáner Facial</h2>
-
-                <div class="scanner-visual">
-                    <div class="scanner-grid"></div>
-
-                    <div class="face-outline">
-                    <div class="scanning-line"></div>
+            <!-- Sección de entrada de datos -->
+            <section class="input-section" aria-labelledby="input-title">
+                <h2 id="input-title" class="section-title">📥 Fuentes de Datos</h2>
+                <div class="input-options">
+                    <div class="input-option">
+                        <label for="camera-input" class="input-label">
+                            <span class="input-icon">📷</span>
+                            Cámara en Tiempo Real
+                        </label>
+                        <button type="button" id="camera-toggle" class="toggle-btn">Activar</button>
                     </div>
-
-                    <!-- Partículas animadas -->
-                    <div class="particle" style="--delay: 0s; top: 20%; left: 10%;"></div>
-                    <div class="particle" style="--delay: 1s; top: 40%; right: 15%;"></div>
-                    <div class="particle" style="--delay: 2s; bottom: 30%; left: 20%;"></div>
-                    <div class="particle" style="--delay: 3s; top: 60%; right: 25%;"></div>
-                </div>
-
-                <!-- Datos biométricos -->
-                <section class="biometric-data">
-                    <ul class="data-list">
-                    <li><strong>Estado del Escáner:</strong> <span id="scanner-status">Activo</span></li>
-                    <li><strong>Precisión:</strong> <span id="accuracy">98.7%</span></li>
-                    <li><strong>Tiempo de Escaneo:</strong> <span id="scan-time">2.3s</span></li>
-                    <li><strong>Puntos de Referencia:</strong> <span id="landmarks">68</span></li>
-                    </ul>
-                </section>
-                </article>
-
-                <!-- Panel: Escáner de Cédula -->
-                <article class="scanner-panel ci-panel" aria-label="Panel de escaneo de documento">
-                <h2 class="panel-title">🔍 Escáner C.I.</h2>
-
-                <div class="document-visual">
-                    <div class="document-frame">
-                    <div class="corner top-left"></div>
-                    <div class="corner top-right"></div>
-                    <div class="corner bottom-left"></div>
-                    <div class="corner bottom-right"></div>
-                    <div class="doc-icon">📄</div>
+                    
+                    <div class="input-option">
+                        <label for="file-input" class="input-label">
+                            <span class="input-icon">🖼️</span>
+                            Subir Imagen
+                        </label>
+                        <input type="file" id="file-input" accept="image/*" class="file-input">
                     </div>
-                </div>
-
-                <!-- Datos del documento -->
-                <section class="biometric-data">
-                    <ul class="data-list">
-                    <li><strong>Documento:</strong> <span id="doc-type">Cédula de Identidad</span></li>
-                    <li><strong>Estado de OCR:</strong> <span id="ocr-status">Listo</span></li>
-                    <li><strong>Calidad:</strong> <span id="quality">Excelente</span></li>
-                    </ul>
-                </section>
-                </article>
-            </main>
-
-            <!-- Indicadores de estado -->
-            <section class="status-indicators" aria-label="Indicadores del sistema">
-                <div class="status-card active">
-                <div class="status-icon">⚡</div>
-                <h3>Cámara Activa</h3>
-                <p>Sistema de captura operativo</p>
-                </div>
-                <div class="status-card processing">
-                <div class="status-icon">🔄</div>
-                <h3>Procesando</h3>
-                <p>Analizando datos biométricos</p>
-                </div>
-                <div class="status-card complete">
-                <div class="status-icon">✅</div>
-                <h3>Verificado</h3>
-                <p>Identidad confirmada</p>
-                </div>
-                <div class="status-card error">
-                <div class="status-icon">⚠️</div>
-                <h3>Alerta</h3>
-                <p>Requiere atención</p>
+                    
+                    <div class="input-option">
+                        <label for="id-input" class="input-label">
+                            <span class="input-icon">📄</span>
+                            Escanear Documento
+                        </label>
+                        <input type="file" id="id-input" accept="image/*,.pdf" class="file-input">
+                    </div>
                 </div>
             </section>
 
-            <!-- Panel de control -->
-            <section class="control-panel" aria-label="Panel de control del escáner">
-                <h2 class="panel-title">⚙️ Panel de Control</h2>
-                <div class="control-buttons">
-                <button onclick="startScan()">Iniciar Escaneo</button>
-                <button onclick="stopScan()">Detener Escaneo</button>
-                <button onclick="resetScanner()">Reiniciar Sistema</button>
-                <button onclick="exportData()">Exportar Datos</button>
+            <!-- Interfaz principal de escaneo -->
+            <section class="scanner-system" aria-label="Sistema de escaneo biométrico">
+                <div class="scanner-interface">
+                    <!-- Panel: Escáner Facial -->
+                    <article class="scanner-panel facial-panel" aria-labelledby="facial-title">
+                        <h2 id="facial-title" class="panel-title">👤 Escáner Facial</h2>
+                        
+                        <div class="scanner-visual">
+                            <div class="video-container">
+                                <video id="camera-feed" autoplay muted playsinline></video>
+                                <canvas id="face-canvas" class="face-canvas"></canvas>
+                            </div>
+                            
+                            <div class="scanner-grid"></div>
+                            <div class="face-outline">
+                                <div class="scanning-line"></div>
+                            </div>
+                            
+                            <!-- Partículas animadas -->
+                            <div class="particle" style="--delay: 0s; top: 20%; left: 10%;"></div>
+                            <div class="particle" style="--delay: 1s; top: 40%; right: 15%;"></div>
+                            <div class="particle" style="--delay: 2s; bottom: 30%; left: 20%;"></div>
+                            <div class="particle" style="--delay: 3s; top: 60%; right: 25%;"></div>
+                        </div>
+
+                        <!-- Datos biométricos -->
+                        <section class="biometric-data" aria-labelledby="biometric-title">
+                            <h3 id="biometric-title" class="data-title">Datos Biométricos</h3>
+                            <ul class="data-list">
+                                <li><strong>Estado del Escáner:</strong> <span id="scanner-status">Inactivo</span></li>
+                                <li><strong>Precisión:</strong> <span id="accuracy">--</span></li>
+                                <li><strong>Tiempo de Escaneo:</strong> <span id="scan-time">--</span></li>
+                                <li><strong>Puntos de Referencia:</strong> <span id="landmarks">--</span></li>
+                                <li><strong>Coincidencia:</strong> <span id="match-confidence">--</span></li>
+                            </ul>
+                        </section>
+                    </article>
+
+                    <!-- Panel: Escáner de Documento -->
+                    <article class="scanner-panel ci-panel" aria-labelledby="document-title">
+                        <h2 id="document-title" class="panel-title">🔍 Escáner de Documento</h2>
+
+                        <div class="document-visual">
+                            <div class="document-frame">
+                                <div class="corner top-left"></div>
+                                <div class="corner top-right"></div>
+                                <div class="corner bottom-left"></div>
+                                <div class="corner bottom-right"></div>
+                                <div class="doc-icon">📄</div>
+                                <div id="document-preview" class="document-preview"></div>
+                            </div>
+                        </div>
+
+                        <!-- Datos del documento -->
+                        <section class="document-data" aria-labelledby="doc-data-title">
+                            <h3 id="doc-data-title" class="data-title">Datos del Documento</h3>
+                            <ul class="data-list">
+                                <li><strong>Documento:</strong> <span id="doc-type">--</span></li>
+                                <li><strong>Estado de OCR:</strong> <span id="ocr-status">Inactivo</span></li>
+                                <li><strong>Calidad:</strong> <span id="quality">--</span></li>
+                                <li><strong>Información Extraída:</strong> <span id="extracted-info">--</span></li>
+                            </ul>
+                        </section>
+                    </article>
                 </div>
+
+                <!-- Resultados de comparación -->
+                <section class="comparison-results" aria-labelledby="results-title" id="results-section" style="display: none;">
+                    <h2 id="results-title" class="section-title">📊 Resultados de la Comparación</h2>
+                    <div class="results-container">
+                        <div class="result-item">
+                            <h3>Coincidencia Facial</h3>
+                            <div class="match-percentage" id="facial-match">0%</div>
+                            <div class="match-bar">
+                                <div class="match-fill" id="facial-match-bar"></div>
+                            </div>
+                        </div>
+                        <div class="result-item">
+                            <h3>Verificación de Documento</h3>
+                            <div class="verification-status" id="doc-verification">Pendiente</div>
+                        </div>
+                        <div class="result-item">
+                            <h3>Estado General</h3>
+                            <div class="overall-status" id="overall-status">En Proceso</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Indicadores de estado -->
+                <section class="status-indicators" aria-label="Indicadores del sistema">
+                    <div class="status-card" id="camera-status">
+                        <div class="status-icon">📷</div>
+                        <h3>Cámara</h3>
+                        <p id="camera-status-text">Inactiva</p>
+                    </div>
+                    <div class="status-card" id="processing-status">
+                        <div class="status-icon">🔄</div>
+                        <h3>Procesando</h3>
+                        <p id="processing-status-text">En espera</p>
+                    </div>
+                    <div class="status-card" id="verification-status">
+                        <div class="status-icon">✅</div>
+                        <h3>Verificación</h3>
+                        <p id="verification-status-text">Pendiente</p>
+                    </div>
+                    <div class="status-card" id="alert-status">
+                        <div class="status-icon">⚠️</div>
+                        <h3>Alertas</h3>
+                        <p id="alert-status-text">Ninguna</p>
+                    </div>
+                </section>
+
+                <!-- Panel de control -->
+                <section class="control-panel" aria-labelledby="control-title">
+                    <h2 id="control-title" class="panel-title">⚙️ Panel de Control</h2>
+                    <div class="control-buttons">
+                        <button type="button" id="start-scan" disabled>Iniciar Escaneo</button>
+                        <button type="button" id="stop-scan" disabled>Detener Escaneo</button>
+                        <button type="button" id="reset-scanner">Reiniciar Sistema</button>
+                        <button type="button" id="export-data">Exportar Datos</button>
+                        <button type="button" id="submit-data" disabled>Enviar para Verificación</button>
+                    </div>
+                </section>
             </section>
+        </div>
+    </main>
 
-        </section>
-        </form>
+    <!-- Footer -->
+    <footer class="system-footer">
+        <div class="footer-content">
+            <p>Sistema de Reconocimiento Facial Biométrico &copy; 2023</p>
+            <p class="footer-info">Sistema seguro certificado bajo estándares ISO 19794-5</p>
+        </div>
+    </footer>
 
-    </body>
+    <!-- Modal para mostrar alertas -->
+    <div id="alert-modal" class="modal" aria-hidden="true" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Alerta del Sistema</h2>
+                <button class="modal-close" aria-label="Cerrar modal">×</button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-ok">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</body>
 </html>

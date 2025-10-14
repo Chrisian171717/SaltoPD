@@ -1,0 +1,19 @@
+[2025-10-14 05:39:05] [ERROR] Error: JSON inválido: Syntax error
+[2025-10-14 05:39:09] [INFO] Solicitud recibida - Acción: execute_python_scan - Session: N/A
+[2025-10-14 05:39:09] [ERROR] Error: Script Python no encontrado: C:\xampp\htdocs\GitHub\SaltoPD\Back-end/escaner.py
+[2025-10-14 05:39:15] [INFO] Solicitud recibida - Acción: execute_python_scan - Session: N/A
+[2025-10-14 05:39:15] [ERROR] Error: Script Python no encontrado: C:\xampp\htdocs\GitHub\SaltoPD\Back-end/escaner.py
+[2025-10-14 05:39:20] [INFO] Solicitud recibida - Acción: execute_python_scan - Session: N/A
+[2025-10-14 05:39:20] [ERROR] Error: Script Python no encontrado: C:\xampp\htdocs\GitHub\SaltoPD\Back-end/escaner.py
+[2025-10-14 05:39:25] [INFO] Solicitud recibida - Acción: execute_python_scan - Session: N/A
+[2025-10-14 05:39:25] [ERROR] Error: Script Python no encontrado: C:\xampp\htdocs\GitHub\SaltoPD\Back-end/escaner.py
+[2025-10-14 05:39:38] [INFO] Solicitud recibida - Acción: execute_python_scan - Session: N/A
+[2025-10-14 05:39:38] [ERROR] Error: Script Python no encontrado: C:\xampp\htdocs\GitHub\SaltoPD\Back-end/escaner.py
+[2025-10-14 05:40:46] [INFO] Solicitud recibida - Acción: execute_python_scan - Session: N/A
+[2025-10-14 05:40:46] [ERROR] Error Python - Código: 1 - STDERR: "python" no se reconoce como un comando interno o externo,
+programa o archivo por lotes ejecutable.
+
+[2025-10-14 05:40:46] [ERROR] Error: Error en ejecución de Python: "python" no se reconoce como un comando interno o externo,
+programa o archivo por lotes ejecutable.
+
+[2025-10-14 05:42:13] [ERROR] Error: JSON inválido: Syntax error

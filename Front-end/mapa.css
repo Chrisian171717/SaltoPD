@@ -1,50 +1,253 @@
-.nav-tabs {
-  background-color: #1b3b5f; 
-  padding: 1rem;
-  text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+/* ===========================================
+   🌌 Estilo elegante: Azul, dorado y negro
+   ✨ Con animaciones + diseño responsive
+   =========================================== */
+
+:root {
+  --azul-oscuro: #0a1128;
+  --azul-intermedio: #102a43;
+  --azul-claro: #3a7ca5;
+  --dorado-intenso: #d4af37;
+  --dorado-suave: #f5e6a7;
+  --negro: #000;
+  --blanco: #f5f5f5;
+  --sombra: rgba(0, 0, 0, 0.5);
+}
+
+/* ======== GENERAL ======== */
+body {
   margin: 0;
-  border-radius: 8px;
-  display: block;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: radial-gradient(circle at top, var(--azul-oscuro) 20%, #050a1a 90%);
+  color: var(--blanco);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+/* ======== NAV TABS ======== */
+.nav-tabs {
+  background: linear-gradient(90deg, #000 0%, var(--azul-oscuro) 100%);
+  border-bottom: 2px solid var(--dorado-intenso);
   width: 100%;
-  box-sizing: border-box;
+  box-shadow: 0 4px 12px var(--sombra);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .nav-tabs__list {
   list-style: none;
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
-  padding: 0;
+  gap: 2em;
+  padding: 10px 0;
   margin: 0;
   flex-wrap: wrap;
-  align-items: center;
 }
 
 .nav-tabs__link {
-  display: inline-block;
-  color: #e0e0e0;
   text-decoration: none;
-  font-size: 1.1rem;
-  font-weight: 500;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  background-color: #2c4d75; 
-  transition: background-color 0.2s ease, color 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-}
-
-.nav-tabs__link:hover {
-  background-color: #3d6aa0; 
-  color: white;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .nav-tabs__icon {
-  height: 28px;
-  width: auto;
-  vertical-align: middle;
-  margin-right: 0.4rem;
-  border-radius: 50%;
-  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border: 2px solid var(--dorado-intenso);
+  border-radius: 12px;
+  background-color: var(--azul-intermedio);
+  padding: 5px;
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-tabs__link:hover .nav-tabs__icon {
+  transform: scale(1.1);
+  box-shadow: 0 0 18px var(--dorado-intenso);
+  border-color: var(--dorado-suave);
+}
+
+/* ======== MAPA SECTION ======== */
+.mapa-section {
+  margin-top: 40px;
+  background: rgba(10, 20, 40, 0.85);
+  border: 2px solid var(--dorado-intenso);
+  border-radius: 15px;
+  box-shadow: 0 0 25px var(--sombra);
+  max-width: 950px;
+  width: 90%;
+  padding: 40px 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efecto de luz dorada en el borde */
+.mapa-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 15px;
+  border: 2px solid transparent;
+  background: linear-gradient(60deg, var(--dorado-intenso), var(--azul-claro), var(--dorado-intenso));
+  background-size: 300% 300%;
+  animation: brillo-borde 6s infinite linear;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+@keyframes brillo-borde {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.mapa-header, .mapa-contenedor {
+  position: relative;
+  z-index: 1;
+}
+
+/* ======== TITULO CON EFECTO DORADO ======== */
+.mapa-title {
+  font-size: 2.3em;
+  color: var(--dorado-intenso);
+  text-shadow: 0 0 15px var(--dorado-suave), 0 0 30px rgba(255, 215, 0, 0.3);
+  margin-bottom: 10px;
+  animation: brillo-dorado 3s infinite ease-in-out;
+}
+
+@keyframes brillo-dorado {
+  0%, 100% { text-shadow: 0 0 10px var(--dorado-suave), 0 0 25px var(--dorado-intenso); }
+  50% { text-shadow: 0 0 20px var(--dorado-intenso), 0 0 40px var(--dorado-suave); }
+}
+
+.mapa-description {
+  font-size: 1.1em;
+  color: var(--azul-claro);
+  margin-bottom: 25px;
+  font-style: italic;
+}
+
+/* ======== CONTENEDOR MAPA ======== */
+.mapa-figure {
+  border: 3px solid var(--dorado-suave);
+  border-radius: 12px;
+  background-color: rgba(16, 42, 67, 0.8);
+  padding: 15px;
+  box-shadow: 0 0 20px var(--sombra);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+}
+
+.mapa-figure:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 25px var(--dorado-intenso);
+}
+
+.imagen-mapa {
+  width: 100%;
+  max-width: 800px;
+  border-radius: 10px;
+  transition: transform 0.4s ease-in-out;
+}
+
+.imagen-mapa:hover {
+  transform: scale(1.03);
+}
+
+.mapa-caption {
+  margin-top: 10px;
+  font-size: 0.95em;
+  color: var(--dorado-suave);
+  font-style: italic;
+  text-shadow: 0 0 5px var(--azul-claro);
+}
+
+/* ======== FORM ======== */
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ======== RESPONSIVE DESIGN ======== */
+
+/* 📱 Teléfonos (pantallas pequeñas) */
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  .nav-tabs__list {
+    gap: 1em;
+  }
+
+  .nav-tabs__icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .mapa-section {
+    padding: 25px 15px;
+  }
+
+  .mapa-title {
+    font-size: 1.8em;
+  }
+
+  .mapa-description {
+    font-size: 1em;
+  }
+
+  .mapa-caption {
+    font-size: 0.85em;
+  }
+}
+
+/* 💻 Pantallas medianas (tablets y laptops) */
+@media (max-width: 900px) {
+  .mapa-section {
+    width: 95%;
+    padding: 30px 20px;
+  }
+
+  .mapa-title {
+    font-size: 2em;
+  }
+
+  .imagen-mapa {
+    max-width: 100%;
+  }
+}
+
+/* 🖥️ Pantallas grandes */
+@media (min-width: 1200px) {
+  .mapa-section {
+    max-width: 1100px;
+  }
+
+  .mapa-title {
+    font-size: 2.5em;
+  }
+
+  .mapa-description {
+    font-size: 1.2em;
+  }
+}
+
+/* ======== ANIMACIONES ADICIONALES ======== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.mapa-section {
+  animation: fadeIn 1s ease forwards;
 }

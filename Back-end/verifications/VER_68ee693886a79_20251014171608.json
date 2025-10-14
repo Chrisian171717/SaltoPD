@@ -1,0 +1,23 @@
+{
+    "verification_id": "VER_68ee693886a79_20251014171608",
+    "timestamp": "2025-10-14T17:16:08+02:00",
+    "face_data": {
+        "landmarks": 68,
+        "accuracy": "94.8",
+        "scanTime": "2.3",
+        "matchConfidence": "92.7",
+        "features": {
+            "faceId": "web_face_1760454955567",
+            "confidence": 0.95
+        }
+    },
+    "document_data": null,
+    "face_result": {
+        "status": "processed",
+        "confidence": "94.8",
+        "landmarks_detected": 68,
+        "processing_time": "0.5s"
+    },
+    "document_result": null,
+    "session_id": "session_1760454967045_689qg6117"
+}
