@@ -1,3 +1,5 @@
+// ===== InicioDeSesion.js (Back-end) =====
+
 console.log('✅ InicioDeSesion.js cargado desde Front-end');
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -73,24 +75,31 @@ function validateForm() {
     const placa = document.getElementById('placa');
     const password = document.getElementById('password');
     const confPassword = document.getElementById('confipassword');
+    const rol = document.getElementById('rolLogin');
     
-    if (email.value && !isValidEmail(email.value)) {
+    if (email && email.value && !isValidEmail(email.value)) {
         showFieldError(email, 'Formato de correo electrónico no válido');
         isValid = false;
     }
     
-    if (placa.value && !isValidPlaca(placa.value)) {
+    if (placa && placa.value && !isValidPlaca(placa.value)) {
         showFieldError(placa, 'Formato de placa no válido. Debe ser ABC1234');
         isValid = false;
     }
     
-    if (password.value && password.value.length < 8) {
+    if (password && password.value && password.value.length < 8) {
         showFieldError(password, 'La contraseña debe tener al menos 8 caracteres');
         isValid = false;
     }
     
-    if (password.value && confPassword.value && password.value !== confPassword.value) {
+    if (password && confPassword && password.value && confPassword.value && password.value !== confPassword.value) {
         showFieldError(confPassword, 'Las contraseñas no coinciden');
+        isValid = false;
+    }
+    
+    // Validación de rol
+    if (rol && rol.value && !['policia', 'administrador'].includes(rol.value)) {
+        showFieldError(rol, 'Selecciona un rol válido (Policía o Administrador)');
         isValid = false;
     }
     
@@ -140,7 +149,7 @@ function sendLoginRequest() {
         console.log(`  ${key}: ${value}`);
     }
     
-    const url = 'http://localhost/GitHub/SaltoPD/Back-end/InicioSesion.php';
+    const url = '../Back-end/InicioSesion.php';
     
     fetch(url, {
         method: 'POST',
@@ -151,7 +160,27 @@ function sendLoginRequest() {
         console.log('📋 Respuesta completa:', data);
         
         if (data.success) {
+            // Guardar datos del usuario en sessionStorage para el perfil
+            const userProfile = {
+                userId: data.user.id,
+                userName: data.user.name,
+                userEmail: data.email,
+                userPlaca: data.placa,
+                userRole: data.user.rol,
+                profileId: Date.now(),
+                createdAt: new Date().toLocaleDateString('es-ES'),
+                profileName: `${data.user.name} (${data.user.rol})`
+            };
+            
+            sessionStorage.setItem('userProfile', JSON.stringify(userProfile));
+            console.log('✅ Perfil guardado:', userProfile);
+            
             showSuccess(data.message);
+            
+            // =============================================
+            // 🎯 REDIRECCIÓN SEGÚN EL ROL
+            // =============================================
+            console.log('🎯 Redirigiendo a:', data.redirect);
             setTimeout(() => {
                 window.location.href = data.redirect;
             }, 1500);
@@ -170,7 +199,6 @@ function sendLoginRequest() {
             if (data.debug_info) {
                 console.log('🔍 Información de debug:', data.debug_info);
                 
-                // Construir mensaje de ayuda
                 let helpMessage = '\n\n🔍 Información para diagnóstico:';
                 
                 if (data.debug_info.usuarios_con_email && data.debug_info.usuarios_con_email.length > 0) {

@@ -79,17 +79,109 @@ if (!function_exists('escaparString')) {
     }
 }
 
-// Función para cerrar la conexión manualmente
+// Función para cerrar la conexión manualmente - CORREGIDA
 if (!function_exists('cerrarConexion')) {
     function cerrarConexion() {
         global $conn;
-        if (isset($conn) && $conn instanceof mysqli) {
-            // No usar ping() ya que puede causar problemas
+        if (isset($conn) && $conn instanceof mysqli && !$conn->connect_error) {
             @$conn->close();
         }
     }
 }
 
-// Eliminar el cierre automático ya que PHP lo maneja automáticamente
-// Las conexiones se cierran automáticamente al final del script
+// Función para crear las tablas del sistema de escaneo si no existen - CORREGIDA
+if (!function_exists('crearTablasEscaneo')) {
+    function crearTablasEscaneo() {
+        global $conn; // Añadido global $conn
+        
+        if (!verificarConexion()) {
+            return false;
+        }
+        
+        $tablas = [
+            "documentos_escaneo" => "
+                CREATE TABLE IF NOT EXISTS documentos_escaneo (
+                    id INT PRIMARY KEY AUTO_INCREMENT,
+                    session_id VARCHAR(100) NOT NULL,
+                    tipo_documento ENUM('id', 'passport', 'driver', 'other') NOT NULL,
+                    nombre_documento VARCHAR(255) NOT NULL,
+                    datos_ocr TEXT,
+                    confianza DECIMAL(5,2),
+                    calidad VARCHAR(50),
+                    imagen_data LONGBLOB,
+                    imagen_tipo VARCHAR(50),
+                    imagen_tamanio INT,
+                    ruta_imagen VARCHAR(500),
+                    campos_detectados TEXT,
+                    es_valido BOOLEAN DEFAULT FALSE,
+                    tasa_completitud DECIMAL(5,2),
+                    timestamp_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    timestamp_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    INDEX idx_session_id (session_id),
+                    INDEX idx_tipo_documento (tipo_documento),
+                    INDEX idx_timestamp (timestamp_creacion)
+                )
+            ",
+            "rostros_escaneo" => "
+                CREATE TABLE IF NOT EXISTS rostros_escaneo (
+                    id INT PRIMARY KEY AUTO_INCREMENT,
+                    session_id VARCHAR(100) NOT NULL,
+                    face_id VARCHAR(100) NOT NULL,
+                    landmarks INT,
+                    confianza DECIMAL(5,2),
+                    tiempo_escaneo DECIMAL(5,2),
+                    edad_estimada INT,
+                    genero ENUM('male', 'female'),
+                    expresion VARCHAR(50),
+                    tiene_lentes BOOLEAN,
+                    imagen_data LONGBLOB,
+                    imagen_tipo VARCHAR(50),
+                    imagen_tamanio INT,
+                    ruta_imagen VARCHAR(500),
+                    datos_biometricos TEXT,
+                    calidad_analisis TEXT,
+                    timestamp_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    INDEX idx_session_id (session_id),
+                    INDEX idx_face_id (face_id),
+                    INDEX idx_timestamp (timestamp_creacion)
+                )
+            ",
+            "verificaciones_escaneo" => "
+                CREATE TABLE IF NOT EXISTS verificaciones_escaneo (
+                    id INT PRIMARY KEY AUTO_INCREMENT,
+                    verification_id VARCHAR(100) UNIQUE NOT NULL,
+                    session_id VARCHAR(100) NOT NULL,
+                    documento_id INT,
+                    rostro_id INT,
+                    datos_faciales TEXT,
+                    datos_documentales TEXT,
+                    info_sistema TEXT,
+                    resultado_verificacion TEXT,
+                    puntaje_confianza DECIMAL(5,2),
+                    evaluacion_riesgo ENUM('muy_bajo', 'bajo', 'medio', 'alto'),
+                    estado ENUM('pendiente', 'procesando', 'completado', 'error') DEFAULT 'pendiente',
+                    timestamp_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    timestamp_procesado TIMESTAMP NULL,
+                    INDEX idx_verification_id (verification_id),
+                    INDEX idx_session_id (session_id),
+                    INDEX idx_estado (estado)
+                )
+            "
+        ];
+        
+        foreach ($tablas as $nombre => $sql) {
+            $resultado = ejecutarConsulta($sql);
+            if (!$resultado) {
+                // CORREGIDO: Usar $conn->error directamente
+                error_log("Error creando tabla $nombre: " . (isset($conn->error) ? $conn->error : 'Error desconocido'));
+                return false;
+            }
+        }
+        
+        return true;
+    }
+}
+
+// Crear las tablas automáticamente al incluir este archivo
+crearTablasEscaneo();
 ?>

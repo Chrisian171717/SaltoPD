@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Página Principal</title>
   <link rel="stylesheet" href="Estilo.css">
-  <script defer src="../Back-end/Pagprin.js"></script>
+  <link rel="icon" href="Logo.png" type="image/svg+xml">
   <script defer src="../Back-end/principal.js"></script>
+  <script defer src="../Back-end/menu.js"></script>
 </head>
 <body>
   <header>
@@ -16,22 +17,41 @@
     </div>
 
     <div class="user-menu">
-      <button id="userButton">👤 Usuario ▾</button>
+      <button id="userButton">
+        <div class="user-avatar" id="headerAvatar">👮</div>
+        <span id="headerUsername">Usuario</span>
+      </button>
       <div id="dropdownMenu" class="dropdown">
-        <a href="Registro.html">Registrar</a>
-        <a href="InicioDeSesion.html">Iniciar Sesion </a>
+        <a href="#" id="viewProfile" class="dropdown-link">
+          <span class="dropdown-link-icon">👤</span>
+          <span>Ver Perfil</span>
+        </a>
+        
+        <div class="dropdown-divider"></div>
+        
+        <a href="Registro.html" class="dropdown-link">
+          <span class="dropdown-link-icon">➕</span>
+          <span>Registrar Usuario</span>
+        </a>
+        
+        <div class="dropdown-divider"></div>
+        
+        <a href="InicioDeSesion.html" id="logoutLink" class="dropdown-link logout">
+          <span class="dropdown-link-icon">🚪</span>
+          <span>Cerrar Sesión</span>
+        </a>
       </div>
     </div>
   </header>
 
   <nav class="barra-iconos">
-    <a href="civiles.html" class="icono" title="Gestión de Civiles">
+    <a href="CivilesUsu.html" class="icono" title="Gestión de Civiles">
       <img src="Civil.png" alt="Civiles">
     </a>
-    <a href="Denuncias.html" class="icono" title="Denuncias">
+    <a href="DenunciasUsu.html" class="icono" title="Denuncias">
       <img src="Denuncias.png" alt="Denuncias">
     </a>
-    <a href="Vehiculo2.0.html" class="icono" title="Vehículos">
+    <a href="vehiculoUsu.html" class="icono" title="Vehículos">
       <img src="Vehiculo.png" alt="Vehículos">
     </a>
     <a href="Mapa.html" class="icono" title="Mapa">
@@ -55,6 +75,73 @@
       🤖 Bienvenido, ¿en qué puedo ayudarte?
     </div>
     <input type="text" placeholder="Escribe tu mensaje..." class="chat-input">
+  </div>
+
+  <!-- Modal de Perfil -->
+  <div id="profileModal" class="profile-modal">
+    <div class="profile-modal-content">
+      <button class="close-modal-btn" id="closeProfileModal">&times;</button>
+      
+      <div class="profile-header">
+        <div class="profile-avatar" id="profileAvatar">👮</div>
+        <div class="profile-info">
+          <h2 id="profileName">Nombre Usuario</h2>
+          <p id="profileRole">Rol</p>
+          <p id="profilePlaca">Placa: ABC1234</p>
+        </div>
+      </div>
+
+      <div class="user-status">
+        ✓ Usuario activo en el sistema
+      </div>
+
+      <div class="profile-section">
+        <h3>Información Personal</h3>
+        <div class="profile-detail">
+          <label>Nombre Completo:</label>
+          <span id="profileFullName">-</span>
+        </div>
+        <div class="profile-detail">
+          <label>Email:</label>
+          <span id="profileEmail">-</span>
+        </div>
+        <div class="profile-detail">
+          <label>Teléfono:</label>
+          <span id="profilePhone">-</span>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <h3>Información Laboral</h3>
+        <div class="profile-detail">
+          <label>Rol:</label>
+          <span id="profileRoleBadge" class="role-badge">-</span>
+        </div>
+        <div class="profile-detail">
+          <label>Departamento:</label>
+          <span id="profileDepartment">-</span>
+        </div>
+        <div class="profile-detail">
+          <label>Fecha de Ingreso:</label>
+          <span id="profileJoinDate">-</span>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <h3>Permisos del Usuario</h3>
+        <div class="permissions-list" id="permissionsList">
+          <div class="permission-item">Gestión de Civiles</div>
+          <div class="permission-item">Ver Denuncias</div>
+          <div class="permission-item">Gestión de Vehículos</div>
+          <div class="permission-item">Acceso al Mapa</div>
+        </div>
+      </div>
+
+      <div class="profile-actions">
+        <button class="btn-profile btn-close-profile" id="btnCloseProfile">Cerrar</button>
+        <button class="btn-profile btn-logout" id="btnLogoutProfile">Cerrar Sesión</button>
+      </div>
+    </div>
   </div>
 
   <footer>

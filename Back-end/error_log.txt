@@ -1,0 +1,58 @@
+[15-Oct-2025 15:40:26 Europe/Berlin] 📥 Solicitud recibida: {"action":"launch_python_ui","scan_type":"face","session_id":"session_1760535626176_nq9cu8ggi","timestamp":"2025-10-15T13:40:26.176Z"}
+[15-Oct-2025 15:40:26 Europe/Berlin] ✅ Python encontrado: python en C:\Users\user\AppData\Local\Programs\Python\Python314\python.exe
+[15-Oct-2025 15:40:28 Europe/Berlin] Verificación de dependencias: OK
+[15-Oct-2025 15:40:28 Europe/Berlin] 🚀 Lanzando interfaz Python: start "Escáner Python" /B python "C:\xampp\htdocs\SaltoPD\Back-end/escaner.py" "face" "session_1760535626176_nq9cu8ggi"
+[15-Oct-2025 15:40:51 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535611691}
+[15-Oct-2025 15:40:54 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535611691}
+[15-Oct-2025 15:40:57 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535611691}
+[15-Oct-2025 15:40:57 Europe/Berlin] 📥 Solicitud recibida: {"action":"launch_python_ui","scan_type":"face","session_id":"session_1760535657625_96yeoyb8k","timestamp":"2025-10-15T13:40:57.625Z"}
+[15-Oct-2025 15:40:57 Europe/Berlin] ✅ Python encontrado: python en C:\Users\user\AppData\Local\Programs\Python\Python314\python.exe
+[15-Oct-2025 15:40:58 Europe/Berlin] 📥 Solicitud recibida: {"action":"launch_python_ui","scan_type":"face","session_id":"session_1760535658390_4qmar7fp1","timestamp":"2025-10-15T13:40:58.390Z"}
+[15-Oct-2025 15:40:58 Europe/Berlin] Verificación de dependencias: OK
+[15-Oct-2025 15:40:58 Europe/Berlin] ✅ Python encontrado: python en C:\Users\user\AppData\Local\Programs\Python\Python314\python.exe
+[15-Oct-2025 15:40:58 Europe/Berlin] 🚀 Lanzando interfaz Python: start "Escáner Python" /B python "C:\xampp\htdocs\SaltoPD\Back-end/escaner.py" "face" "session_1760535657625_96yeoyb8k"
+[15-Oct-2025 15:40:59 Europe/Berlin] Verificación de dependencias: OK
+[15-Oct-2025 15:40:59 Europe/Berlin] 🚀 Lanzando interfaz Python: start "Escáner Python" /B python "C:\xampp\htdocs\SaltoPD\Back-end/escaner.py" "face" "session_1760535658390_4qmar7fp1"
+[15-Oct-2025 15:41:00 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535611691}
+[15-Oct-2025 15:41:03 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535611691}
+[15-Oct-2025 15:41:06 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535611691}
+[15-Oct-2025 15:41:09 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535611691}
+[15-Oct-2025 15:41:12 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535611691}
+[15-Oct-2025 15:41:15 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535611691}
+[15-Oct-2025 15:41:18 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535611691}
+[15-Oct-2025 15:41:21 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535611691}
+[15-Oct-2025 15:41:24 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535611691}
+[15-Oct-2025 15:41:27 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535611691}
+[15-Oct-2025 15:41:29 Europe/Berlin] 📥 Solicitud recibida: {"action":"launch_python_ui","scan_type":"face","session_id":"session_1760535689608_4hfovhjgt","timestamp":"2025-10-15T13:41:29.608Z"}
+[15-Oct-2025 15:41:29 Europe/Berlin] ✅ Python encontrado: python en C:\Users\user\AppData\Local\Programs\Python\Python314\python.exe
+[15-Oct-2025 15:41:30 Europe/Berlin] Verificación de dependencias: OK
+[15-Oct-2025 15:41:30 Europe/Berlin] 🚀 Lanzando interfaz Python: start "Escáner Python" /B python "C:\xampp\htdocs\SaltoPD\Back-end/escaner.py" "face" "session_1760535689608_4hfovhjgt"
+[15-Oct-2025 15:41:34 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535611691}
+[15-Oct-2025 15:42:15 Europe/Berlin] 📥 Solicitud recibida: {"action":"launch_python_ui","scan_type":"id","session_id":"session_1760535735697_88kn4327z","timestamp":"2025-10-15T13:42:15.698Z"}
+[15-Oct-2025 15:42:16 Europe/Berlin] ✅ Python encontrado: python en C:\Users\user\AppData\Local\Programs\Python\Python314\python.exe
+[15-Oct-2025 15:42:16 Europe/Berlin] Verificación de dependencias: OK
+[15-Oct-2025 15:42:16 Europe/Berlin] 🚀 Lanzando interfaz Python: start "Escáner Python" /B python "C:\xampp\htdocs\SaltoPD\Back-end/escaner.py" "id" "session_1760535735697_88kn4327z"
+[15-Oct-2025 15:42:17 Europe/Berlin] 📥 Solicitud recibida: {"action":"launch_python_ui","scan_type":"id","session_id":"session_1760535737378_83l6kqmbk","timestamp":"2025-10-15T13:42:17.378Z"}
+[15-Oct-2025 15:42:17 Europe/Berlin] ✅ Python encontrado: python en C:\Users\user\AppData\Local\Programs\Python\Python314\python.exe
+[15-Oct-2025 15:42:17 Europe/Berlin] 📥 Solicitud recibida: {"action":"launch_python_ui","scan_type":"face","session_id":"session_1760535737914_kv1dbr8i3","timestamp":"2025-10-15T13:42:17.914Z"}
+[15-Oct-2025 15:42:18 Europe/Berlin] ✅ Python encontrado: python en C:\Users\user\AppData\Local\Programs\Python\Python314\python.exe
+[15-Oct-2025 15:42:18 Europe/Berlin] Verificación de dependencias: OK
+[15-Oct-2025 15:42:18 Europe/Berlin] 🚀 Lanzando interfaz Python: start "Escáner Python" /B python "C:\xampp\htdocs\SaltoPD\Back-end/escaner.py" "id" "session_1760535737378_83l6kqmbk"
+[15-Oct-2025 15:42:18 Europe/Berlin] Verificación de dependencias: OK
+[15-Oct-2025 15:42:18 Europe/Berlin] 🚀 Lanzando interfaz Python: start "Escáner Python" /B python "C:\xampp\htdocs\SaltoPD\Back-end/escaner.py" "face" "session_1760535737914_kv1dbr8i3"
+[15-Oct-2025 15:42:22 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535736717}
+[15-Oct-2025 15:44:49 Europe/Berlin] 📥 Solicitud recibida: {"action":"launch_python_ui","scan_type":"face","session_id":"session_1760535889135_eeqm0jer7","timestamp":"2025-10-15T13:44:49.135Z"}
+[15-Oct-2025 15:44:49 Europe/Berlin] ✅ Python encontrado: python en C:\Users\user\AppData\Local\Programs\Python\Python314\python.exe
+[15-Oct-2025 15:44:49 Europe/Berlin] 📥 Solicitud recibida: {"action":"launch_python_ui","scan_type":"face","session_id":"session_1760535889933_fwf280npm","timestamp":"2025-10-15T13:44:49.933Z"}
+[15-Oct-2025 15:44:50 Europe/Berlin] Verificación de dependencias: OK
+[15-Oct-2025 15:44:50 Europe/Berlin] 🚀 Lanzando interfaz Python: start "Escáner Python" /B python "C:\xampp\htdocs\SaltoPD\Back-end/escaner.py" "face" "session_1760535889135_eeqm0jer7"
+[15-Oct-2025 15:44:50 Europe/Berlin] ✅ Python encontrado: python en C:\Users\user\AppData\Local\Programs\Python\Python314\python.exe
+[15-Oct-2025 15:44:50 Europe/Berlin] Verificación de dependencias: OK
+[15-Oct-2025 15:44:50 Europe/Berlin] 🚀 Lanzando interfaz Python: start "Escáner Python" /B python "C:\xampp\htdocs\SaltoPD\Back-end/escaner.py" "face" "session_1760535889933_fwf280npm"
+[15-Oct-2025 15:44:55 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535736717}
+[15-Oct-2025 15:44:58 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535736717}
+[15-Oct-2025 15:45:01 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535736717}
+[15-Oct-2025 15:45:04 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535736717}
+[15-Oct-2025 15:45:07 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535736717}
+[15-Oct-2025 15:45:10 Europe/Berlin] 📥 Solicitud recibida: {"action":"check_new_images","last_check":1760535736717}
+[16-Oct-2025 12:01:06 Europe/Berlin] ✅ Solicitud procesada: submit_verification

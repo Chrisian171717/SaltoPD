@@ -7,41 +7,40 @@
     <title>Civiles</title>
     <link rel="stylesheet" href="civiles.css">
     <link rel="icon" href="logo.png" type="image/png">
-    
 </head>
 <body>
-    <form id="addCivilForm">
-        <header class="header-civiles" aria-label="Encabezado de sección civiles">
-            <div class="header-civiles__branding">
-                <img src="1769039.png" alt="Icono de sección civiles" class="header-civiles__icon" />
-                <h1 class="header-civiles__title">Civiles</h1>
-            </div>
+    <header class="header-civiles" aria-label="Encabezado de sección civiles">
+        <div class="header-civiles__branding">
+            <img src="1769039.png" alt="Icono de sección civiles" class="header-civiles__icon" />
+            <h1 class="header-civiles__title">Civiles</h1>
+        </div>
 
-            <div class="header-civiles__search">
-                <!-- Barra de búsqueda -->
-                <div class="search-container">
-                    <input type="search" id="searchInput" placeholder="Buscar persona por nombre o DNI..." 
-                           class="search-input" aria-label="Buscar persona por nombre o DNI" />
-                    <button type="button" id="clearSearch" class="clear-search-btn">✕</button>
-                </div>
-                
-                <!-- Formulario para agregar nuevo civil -->
-                <div class="add-civil-form">
-                    <input type="text" id="nombre" name="nombre" placeholder="Nombre completo" required aria-label="Nombre del civil" />
-                    <input type="number" id="dni" name="dni" placeholder="DNI" required aria-label="DNI del civil" min="1000000" max="999999999" />
-                    <input type="number" id="id" name="ID" placeholder="id" required aria-label="ID del civil" />
-                    <button type="submit" class="add-btn">➕ Agregar Civil</button>
-                </div>
-                
-                <!-- Botón para recargar -->
-                <button type="button" id="reloadButton" class="reload-btn">🔄 Recargar</button>
+        <div class="header-civiles__search">
+            <!-- Barra de búsqueda -->
+            <div class="search-container">
+                <input type="search" id="searchInput" placeholder="Buscar persona por nombre o DNI..." 
+                       class="search-input" aria-label="Buscar persona por nombre o DNI" />
+                <button type="button" id="clearSearch" class="clear-search-btn" title="Limpiar búsqueda">🔎</button>
             </div>
-        </header>
-    </form>
+            
+            <!-- Botones de acción -->
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button type="button" id="reloadButton" class="reload-btn" title="Recargar lista de civiles">🔄 Recargar</button>
+                <button type="button" id="exportButton" class="export-btn" title="Exportar datos a CSV">📥 Exportar CSV</button>
+            </div>
+            
+            <!-- Formulario para agregar nuevo civil -->
+            <form id="addCivilForm" class="add-civil-form">
+                <input type="text" id="nombre" name="nombre" placeholder="Nombre completo" required aria-label="Nombre del civil" />
+                <input type="number" id="dni" name="dni" placeholder="DNI" required aria-label="DNI del civil" min="1000000" max="999999999" />
+                <button type="submit" class="add-btn">➕ Agregar Civil</button>
+            </form>
+        </div>
+    </header>
 
     <nav class="nav-tabs" aria-label="Navegación principal">
         <ul class="nav-tabs__list">
-            <li><a href="principal.html" class="nav-tabs__link"><img src="Logo.png" alt="Sección Principal" class="nav-tabs__icon" /></a></li>
+            <li><a href="PrincipalAd.html" class="nav-tabs__link"><img src="Logo.png" alt="Sección Principal" class="nav-tabs__icon" /></a></li>
             <li><a href="Denuncias.html" class="nav-tabs__link"><img src="Denuncias.png" alt="Sección Denuncias" class="nav-tabs__icon" /></a></li>
             <li><a href="Vehiculo2.0.html" class="nav-tabs__link"><img src="Vehiculo.png" alt="Sección Vehículo" class="nav-tabs__icon" /></a></li>
             <li><a href="Mapa.html" class="nav-tabs__link"><img src="mapa.png" alt="Sección Mapa" class="nav-tabs__icon" /></a></li>
@@ -53,6 +52,12 @@
     <main class="civiles-main">
         <section class="civiles-container" aria-label="Listado de civiles">
             <h2 class="section-title">Lista de Civiles</h2>
+            
+            <!-- Contador de civiles -->
+            <div class="civiles-counter">
+                <span id="totalCiviles">Total: 0 civiles</span>
+            </div>
+            
             <div class="civiles-list">
                 <!-- Contenido dinámico se cargará aquí -->
                 <div class="loading-message">Cargando civiles...</div>
@@ -62,7 +67,6 @@
             <div class="no-results-message" style="display: none;">
                 No se encontraron civiles. Intenta agregar uno nuevo.
             </div>
-        
         </section>
     </main>
 

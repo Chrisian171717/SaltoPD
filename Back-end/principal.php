@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
-    <form action="../Back-end/principal.php" method="post">
+    <form action="principal.php" method="post">
         <nav class="nav-tabs" aria-label="Navegación principal">
             <ul class="nav-tabs__list">
                 <li><a href="civiles.html" class="nav-tabs__link"><img src="Civil.png" alt="Sección Civil" class="nav-tabs__icon" /></a></li>

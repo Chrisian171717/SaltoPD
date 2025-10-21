@@ -47,8 +47,9 @@ if (!empty($confipassword) && $password !== $confipassword) {
     $errors['confipassword'] = 'Las contraseñas no coinciden';
 }
 
-if (empty($rol) || !in_array($rol, ['policia', 'administrador', 'usuario'])) {
-    $errors['rolLogin'] = 'Selecciona un rol válido';
+// Solo permitir policia y administrador
+if (empty($rol) || !in_array($rol, ['policia', 'administrador'])) {
+    $errors['rolLogin'] = 'Selecciona un rol válido (Policía o Administrador)';
 }
 
 if (!empty($errors)) {
@@ -142,16 +143,36 @@ if (password_verify($password, $user['contrasena'])) {
     $_SESSION['user_placa'] = $placa;
     $_SESSION['user_role'] = $rol;
     
+    // Crear ID único para el perfil
+    $_SESSION['profile_id'] = uniqid('profile_');
+    $_SESSION['profile_created_at'] = date('d/m/Y H:i:s');
+    
+    // =============================================
+    // 🎯 REDIRECCIÓN SEGÚN EL ROL - CORREGIDO
+    // =============================================
+    $redirect_url = '';
+    if ($rol === 'administrador') {
+        $redirect_url = 'PrincipalAd.html';
+    } else {
+        $redirect_url = 'principal.html';
+    }
+    
+    error_log("🎯 Redirigiendo a: $redirect_url");
+    
     $stmt->close();
     
     echo json_encode([
         'success' => true, 
-        'redirect' => 'principal.html',
+        'redirect' => $redirect_url,
         'message' => '¡Inicio de sesión exitoso!',
         'user' => [
+            'id' => $user['id'],
             'name' => $user['nombre'] . ' ' . $user['apellido'],
-            'rol' => $rol
-        ]
+            'rol' => $rol,
+            'role' => $rol
+        ],
+        'email' => $email,
+        'placa' => $placa
     ]);
     exit;
 } else {
