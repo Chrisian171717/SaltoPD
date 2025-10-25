@@ -182,6 +182,70 @@ if (!function_exists('crearTablasEscaneo')) {
     }
 }
 
+// ============================================================
+// NUEVAS FUNCIONES PARA REGISTRO DE ACTIVIDADES
+// ============================================================
+
+// Función para registrar actividades del sistema
+if (!function_exists('registrarActividad')) {
+    function registrarActividad($conn, $usuario, $accion, $modulo, $registro_id = null) {
+        if (!verificarConexion()) {
+            error_log("No se pudo registrar actividad: sin conexión a BD");
+            return false;
+        }
+        
+        $usuario = $conn->real_escape_string($usuario);
+        $accion = $conn->real_escape_string($accion);
+        $modulo = $conn->real_escape_string($modulo);
+        $registro_id_sql = $registro_id !== null ? intval($registro_id) : 'NULL';
+        
+        $sql = "INSERT INTO registro_actividades (usuario, accion, modulo, registro_id, fecha) 
+                VALUES ('$usuario', '$accion', '$modulo', $registro_id_sql, NOW())";
+        
+        $resultado = $conn->query($sql);
+        
+        if (!$resultado) {
+            error_log("Error registrando actividad: " . $conn->error);
+            return false;
+        }
+        
+        return true;
+    }
+}
+
+// Función para crear la tabla de registro de actividades
+if (!function_exists('crearTablaRegistroActividades')) {
+    function crearTablaRegistroActividades() {
+        global $conn;
+        
+        if (!verificarConexion()) {
+            return false;
+        }
+        
+        $sql = "CREATE TABLE IF NOT EXISTS registro_actividades (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            usuario VARCHAR(100) NOT NULL,
+            accion TEXT NOT NULL,
+            modulo VARCHAR(50) NOT NULL,
+            registro_id INT NULL,
+            fecha DATETIME NOT NULL,
+            INDEX idx_fecha (fecha),
+            INDEX idx_modulo (modulo),
+            INDEX idx_usuario (usuario)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+        
+        $resultado = ejecutarConsulta($sql);
+        
+        if (!$resultado) {
+            error_log("Error creando tabla registro_actividades: " . $conn->error);
+            return false;
+        }
+        
+        return true;
+    }
+}
+
 // Crear las tablas automáticamente al incluir este archivo
 crearTablasEscaneo();
+crearTablaRegistroActividades(); // <- NUEVA LÍNEA
 ?>
