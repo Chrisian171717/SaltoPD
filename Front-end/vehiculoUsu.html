@@ -6,7 +6,7 @@
     <title>Vehículos - Sistema de Gestión</title>
     <link rel="icon" href="logo.png" type="image/png">
     <link rel="stylesheet" href="vehiculo.css">
-    <script src="../Back-end/vehiculo.js"></script>
+    <script src="../Back-end/vehiculoUsu.js"></script>
 </head>
 <body>
     <!-- Navegación Principal -->
@@ -56,18 +56,19 @@
             </form>
         </header>
 
+        <!-- Sección donde se mostrarán las denuncias -->
+            <section id="denuncias-container" style="display: none;">
+                <h2>Denuncias del vehículo <span id="vehiculo-info"></span></h2>
+                <input type="hidden" id="vehiculo-id" />
+                <div id="lista-denuncias"></div>
+            </section>
+
 
         <!-- Lista de Resultados -->
         <div class="vehiculos-lista" id="resultados-vehiculos">
             <div class="loading">🔄 Cargando vehículos...</div>
         </div>
 
-        <!-- Acciones Adicionales -->
-        <div class="actions-container">
-            <a href="../Back-end/Vehiculos.php" class="btn btn-admin" target="_blank">
-                <span class="icon-large">📋</span> Ver Todos los Vehículos
-  
-        </div>
     </section>
 </body>
 </html>

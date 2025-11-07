@@ -18,7 +18,7 @@ console.log('📍 Ruta Backend detectada:', BACKEND_BASE_URL);
 
 // ===== INICIALIZACIÓN =====
 $(document).ready(function () {
-    console.log('🚀 Sistema de Denuncias - Iniciando...');
+    console.log('🚀 Sistema de Denuncias - Modo Consulta');
     
     // Probar conexión primero
     probarConexionBackend();
@@ -28,19 +28,9 @@ $(document).ready(function () {
 });
 
 function configurarEventos() {
-    $("#form-agregar-denuncia").submit(function (e) {
-        e.preventDefault();
-        agregarDenuncia();
-    });
-
     $("#form-buscar-denuncia").submit(function (e) {
         e.preventDefault();
         buscarDenuncias();
-    });
-
-    $("#form-editar-denuncia").submit(function (e) {
-        e.preventDefault();
-        guardarEdicionDenuncia();
     });
 
     $(".close").click(function() {
@@ -48,7 +38,7 @@ function configurarEventos() {
     });
 
     $(window).click(function(e) {
-        if (e.target.id === 'modalEditar') {
+        if (e.target.id === 'modalDetalle') {
             cerrarModal();
         }
     });
@@ -59,10 +49,6 @@ function configurarEventos() {
     
     $("#btn-generar-reporte").click(function() {
         generarReporte();
-    });
-    
-    $("#btn-cancelar-edicion").click(function() {
-        cerrarModal();
     });
     
     $("#btn-actualizar-lista").click(function() {
@@ -161,67 +147,6 @@ function cargarDenuncias() {
     });
 }
 
-function agregarDenuncia() {
-    const url = `${BACKEND_BASE_URL}/funciones_denuncias.php`;
-    
-    const nombre = $("#nombre_civil").val().trim();
-    const codigo = $("#codigo_penal").val().trim();
-    const descripcion = $("#descripcion").val().trim();
-    
-    if (!nombre || !codigo || !descripcion) {
-        mostrarMensaje("❌ Todos los campos son obligatorios", "error");
-        return;
-    }
-    
-    const formData = {
-        accion: "agregar",
-        nombre_civil: nombre,
-        codigo_penal: codigo,
-        descripcion: descripcion
-    };
-    
-    const submitBtn = $("#form-agregar-denuncia button[type='submit']");
-    const originalText = submitBtn.html();
-    submitBtn.html('⏳ Enviando...').prop('disabled', true);
-    
-    $.ajax({
-        url: url,
-        method: 'POST',
-        data: formData,
-        dataType: 'text',
-        timeout: 10000,
-        success: function(response) {
-            const cleanResponse = response.trim();
-            
-            // Verificar si es HTML (error PHP)
-            if (cleanResponse.startsWith('<') || cleanResponse.includes('<b>') || cleanResponse.includes('<br')) {
-                mostrarErrorPHP(cleanResponse);
-                return;
-            }
-            
-            try {
-                const res = JSON.parse(cleanResponse);
-                if (res.status === "ok") {
-                    mostrarMensaje("✅ Denuncia registrada correctamente", "success");
-                    $("#form-agregar-denuncia")[0].reset();
-                    cargarDenuncias();
-                } else {
-                    mostrarMensaje("❌ Error: " + res.mensaje, "error");
-                }
-            } catch (e) {
-                console.error('❌ Error parseando JSON:', e);
-                mostrarErrorJSON(cleanResponse);
-            }
-        },
-        error: function(xhr, status, error) {
-            mostrarMensaje("❌ Error de conexión: " + error, "error");
-        },
-        complete: function() {
-            submitBtn.html(originalText).prop('disabled', false);
-        }
-    });
-}
-
 function buscarDenuncias() {
     const url = `${BACKEND_BASE_URL}/funciones_denuncias.php`;
     
@@ -274,130 +199,41 @@ function cargarTodasDenuncias() {
     mostrarMensaje("📋 Mostrando todas las denuncias", "info");
 }
 
-// ===== FUNCIONES DE EDICIÓN Y ELIMINACIÓN =====
+// ===== FUNCIONES DE VISUALIZACIÓN =====
 
-function editarDenuncia(id, nombre, codigo, descripcion) {
-    $("#editar_id").val(id);
-    $("#editar_nombre_civil").val(nombre);
-    $("#editar_codigo_penal").val(codigo);
-    $("#editar_descripcion").val(descripcion);
-    $("#modalEditar").show();
-    $("#mensaje-editar").html('');
-}
-
-function guardarEdicionDenuncia() {
-    const url = `${BACKEND_BASE_URL}/funciones_denuncias.php`;
-    
-    const id = $("#editar_id").val();
-    const nombre = $("#editar_nombre_civil").val().trim();
-    const codigo = $("#editar_codigo_penal").val().trim();
-    const descripcion = $("#editar_descripcion").val().trim();
-    
-    if (!nombre || !codigo || !descripcion) {
-        $("#mensaje-editar").html('<div class="error">❌ Todos los campos son obligatorios</div>');
-        return;
-    }
-    
-    const formData = {
-        accion: "editar",
-        id: id,
-        nombre_civil: nombre,
-        codigo_penal: codigo,
-        descripcion: descripcion
-    };
-    
-    const submitBtn = $("#form-editar-denuncia button[type='submit']");
-    const originalText = submitBtn.html();
-    submitBtn.html('⏳ Guardando...').prop('disabled', true);
-    
-    $.ajax({
-        url: url,
-        method: 'POST',
-        data: formData,
-        dataType: 'text',
-        timeout: 10000,
-        success: function(response) {
-            const cleanResponse = response.trim();
-            
-            // Verificar si es HTML (error PHP)
-            if (cleanResponse.startsWith('<') || cleanResponse.includes('<b>') || cleanResponse.includes('<br')) {
-                mostrarErrorPHP(cleanResponse);
-                return;
-            }
-            
-            try {
-                const res = JSON.parse(cleanResponse);
-                if (res.status === "ok") {
-                    $("#mensaje-editar").html('<div class="success">✅ Denuncia actualizada correctamente</div>');
-                    setTimeout(() => {
-                        cerrarModal();
-                        cargarDenuncias();
-                    }, 1500);
-                } else {
-                    $("#mensaje-editar").html('<div class="error">❌ Error: ' + res.mensaje + '</div>');
-                }
-            } catch (e) {
-                console.error('❌ Error parseando JSON:', e);
-                $("#mensaje-editar").html('<div class="error">❌ Error en el servidor: respuesta no válida</div>');
-            }
-        },
-        error: function(xhr, status, error) {
-            $("#mensaje-editar").html('<div class="error">❌ Error de conexión: ' + error + '</div>');
-        },
-        complete: function() {
-            submitBtn.html(originalText).prop('disabled', false);
-        }
+function verDetalleDenuncia(id, nombre, codigo, descripcion, fecha) {
+    const fechaFormateada = new Date(fecha).toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
     });
-}
-
-function eliminarDenuncia(id) {
-    if (!confirm("⚠️ ¿Está seguro de que desea eliminar esta denuncia?\n\nEsta acción no se puede deshacer.")) {
-        return;
-    }
     
-    const url = `${BACKEND_BASE_URL}/funciones_denuncias.php`;
-    
-    $.ajax({
-        url: url,
-        method: 'POST',
-        data: {
-            accion: "eliminar",
-            id: id
-        },
-        dataType: 'text',
-        timeout: 10000,
-        success: function(response) {
-            const cleanResponse = response.trim();
-            
-            // Verificar si es HTML (error PHP)
-            if (cleanResponse.startsWith('<') || cleanResponse.includes('<b>') || cleanResponse.includes('<br')) {
-                mostrarErrorPHP(cleanResponse);
-                return;
-            }
-            
-            try {
-                const res = JSON.parse(cleanResponse);
-                if (res.status === "ok") {
-                    mostrarMensaje("✅ Denuncia eliminada correctamente", "success");
-                    cargarDenuncias();
-                } else {
-                    mostrarMensaje("❌ Error: " + res.mensaje, "error");
-                }
-            } catch (e) {
-                console.error('❌ Error parseando JSON:', e);
-                mostrarMensaje("❌ Error en el servidor al eliminar", "error");
-            }
-        },
-        error: function(xhr, status, error) {
-            mostrarMensaje("❌ Error de conexión: " + error, "error");
-        }
-    });
+    $("#detalle-contenido").html(`
+        <div style="padding: 20px;">
+            <h3 style="margin-bottom: 20px; color: #667eea;">📋 Denuncia #${id}</h3>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                <p><strong>📅 Fecha:</strong> ${fechaFormateada}</p>
+            </div>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                <p><strong>👤 Civil:</strong> ${escapeHtml(nombre)}</p>
+            </div>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                <p><strong>⚖️ Código Penal:</strong> <code style="background: #e9ecef; padding: 4px 8px; border-radius: 4px;">${escapeHtml(codigo)}</code></p>
+            </div>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                <p><strong>📝 Descripción:</strong></p>
+                <p style="margin-top: 10px; line-height: 1.6;">${escapeHtml(descripcion)}</p>
+            </div>
+        </div>
+    `);
+    $("#modalDetalle").show();
 }
 
 function cerrarModal() {
-    $("#modalEditar").hide();
-    $("#form-editar-denuncia")[0].reset();
-    $("#mensaje-editar").html('');
+    $("#modalDetalle").hide();
+    $("#detalle-contenido").html('');
 }
 
 // ===== FUNCIONES DE RENDERIZADO =====
@@ -448,17 +284,13 @@ function renderizarDenuncias(denuncias) {
             
             <p><strong>👤 Civil:</strong> ${escapeHtml(denuncia.nombre_civil)}</p>
             <p><strong>⚖️ Código Penal:</strong> <code>${escapeHtml(denuncia.CodigoPenal)}</code></p>
-            <p><strong>📝 Descripción:</strong> ${escapeHtml(denuncia.descripcion)}</p>
+            <p><strong>📝 Descripción:</strong> ${escapeHtml(denuncia.descripcion).substring(0, 100)}${denuncia.descripcion.length > 100 ? '...' : ''}</p>
             ${infoAdicional.length > 0 ? `<p><strong>📊 Información Adicional:</strong><br>${infoAdicional.join('<br>')}</p>` : ''}
             
             <div class="denuncia-actions">
-                <button onclick="editarDenuncia(${denuncia.id}, '${escapeJs(denuncia.nombre_civil)}', '${escapeJs(denuncia.CodigoPenal)}', '${escapeJs(denuncia.descripcion)}')" 
-                        class="btn btn-warning btn-sm">
-                    ✏️ Editar
-                </button>
-                <button onclick="eliminarDenuncia(${denuncia.id})" 
-                        class="btn btn-danger btn-sm">
-                    🗑️ Eliminar
+                <button onclick="verDetalleDenuncia(${denuncia.id}, '${escapeJs(denuncia.nombre_civil)}', '${escapeJs(denuncia.CodigoPenal)}', '${escapeJs(denuncia.descripcion)}', '${denuncia.Fecha}')" 
+                        class="btn btn-info btn-sm">
+                    👁️ Ver Detalle
                 </button>
             </div>
         </article>`;
@@ -683,4 +515,4 @@ function escapeJs(text) {
                .replace(/\r/g, '\\r');
 }
 
-console.log('✅ Sistema de Denuncias - Listo para usar');
+console.log('✅ Sistema de Denuncias - Modo Consulta Listo');

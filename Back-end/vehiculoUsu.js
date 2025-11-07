@@ -61,18 +61,6 @@ function cargarResultados(busqueda = '') {
                             </div>
                             <input type="text" placeholder="Agregar observación sobre este vehículo..." class="vehiculo-card__observacion" />
                             <div class="vehiculo-acciones">
-                                <a href="../Back-end/Vehiculos.php?action=edit&matricula=${vehiculo.Matricula}" 
-                                   class="btn" 
-                                   style="background: linear-gradient(135deg, #f39c12, #e67e22); padding: 8px 15px; font-size: 14px;"
-                                   target="_blank">
-                                    ✏️ Editar
-                                </a>
-                                <a href="javascript:void(0);" 
-                                   class="btn" 
-                                   style="background: linear-gradient(135deg, #e74c3c, #c0392b); padding: 8px 15px; font-size: 14px;"
-                                   onclick="eliminarVehiculo('${vehiculo.Matricula}')">
-                                    🗑️ Eliminar
-                                </a>
                                 <button class="btn btn-primary" onclick="mostrarDenuncias('${vehiculo.Matricula.replace(/'/g, "\\'")}')" type="button">
                                     📋 Ver Denuncias
                                 </button>
@@ -108,11 +96,6 @@ function cargarResultados(busqueda = '') {
                     <div style="font-size: 4em; margin-bottom: 20px;">🚗</div>
                     <h3>No hay vehículos registrados</h3>
                     <p>El sistema no tiene vehículos registrados actualmente.</p>
-                    <div style="margin-top: 20px;">
-                        <a href="../Back-end/Vehiculos.php?action=add" class="btn btn-add" target="_blank">
-                            <span class="icon-large">➕</span> Agregar Primer Vehículo
-                        </a>
-                    </div>
                 </div>
             `;
         }
@@ -138,20 +121,11 @@ function cargarResultados(busqueda = '') {
     });
 }
 
-// Función para eliminar un vehículo
-function eliminarVehiculo(matricula) {
-    const confirmar = confirm(`¿Estás seguro de que deseas eliminar el vehículo con matrícula ${matricula}?`);
-    if (confirmar) {
-        window.location.href = `../Back-end/Vehiculos.php?action=delete&matricula=${matricula}`;
-    }
-}
-
 // =============================================
-// GESTIÓN DE DENUNCIAS - CONECTADO CON PHP
+// GESTIÓN DE DENUNCIAS - SOLO VISUALIZACIÓN
 // =============================================
 
 // Variables globales para denuncias
-let denunciaAEliminar = null;
 let vehiculoActual = null;
 
 // Función para mostrar denuncias
@@ -216,7 +190,7 @@ function cargarDenunciasVehiculo(matricula) {
         });
 }
 
-// Mostrar lista de denuncias
+// Mostrar lista de denuncias (SOLO LECTURA)
 function mostrarListaDenuncias(denuncias) {
     const lista = document.getElementById('lista-denuncias');
     if (!lista) return;
@@ -230,14 +204,6 @@ function mostrarListaDenuncias(denuncias) {
         <div class="denuncia-item">
             <div class="denuncia-header">
                 <div class="denuncia-fecha">${formatearFecha(denuncia.fecha_denuncia)} - ${denuncia.tipo_denuncia}</div>
-                <div class="denuncia-acciones">
-                    <button class="btn btn-primary" onclick="editarDenuncia(${denuncia.id})" type="button">
-                        <span class="icon-small">✏️</span> Editar
-                    </button>
-                    <button class="btn btn-danger" onclick="solicitarEliminarDenuncia(${denuncia.id})" type="button">
-                        <span class="icon-small">🗑️</span> Eliminar
-                    </button>
-                </div>
             </div>
             <div class="denuncia-descripcion">
                 <strong>Descripción:</strong> ${denuncia.descripcion}<br>
@@ -248,160 +214,6 @@ function mostrarListaDenuncias(denuncias) {
             </div>
         </div>
     `).join('');
-}
-
-// Mostrar modal para agregar denuncia
-function mostrarModalAgregar() {
-    console.log('➕ Abriendo modal para agregar denuncia');
-    document.getElementById('modal-titulo').textContent = 'Agregar Denuncia';
-    document.getElementById('form-denuncia').reset();
-    document.getElementById('denuncia-id').value = '';
-    document.getElementById('fecha-denuncia').valueAsDate = new Date();
-    document.getElementById('modal-denuncia').style.display = 'flex';
-}
-
-// Editar denuncia existente
-function editarDenuncia(id) {
-    console.log('✏️ Editando denuncia:', id);
-    
-    // Cargar datos de la denuncia desde el servidor
-    fetch(`../Back-end/Vehiculos.php?action=get_denuncias&matricula=${vehiculoActual}`)
-        .then(response => response.json())
-        .then(denuncias => {
-            const denuncia = denuncias.find(d => d.id == id);
-            if (!denuncia) {
-                mostrarNotificacion('No se encontró la denuncia', 'error');
-                return;
-            }
-            
-            document.getElementById('modal-titulo').textContent = 'Editar Denuncia';
-            document.getElementById('denuncia-id').value = denuncia.id;
-            document.getElementById('fecha-denuncia').value = denuncia.fecha_denuncia;
-            document.getElementById('tipo-denuncia').value = denuncia.tipo_denuncia;
-            document.getElementById('descripcion-denuncia').value = denuncia.descripcion;
-            document.getElementById('estado-denuncia').value = denuncia.estado;
-            
-            document.getElementById('modal-denuncia').style.display = 'flex';
-        })
-        .catch(error => {
-            console.error('❌ Error al cargar denuncia:', error);
-            mostrarNotificacion('Error al cargar la denuncia', 'error');
-        });
-}
-
-// Cerrar modal
-function cerrarModal() {
-    document.getElementById('modal-denuncia').style.display = 'none';
-}
-
-// Guardar denuncia (agregar o editar)
-function guardarDenuncia(e) {
-    e.preventDefault();
-    
-    const id = document.getElementById('denuncia-id').value;
-    const fecha = document.getElementById('fecha-denuncia').value;
-    const tipo = document.getElementById('tipo-denuncia').value;
-    const descripcion = document.getElementById('descripcion-denuncia').value;
-    const estado = document.getElementById('estado-denuncia').value;
-    const vehiculoMatricula = document.getElementById('vehiculo-id').value;
-    
-    if (!fecha || !tipo || !descripcion || !estado) {
-        mostrarNotificacion('Por favor, complete todos los campos requeridos', 'error');
-        return;
-    }
-    
-    const denunciaData = {
-        fecha_denuncia: fecha,
-        tipo_denuncia: tipo,
-        descripcion: descripcion,
-        estado: estado,
-        vehiculo_matricula: vehiculoMatricula
-    };
-    
-    if (id) {
-        denunciaData.id = id;
-    }
-    
-    const url = id 
-        ? `../Back-end/Vehiculos.php?action=update_denuncia` 
-        : `../Back-end/Vehiculos.php?action=add_denuncia`;
-    
-    const method = id ? 'PUT' : 'POST';
-    
-    console.log('💾 Guardando denuncia:', denunciaData);
-    
-    fetch(url, {
-        method: method,
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(denunciaData)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Error HTTP: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('✅ Respuesta del servidor:', data);
-        
-        if (data.error) {
-            throw new Error(data.error);
-        }
-        
-        mostrarNotificacion(data.message || 'Denuncia guardada correctamente', 'success');
-        cerrarModal();
-        cargarDenunciasVehiculo(vehiculoMatricula);
-    })
-    .catch(error => {
-        console.error('❌ Error al guardar denuncia:', error);
-        mostrarNotificacion(error.message || 'Error al guardar denuncia', 'error');
-    });
-}
-
-// Solicitar confirmación para eliminar
-function solicitarEliminarDenuncia(id) {
-    denunciaAEliminar = id;
-    document.getElementById('modal-confirmacion').style.display = 'flex';
-}
-
-// Cerrar modal de confirmación
-function cerrarConfirmacion() {
-    document.getElementById('modal-confirmacion').style.display = 'none';
-    denunciaAEliminar = null;
-}
-
-// Eliminar denuncia
-function eliminarDenuncia() {
-    if (!denunciaAEliminar) return;
-    
-    console.log('🗑️ Eliminando denuncia:', denunciaAEliminar);
-    
-    fetch(`../Back-end/Vehiculos.php?action=delete_denuncia&id=${denunciaAEliminar}`, {
-        method: 'DELETE'
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Error HTTP: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('✅ Respuesta del servidor:', data);
-        
-        if (data.error) {
-            throw new Error(data.error);
-        }
-        
-        mostrarNotificacion(data.message || 'Denuncia eliminada correctamente', 'success');
-        cerrarConfirmacion();
-        cargarDenunciasVehiculo(vehiculoActual);
-    })
-    .catch(error => {
-        console.error('❌ Error al eliminar denuncia:', error);
-        mostrarNotificacion(error.message || 'Error al eliminar denuncia', 'error');
-    });
 }
 
 // =============================================
@@ -423,59 +235,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Inicializar datos
     cargarResultados();
-    
-    // Configurar eventos de denuncias
-    const agregarDenunciaBtn = document.getElementById('agregar-denuncia');
-    if (agregarDenunciaBtn) {
-        agregarDenunciaBtn.addEventListener('click', mostrarModalAgregar);
-        console.log('✅ Evento agregar-denuncia configurado');
-    }
-    
-    const cerrarModalBtn = document.getElementById('cerrar-modal');
-    if (cerrarModalBtn) {
-        cerrarModalBtn.addEventListener('click', cerrarModal);
-    }
-    
-    const cancelarDenunciaBtn = document.getElementById('cancelar-denuncia');
-    if (cancelarDenunciaBtn) {
-        cancelarDenunciaBtn.addEventListener('click', cerrarModal);
-    }
-    
-    const formDenuncia = document.getElementById('form-denuncia');
-    if (formDenuncia) {
-        formDenuncia.addEventListener('submit', guardarDenuncia);
-        console.log('✅ Evento form-denuncia configurado');
-    }
-    
-    const cerrarConfirmacionBtn = document.getElementById('cerrar-confirmacion');
-    if (cerrarConfirmacionBtn) {
-        cerrarConfirmacionBtn.addEventListener('click', cerrarConfirmacion);
-    }
-    
-    const cancelarEliminarBtn = document.getElementById('cancelar-eliminar');
-    if (cancelarEliminarBtn) {
-        cancelarEliminarBtn.addEventListener('click', cerrarConfirmacion);
-    }
-    
-    const confirmarEliminarBtn = document.getElementById('confirmar-eliminar');
-    if (confirmarEliminarBtn) {
-        confirmarEliminarBtn.addEventListener('click', eliminarDenuncia);
-    }
-    
-    // Cerrar modal al hacer clic fuera del contenido
-    const modalDenuncia = document.getElementById('modal-denuncia');
-    if (modalDenuncia) {
-        modalDenuncia.addEventListener('click', function(e) {
-            if (e.target === this) cerrarModal();
-        });
-    }
-    
-    const modalConfirmacion = document.getElementById('modal-confirmacion');
-    if (modalConfirmacion) {
-        modalConfirmacion.addEventListener('click', function(e) {
-            if (e.target === this) cerrarConfirmacion();
-        });
-    }
 });
 
 // Manejar envío del formulario de búsqueda

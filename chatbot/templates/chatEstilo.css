@@ -1,13 +1,13 @@
 body { 
     font-family: Arial, sans-serif; 
     margin: 20px; 
-    background: #0d1b2a; /* azul oscuro */
+    background: #083e79; /* azul oscuro */
     color: #ffffff;
 }
 
 h1 {
     text-align: center;
-    color: #e0e1dd;
+    color: gold;
 }
 
 #chatbox { 

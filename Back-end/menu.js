@@ -1,4 +1,3 @@
-// Elementos del DOM
 const userButton = document.getElementById('userButton');
 const dropdownMenu = document.getElementById('dropdownMenu');
 const viewProfileLink = document.getElementById('viewProfile');
